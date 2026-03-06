@@ -5,27 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexFlow AI — Appointment Automation for Small Businesses</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; background: #f9f9f9; color: #1a1a1a; }
-        nav { background: #1a1a1a; color: white; padding: 20px 40px; font-size: 20px; font-weight: 700; }
-        .hero { max-width: 700px; margin: 80px auto; padding: 0 24px; text-align: center; }
-        h1 { font-size: 42px; line-height: 1.2; margin-bottom: 20px; }
-        p { font-size: 18px; color: #555; margin-bottom: 32px; }
-        .btn { background: #1a1a1a; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; }
-        footer { text-align: center; padding: 40px; color: #aaa; font-size: 13px; margin-top: 80px; }
-        footer a { color: #aaa; margin: 0 12px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #fff; }
+
+        /* NAV */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid #eee; }
+        .nav-logo { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+        .nav-cta { background: #1a1a1a; color: white; padding: 10px 22px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; }
+
+        /* HERO */
+        .hero { max-width: 780px; margin: 90px auto; padding: 0 24px; text-align: center; }
+        .hero-badge { display: inline-block; background: #f0f0f0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 24px; color: #555; }
+        .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+        .hero h1 span { color: #555; }
+        .hero p { font-size: 19px; color: #555; line-height: 1.6; max-width: 560px; margin: 0 auto 36px; }
+        .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: #1a1a1a; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; }
+        .btn-secondary { background: #f5f5f5; color: #1a1a1a; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; }
+
+        /* SOCIAL PROOF */
+        .proof { text-align: center; padding: 40px 24px; background: #f9f9f9; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .proof p { font-size: 14px; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .proof-items { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+        .proof-item { font-size: 14px; color: #555; font-weight: 500; }
+
+        /* PROBLEM */
+        .section { max-width: 900px; margin: 80px auto; padding: 0 24px; }
+        .section-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 12px; }
+        .section h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.2; }
+        .section p { font-size: 17px; color: #555; line-height: 1.7; max-width: 620px; }
+
+        /* FEATURES */
+        .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+        .feature { background: #f9f9f9; border-radius: 12px; padding: 28px; }
+        .feature-icon { font-size: 28px; margin-bottom: 14px; }
+        .feature h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .feature p { font-size: 14px; color: #666; line-height: 1.6; }
+
+        /* HOW IT WORKS */
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+        .step { text-align: center; }
+        .step-num { width: 40px; height: 40px; background: #1a1a1a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; margin: 0 auto 16px; }
+        .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .step p { font-size: 14px; color: #666; line-height: 1.6; }
+
+        /* PRICING */
+        .pricing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; max-width: 680px; }
+        .plan { border: 2px solid #eee; border-radius: 12px; padding: 32px; }
+        .plan.featured { border-color: #1a1a1a; }
+        .plan-name { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; }
+        .plan-price { font-size: 42px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+        .plan-price span { font-size: 16px; font-weight: 500; color: #888; }
+        .plan-desc { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .plan ul { list-style: none; }
+        .plan ul li { font-size: 14px; color: #444; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+        .plan ul li:before { content: "✓ "; font-weight: 700; color: #1a1a1a; }
+        .plan-btn { display: block; text-align: center; margin-top: 24px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; background: #1a1a1a; color: white; }
+        .plan-btn.outline { background: white; color: #1a1a1a; border: 2px solid #1a1a1a; }
+
+        /* CTA */
+        .cta-section { background: #1a1a1a; color: white; text-align: center; padding: 80px 24px; margin-top: 80px; }
+        .cta-section h2 { font-size: 38px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+        .cta-section p { font-size: 17px; color: #aaa; margin-bottom: 32px; }
+        .btn-white { background: white; color: #1a1a1a; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 32px; color: #aaa; font-size: 13px; border-top: 1px solid #eee; }
+        footer a { color: #aaa; margin: 0 12px; text-decoration: none; }
+
+        @media (max-width: 640px) {
+            nav { padding: 16px 24px; }
+            .hero h1 { font-size: 36px; }
+            .features, .steps, .pricing { grid-template-columns: 1fr; }
+            .proof-items { gap: 24px; }
+        }
     </style>
 </head>
 <body>
-    <nav>NexFlow AI</nav>
-    <div class="hero">
-        <h1>Stop losing clients to no-shows.</h1>
-        <p>NexFlow AI automatically sends appointment reminders and follow-ups for your small business — so you can focus on the work, not the admin.</p>
-        <a class="btn" href="mailto:hello@nexflowai.com">Get Started</a>
+
+<nav>
+    <span class="nav-logo">NexFlow AI</span>
+    <a class="nav-cta" href="mailto:hello@nexflowai.com">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">AI Automation for Small Businesses</div>
+    <h1>Stop losing money to <span>no-shows.</span></h1>
+    <p>NexFlow AI automatically reminds your clients before their appointments and follows up after — so you focus on the work, not the admin.</p>
+    <div class="hero-btns">
+        <a class="btn-primary" href="mailto:hello@nexflowai.com">Start Free Trial</a>
+        <a class="btn-secondary" href="#how-it-works">See How It Works</a>
     </div>
-    <footer>
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/terms.html">Terms & Conditions</a>
-        <br><br>© 2026 NexFlow AI
-    </footer>
+</section>
+
+<!-- SOCIAL PROOF BAR -->
+<div class="proof">
+    <p>Built for service businesses like</p>
+    <div class="proof-items">
+        <span class="proof-item">Barbershops</span>
+        <span class="proof-item">Hair Salons</span>
+        <span class="proof-item">Law Firms</span>
+        <span class="proof-item">Medical Offices</span>
+        <span class="proof-item">Auto Shops</span>
+        <span class="proof-item">Tattoo Studios</span>
+    </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="section">
+    <div class="section-label">The Problem</div>
+    <h2>Every no-show is money left on the table.</h2>
+    <p>The average service business loses 10-15% of revenue to no-shows and last-minute cancellations. That's thousands of dollars a year — gone. Manual reminder calls take time you don't have. NexFlow AI handles it automatically.</p>
+
+    <div class="features">
+        <div class="feature">
+            <div class="feature-icon">📅</div>
+            <h3>24-Hour Reminder</h3>
+            <p>Clients get an SMS the day before confirming their appointment with a simple CONFIRM or CANCEL reply.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⏰</div>
+            <h3>1-Hour Reminder</h3>
+            <p>A second reminder fires an hour before so no one forgets on the day of. No more last-minute scrambles.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⭐</div>
+            <h3>Auto Review Request</h3>
+            <p>30 minutes after the appointment, clients get a follow-up asking for a Google review — on autopilot.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+    <div class="section-label">How It Works</div>
+    <h2>Set it up once. Let it run.</h2>
+    <p>No technical skills needed. If you can fill out a form, you can use NexFlow AI.</p>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h3>Add Your Appointments</h3>
+            <p>Enter your client's name, phone number, service, and appointment time into your dashboard.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h3>We Handle the Rest</h3>
+            <p>NexFlow AI automatically sends reminders at 24 hours and 1 hour before each appointment.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h3>Watch Reviews Roll In</h3>
+            <p>After every appointment, clients are prompted to leave a review — growing your reputation automatically.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="section">
+    <div class="section-label">Pricing</div>
+    <h2>Simple, flat-rate pricing.</h2>
+    <p>No setup fees. No contracts. Cancel anytime.</p>
+
+    <div class="pricing">
+        <div class="plan">
+            <div class="plan-name">Starter</div>
+            <div class="plan-price">$199<span>/mo</span></div>
+            <div class="plan-desc">Perfect for solo operators</div>
+            <ul>
+                <li>Up to 100 appointments/mo</li>
+                <li>24hr + 1hr SMS reminders</li>
+                <li>Review request follow-ups</li>
+                <li>Dashboard access</li>
+                <li>Email support</li>
+            </ul>
+            <a class="plan-btn outline" href="mailto:hello@nexflowai.com">Get Started</a>
+        </div>
+        <div class="plan featured">
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$349<span>/mo</span></div>
+            <div class="plan-desc">For growing businesses</div>
+            <ul>
+                <li>Unlimited appointments</li>
+                <li>24hr + 1hr SMS reminders</li>
+                <li>Review request follow-ups</li>
+                <li>Custom message branding</li>
+                <li>Priority support</li>
+            </ul>
+            <a class="plan-btn" href="mailto:hello@nexflowai.com">Get Started</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Ready to stop losing clients?</h2>
+    <p>Get set up in under 10 minutes. First month free.</p>
+    <a class="btn-white" href="mailto:hello@nexflowai.com">Start Free Trial</a>
+</section>
+
+<footer>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms & Conditions</a>
+    <br><br>© 2026 NexFlow AI. All rights reserved.
+</footer>
+
 </body>
 </html>
