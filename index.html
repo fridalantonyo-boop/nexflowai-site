@@ -511,8 +511,13 @@ footer { padding: 48px 60px; display: flex; align-items: center; justify-content
   <h2 class="sec-h2 reveal reveal-delay-1">First setup is <em>completely free.</em></h2>
   <p class="sec-p reveal reveal-delay-2">I'm doing the first setup at no charge in exchange for a testimonial. You get the full system running — zero risk on your end.</p>
   <div class="reveal reveal-delay-3">
-    <form name="contact" method="POST" data-netlify="true" action="/thank-you.html" style="max-width:480px;margin:2rem auto 0;text-align:left;">
-      <input type="hidden" name="form-name" value="contact" />
+    <div id="form-success" style="display:none;max-width:480px;margin:2rem auto 0;text-align:center;padding:2rem;background:#1a1a1a;border-radius:12px;border:1px solid #333;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">✓</div>
+      <h3 style="color:#fff;margin-bottom:0.5rem;">You're all set.</h3>
+      <p style="color:#888;font-size:0.9rem;">We got your info and will reach out within 24 hours. Talk soon.</p>
+    </div>
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/?success=true" style="max-width:480px;margin:2rem auto 0;text-align:left;">
+      <input type="hidden" name="form-name" value="contact">
       <div style="margin-bottom:1rem;">
         <input type="text" name="name" placeholder="Your Name" required
           style="width:100%;padding:0.85rem 1rem;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:0.95rem;outline:none;" />
@@ -547,6 +552,12 @@ footer { padding: 48px 60px; display: flex; align-items: center; justify-content
 </footer>
 
 <script>
+if (new URLSearchParams(window.location.search).get('success') === 'true') {
+  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('contact-form').style.display = 'none';
+  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.12 });
