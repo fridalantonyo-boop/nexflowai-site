@@ -516,7 +516,7 @@ footer { padding: 48px 60px; display: flex; align-items: center; justify-content
       <h3 style="color:#fff;margin-bottom:0.5rem;">You're all set.</h3>
       <p style="color:#888;font-size:0.9rem;">We got your info and will reach out within 24 hours. Talk soon.</p>
     </div>
-    <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/?success=true" style="max-width:480px;margin:2rem auto 0;text-align:left;">
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" style="max-width:480px;margin:2rem auto 0;text-align:left;">
       <input type="hidden" name="form-name" value="contact">
       <div style="margin-bottom:1rem;">
         <input type="text" name="name" placeholder="Your Name" required
@@ -552,11 +552,17 @@ footer { padding: 48px 60px; display: flex; align-items: center; justify-content
 </footer>
 
 <script>
-if (new URLSearchParams(window.location.search).get('success') === 'true') {
-  document.getElementById('form-success').style.display = 'block';
-  document.getElementById('contact-form').style.display = 'none';
-  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-}
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const data = new FormData(form);
+  fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() })
+    .then(() => {
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    })
+    .catch(() => alert('Something went wrong. Please email us directly at nexflowaisolutions@gmail.com'));
+});
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
