@@ -479,6 +479,37 @@ footer{padding:44px 52px;display:flex;align-items:center;justify-content:space-b
 }
 .nav-links a:not(.nav-cta):hover::after { width:100%; }
 
+/* Aurora behind hero */
+.hero::before {
+  content:''; position:absolute; top:10%; left:40%; width:700px; height:700px;
+  background: radial-gradient(circle, rgba(201,168,76,0.12), transparent 60%);
+  filter: blur(40px); pointer-events:none; z-index:0;
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from { transform: translate(-40px,-20px) scale(1); opacity:0.7; }
+  to   { transform: translate(60px,30px) scale(1.15); opacity:1; }
+}
+
+/* CC panel gold border-glow on hover */
+.cc-panel { transition: box-shadow 0.5s ease, border-color 0.5s ease; }
+.cc-panel:hover {
+  border-color: rgba(201,168,76,0.22);
+  box-shadow: 0 40px 100px -30px rgba(201,168,76,0.2), 0 0 0 1px rgba(201,168,76,0.05);
+}
+
+/* Form focus ring */
+.form-field input:focus, .form-field select:focus {
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+}
+
+/* Footer gold dot */
+footer { position:relative; }
+footer::before {
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:60px; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hero-bg, .cmd-widget::before, .hero h1 em, .sec-h2 em { animation: none !important; }
@@ -546,7 +577,7 @@ footer{padding:44px 52px;display:flex;align-items:center;justify-content:space-b
         <span class="ht-label">To Go Live</span>
       </div>
       <div class="ht-item">
-        <span class="ht-num">6</span>
+        <span class="ht-num"><span data-count="6">0</span></span>
         <span class="ht-label">Active Modules</span>
       </div>
     </div>
