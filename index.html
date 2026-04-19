@@ -405,6 +405,85 @@ footer{padding:44px 52px;display:flex;align-items:center;justify-content:space-b
 .reveal-delay-2{transition-delay:0.2s}
 .reveal-delay-3{transition-delay:0.3s}
 
+/* ── PREMIUM POLISH ── */
+/* Metallic gold on italic accents */
+.hero h1 em, .sec-h2 em {
+  background: linear-gradient(135deg, #f5dfa0 0%, #e8c96a 35%, #c9a84c 55%, #8a6d28 85%, #e8c96a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 8s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+/* Tighter editorial hero headline */
+.hero h1 { letter-spacing: -0.022em; }
+
+/* Marquee edge fade + pause on hover */
+.marquee-wrap {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+/* Scanning line across command widget */
+.cmd-widget::before {
+  height: 1px;
+  animation: scanline 6s ease-in-out infinite;
+}
+@keyframes scanline {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.9; transform: translateY(1px); }
+}
+.cmd-widget { transition: box-shadow 0.4s ease, border-color 0.4s ease; }
+.cmd-widget:hover {
+  border-color: rgba(201,168,76,0.25);
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.08), 0 30px 80px -20px rgba(201,168,76,0.15), inset 0 0 60px rgba(201,168,76,0.03);
+}
+
+/* Spotlight cursor-follow on modules and os tiles */
+.module, .os-tile, .plan {
+  background-image: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(201,168,76,0.06), transparent 40%);
+}
+
+/* Button glow */
+.btn-gold {
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(201,168,76,0.4);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.3s;
+}
+.btn-gold:hover {
+  box-shadow: 0 10px 30px -8px rgba(201,168,76,0.5), 0 0 0 1px rgba(245,223,160,0.3);
+}
+.form-submit { transition: background 0.2s, box-shadow 0.3s; }
+.form-submit:hover { box-shadow: 0 10px 30px -8px rgba(201,168,76,0.5); }
+
+/* Hero background slow drift */
+.hero-bg { animation: drift 40s ease-in-out infinite alternate; }
+@keyframes drift {
+  from { transform: translate(0,0); }
+  to   { transform: translate(-16px,-12px); }
+}
+
+/* Subtle hairline accent on section labels (stronger than default) */
+.sec-label::before { width: 40px; background: linear-gradient(90deg, var(--gold), transparent); opacity: 1; }
+
+/* Smoother pillar/step hover */
+.pillar, .hiw-step { transition: background 0.25s ease, padding-left 0.25s ease; }
+.pillar:hover, .hiw-step:hover { background: linear-gradient(90deg, var(--goldfaint), transparent 60%); padding-left: 12px; }
+
+/* Nav subtle gold under-line on hover */
+.nav-links a { position: relative; }
+.nav-links a:not(.nav-cta)::after {
+  content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--gold); transition:width 0.25s ease;
+}
+.nav-links a:not(.nav-cta):hover::after { width:100%; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg, .cmd-widget::before, .hero h1 em, .sec-h2 em { animation: none !important; }
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   nav{padding:0 24px}
@@ -1030,6 +1109,26 @@ const countObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.4 });
 document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+// Spotlight cursor-follow on cards
+document.querySelectorAll('.module, .os-tile, .plan').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+// Magnetic gold buttons
+document.querySelectorAll('.btn-gold, .form-submit').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width/2;
+    const y = e.clientY - r.top - r.height/2;
+    btn.style.transform = `translate(${x*0.12}px, ${y*0.18}px)`;
+  });
+  btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+});
 
 // Form
 document.getElementById('contact-form').addEventListener('submit', function(e) {
