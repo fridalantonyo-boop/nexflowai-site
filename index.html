@@ -268,7 +268,7 @@ nav{
 .cc-body{display:grid;grid-template-columns:200px 1fr 200px;gap:0;min-height:420px}
 /* sidebar */
 .cc-sidebar{border-right:1px solid var(--line);padding:20px 0}
-.cc-nav-item{padding:10px 20px;font-size:12px;color:var(--muted);cursor:default;display:flex;align-items:center;gap:10px;transition:background 0.15s,color 0.15s;letter-spacing:0.02em}
+.cc-nav-item{padding:10px 20px;font-size:12px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:10px;transition:background 0.15s,color 0.15s;letter-spacing:0.02em;user-select:none}
 .cc-nav-item:hover{background:var(--bg3);color:var(--text)}
 .cc-nav-item.active{color:var(--white);background:var(--bg4)}
 .cc-nav-item.active::before{content:'';display:block;width:2px;height:100%;background:var(--gold);position:absolute;left:0}
@@ -277,6 +277,9 @@ nav{
 .cc-nav-badge{margin-left:auto;background:var(--goldfaint);color:var(--gold);font-family:var(--font-m);font-size:8px;padding:1px 6px;border-radius:2px}
 /* main area */
 .cc-main{padding:24px;overflow:hidden}
+.cc-pane{display:none;animation:cc-fade 0.25s ease}
+.cc-pane.active{display:block}
+@keyframes cc-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .cc-main-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .cms{background:var(--bg3);border:1px solid var(--line);padding:16px;text-align:center}
 .cms-n{font-family:var(--font-d);font-size:30px;font-weight:600;color:var(--white);line-height:1}
@@ -355,10 +358,10 @@ nav{
 }
 
 /* ── STATS ── */
-.stats-band{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.stats-inner{max-width:1120px;margin:0 auto;padding:70px 52px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-left:1px solid var(--line);border-right:1px solid var(--line)}
-.stat-box{background:var(--bg2);padding:44px 32px;text-align:center;transition:background 0.2s}
-.stat-box:hover{background:var(--bg3)}
+.stats-band{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats-inner{max-width:1120px;margin:0 auto;padding:70px 52px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.stat-box{background:var(--bg);padding:44px 32px;text-align:center;transition:background 0.2s}
+.stat-box:hover{background:var(--bg2)}
 .stat-num{font-family:var(--font-d);font-size:60px;font-weight:600;color:var(--white);line-height:1;display:block}
 .stat-num sub{font-size:26px;color:var(--gold);vertical-align:baseline}
 .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.14em;margin-top:10px;display:block;line-height:1.6}
@@ -688,63 +691,219 @@ footer::before {
   </div>
 </div>
 
-<!-- PLATFORM INTRO -->
-<section class="platform-intro" id="platform">
+<!-- COMMAND CENTER PREVIEW -->
+<section class="command-center-section">
   <div class="section">
-    <div class="platform-cols">
+    <div class="cc-header reveal">
       <div>
-        <span class="sec-label reveal">The Platform</span>
-        <h2 class="sec-h2 reveal reveal-delay-1">Not just automations.<br><em>An operating system.</em></h2>
-        <p class="sec-p reveal reveal-delay-2">Most tools automate one thing. NexFlow connects every part of your customer journey into a single intelligent system — so you capture more, lose fewer, and keep coming back.</p>
-        <div class="platform-pillars">
-          <div class="pillar reveal">
-            <div class="pillar-icon">⚡</div>
-            <div class="pillar-body">
-              <h4>Instant response</h4>
-              <p>Every lead, missed call, and appointment triggers an immediate automated action. No delays. No manual work.</p>
+        <span class="sec-label">Command Center</span>
+        <h2 class="sec-h2">One dashboard.<br><em>Every automation.</em></h2>
+      </div>
+      <p class="sec-p">See every active module, message sent, and appointment confirmed in real time. Your business running itself — visible at a glance.</p>
+    </div>
+    <div class="cc-panel reveal">
+      <div class="cc-topbar">
+        <div class="cc-dots"><div class="cc-dot"></div><div class="cc-dot"></div><div class="cc-dot"></div></div>
+        <div class="cc-topbar-title">NexFlow Command Center</div>
+        <div class="cc-topbar-badge">● All Systems Live</div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-sidebar">
+          <div class="cc-nav-item active" data-tab="overview"><span class="cc-nav-icon">⊞</span>Overview<span class="cc-nav-badge">6</span></div>
+          <div class="cc-nav-item" data-tab="leads"><span class="cc-nav-icon">🎯</span>Leads</div>
+          <div class="cc-nav-item" data-tab="appointments"><span class="cc-nav-icon">📅</span>Appointments</div>
+          <div class="cc-nav-item" data-tab="sms"><span class="cc-nav-icon">💬</span>SMS Queue<span class="cc-nav-badge">4</span></div>
+          <div class="cc-nav-item" data-tab="reviews"><span class="cc-nav-icon">⭐</span>Reviews</div>
+          <div class="cc-nav-item" data-tab="analytics"><span class="cc-nav-icon">📊</span>Analytics</div>
+        </div>
+        <div class="cc-main">
+          <div class="cc-pane active" data-pane="overview">
+            <div class="cc-main-stats">
+              <div class="cms"><div class="cms-n" data-count="12">0</div><div class="cms-l">Leads Today</div></div>
+              <div class="cms"><div class="cms-n" data-count="3">0</div><div class="cms-l">No-Shows Blocked</div></div>
+              <div class="cms"><div class="cms-n" data-count="840">0</div><div class="cms-l">Revenue Protected ($)</div></div>
+            </div>
+            <div class="cc-activity">
+              <div class="cc-activity-label">Live Activity Feed</div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>New lead captured</strong> — Maria T. submitted the intake form. Auto-follow-up sent.</div>
+                <div class="cc-event-time">2m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Appointment confirmed</strong> — James K. replied YES to his reminder. 2pm slot locked in.</div>
+                <div class="cc-event-time">18m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>AI Receptionist answered</strong> — Booked Sarah P. for Friday 3pm while you were with a client.</div>
+                <div class="cc-event-time">34m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>5-star review posted</strong> — Sandra L. left a Google review after her appointment.</div>
+                <div class="cc-event-time">1h ago</div>
+              </div>
             </div>
           </div>
-          <div class="pillar reveal reveal-delay-1">
-            <div class="pillar-icon">🔁</div>
-            <div class="pillar-body">
-              <h4>Closes the loop</h4>
-              <p>From first contact to follow-up review request — every step is tracked and handled automatically.</p>
+          <div class="cc-pane" data-pane="leads">
+            <div class="cc-activity">
+              <div class="cc-activity-label">Recent Leads · 12 today</div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Maria Torres</strong> — Intake form · Interested in facial package. Auto SMS sent.</div>
+                <div class="cc-event-time">2m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Derek Chen</strong> — Google Ads click · Requested quote for full detail. Follow-up queued.</div>
+                <div class="cc-event-time">24m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Sarah P.</strong> — Missed call → AI Receptionist booked for Friday 3pm.</div>
+                <div class="cc-event-time">34m ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot y"></div>
+                <div class="cc-event-text"><strong>Jordan L.</strong> — Instagram DM · AI qualified, awaiting preferred time.</div>
+                <div class="cc-event-time">1h ago</div>
+              </div>
             </div>
           </div>
-          <div class="pillar reveal reveal-delay-2">
-            <div class="pillar-icon">📊</div>
-            <div class="pillar-body">
-              <h4>Real visibility</h4>
-              <p>A live dashboard showing every active automation, message sent, and appointment confirmed — in real time.</p>
+          <div class="cc-pane" data-pane="appointments">
+            <div class="cc-activity">
+              <div class="cc-activity-label">Upcoming · Today & Tomorrow</div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>James K.</strong> — Today 2:00 PM · Confirmed via SMS reply.</div>
+                <div class="cc-event-time">in 3h</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Emily R.</strong> — Today 4:30 PM · Reminder sent, awaiting confirm.</div>
+                <div class="cc-event-time">in 5h</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>David M.</strong> — Tomorrow 10:00 AM · Reminder queued for 8pm tonight.</div>
+                <div class="cc-event-time">tomorrow</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Sarah P.</strong> — Friday 3:00 PM · Booked by AI Receptionist.</div>
+                <div class="cc-event-time">Fri</div>
+              </div>
+            </div>
+          </div>
+          <div class="cc-pane" data-pane="sms">
+            <div class="cc-activity">
+              <div class="cc-activity-label">Outbound SMS Queue · 4 scheduled</div>
+              <div class="cc-event">
+                <div class="cc-event-dot y"></div>
+                <div class="cc-event-text"><strong>Reminder → David M.</strong> — "Hi David, reminder for 10am tomorrow…" Sending in 14h.</div>
+                <div class="cc-event-time">8:00 PM</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot y"></div>
+                <div class="cc-event-text"><strong>Promo Blast → 147 clients</strong> — "Slow week special: 20% off this Thursday."</div>
+                <div class="cc-event-time">Thu 10am</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot y"></div>
+                <div class="cc-event-text"><strong>Review Request → Ana R.</strong> — Post-appointment follow-up. AI-personalized.</div>
+                <div class="cc-event-time">6:00 PM</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Confirm → Emily R.</strong> — Sent · Awaiting YES reply.</div>
+                <div class="cc-event-time">just now</div>
+              </div>
+            </div>
+          </div>
+          <div class="cc-pane" data-pane="reviews">
+            <div class="cc-activity">
+              <div class="cc-activity-label">Recent Reviews · 4.9 avg · 28 this month</div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>★★★★★ Sandra L.</strong> — "Best service in town, booking was so easy." · Google</div>
+                <div class="cc-event-time">1h ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>★★★★★ Marcus T.</strong> — "Got a text reminder, didn't even need to think about it." · Google</div>
+                <div class="cc-event-time">yesterday</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>★★★★★ Priya K.</strong> — "Quick, professional, highly recommend!" · Google</div>
+                <div class="cc-event-time">2d ago</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>★★★★☆ Luis G.</strong> — "Great experience overall — small parking issue." · Google</div>
+                <div class="cc-event-time">3d ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="cc-pane" data-pane="analytics">
+            <div class="cc-main-stats">
+              <div class="cms"><div class="cms-n">68<span>%</span></div><div class="cms-l">Lead-to-Book Rate</div></div>
+              <div class="cms"><div class="cms-n">4.9<span>★</span></div><div class="cms-l">Avg. Rating</div></div>
+              <div class="cms"><div class="cms-n">12.4<span>k</span></div><div class="cms-l">Revenue this Month ($)</div></div>
+            </div>
+            <div class="cc-activity">
+              <div class="cc-activity-label">Module Performance · Last 30 Days</div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>AI Receptionist</strong> — 94 calls answered · 61 appointments booked.</div>
+                <div class="cc-event-time">65% conv</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Appointment Reminders</strong> — 312 sent · 14 no-shows prevented.</div>
+                <div class="cc-event-time">96% confirm</div>
+              </div>
+              <div class="cc-event">
+                <div class="cc-event-dot g"></div>
+                <div class="cc-event-text"><strong>Review Follow-Ups</strong> — 186 requests sent · 42 new reviews.</div>
+                <div class="cc-event-time">23% post</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="platform-visual reveal reveal-delay-1">
-        <div class="os-grid">
-          <div class="os-tile">
-            <div class="ost-badge">Live</div>
-            <div class="ost-num" data-count="247">0</div>
-            <div class="ost-label">Leads Captured</div>
-            <div class="ost-sub">This Month</div>
+        <div class="cc-right">
+          <div class="cc-right-label">SMS Queue</div>
+          <div class="cc-queue-item">
+            <div class="cc-qi-name">Reminder — David M.</div>
+            <div class="cc-qi-meta">Tomorrow at 10am</div>
+            <div class="cc-qi-status">Sending in 14h</div>
           </div>
-          <div class="os-tile">
-            <div class="ost-badge">Live</div>
-            <div class="ost-num" data-count="98">0</div>
-            <div class="ost-label">SMS Open Rate</div>
-            <div class="ost-sub">vs 20% email</div>
+          <div class="cc-queue-item">
+            <div class="cc-qi-name">Promo Blast — All Clients</div>
+            <div class="cc-qi-meta">147 recipients</div>
+            <div class="cc-qi-status">Scheduled Thu 10am</div>
           </div>
-          <div class="os-tile">
-            <div class="ost-badge">Active</div>
-            <div class="ost-num" data-count="40">0</div>
-            <div class="ost-label">% Fewer No-Shows</div>
-            <div class="ost-sub">Average result</div>
+          <div class="cc-queue-item">
+            <div class="cc-qi-name">Review Request — Ana R.</div>
+            <div class="cc-qi-meta">Post-appointment</div>
+            <div class="cc-qi-status">Sending at 6pm</div>
           </div>
-          <div class="os-tile">
-            <div class="ost-badge">Running</div>
-            <div class="ost-num">24<span style="font-size:22px;color:var(--gold)">/7</span></div>
-            <div class="ost-label">Always On</div>
-            <div class="ost-sub">Zero manual input</div>
+          <div class="cc-health">
+            <div class="cc-right-label" style="margin-top:16px">System Health</div>
+            <div class="ch-row">
+              <div class="ch-name">SMS Gateway</div>
+              <div class="ch-bar"><div class="ch-fill" style="width:100%"></div></div>
+            </div>
+            <div class="ch-row">
+              <div class="ch-name">Lead Capture</div>
+              <div class="ch-bar"><div class="ch-fill" style="width:100%"></div></div>
+            </div>
+            <div class="ch-row">
+              <div class="ch-name">Webhooks</div>
+              <div class="ch-bar"><div class="ch-fill" style="width:96%"></div></div>
+            </div>
           </div>
         </div>
       </div>
@@ -846,92 +1005,63 @@ footer::before {
   </div>
 </section>
 
-<!-- COMMAND CENTER PREVIEW -->
-<section class="command-center-section">
+<!-- PLATFORM INTRO -->
+<section class="platform-intro" id="platform">
   <div class="section">
-    <div class="cc-header reveal">
+    <div class="platform-cols">
       <div>
-        <span class="sec-label">Command Center</span>
-        <h2 class="sec-h2">One dashboard.<br><em>Every automation.</em></h2>
-      </div>
-      <p class="sec-p">See every active module, message sent, and appointment confirmed in real time. Your business running itself — visible at a glance.</p>
-    </div>
-    <div class="cc-panel reveal">
-      <div class="cc-topbar">
-        <div class="cc-dots"><div class="cc-dot"></div><div class="cc-dot"></div><div class="cc-dot"></div></div>
-        <div class="cc-topbar-title">NexFlow Command Center</div>
-        <div class="cc-topbar-badge">● All Systems Live</div>
-      </div>
-      <div class="cc-body">
-        <div class="cc-sidebar">
-          <div class="cc-nav-item active"><span class="cc-nav-icon">⊞</span>Overview<span class="cc-nav-badge">6</span></div>
-          <div class="cc-nav-item"><span class="cc-nav-icon">🎯</span>Leads</div>
-          <div class="cc-nav-item"><span class="cc-nav-icon">📅</span>Appointments</div>
-          <div class="cc-nav-item"><span class="cc-nav-icon">💬</span>SMS Queue<span class="cc-nav-badge">4</span></div>
-          <div class="cc-nav-item"><span class="cc-nav-icon">⭐</span>Reviews</div>
-          <div class="cc-nav-item"><span class="cc-nav-icon">📊</span>Analytics</div>
-        </div>
-        <div class="cc-main">
-          <div class="cc-main-stats">
-            <div class="cms"><div class="cms-n" data-count="12">0</div><div class="cms-l">Leads Today</div></div>
-            <div class="cms"><div class="cms-n" data-count="3">0</div><div class="cms-l">No-Shows Blocked</div></div>
-            <div class="cms"><div class="cms-n" data-count="840">0</div><div class="cms-l">Revenue Protected ($)</div></div>
+        <span class="sec-label reveal">The Platform</span>
+        <h2 class="sec-h2 reveal reveal-delay-1">Not just automations.<br><em>An operating system.</em></h2>
+        <p class="sec-p reveal reveal-delay-2">Most tools automate one thing. NexFlow connects every part of your customer journey into a single intelligent system — so you capture more, lose fewer, and keep coming back.</p>
+        <div class="platform-pillars">
+          <div class="pillar reveal">
+            <div class="pillar-icon">⚡</div>
+            <div class="pillar-body">
+              <h4>Instant response</h4>
+              <p>Every lead, missed call, and appointment triggers an immediate automated action. No delays. No manual work.</p>
+            </div>
           </div>
-          <div class="cc-activity">
-            <div class="cc-activity-label">Live Activity Feed</div>
-            <div class="cc-event">
-              <div class="cc-event-dot g"></div>
-              <div class="cc-event-text"><strong>New lead captured</strong> — Maria T. submitted the intake form. Auto-follow-up sent.</div>
-              <div class="cc-event-time">2m ago</div>
+          <div class="pillar reveal reveal-delay-1">
+            <div class="pillar-icon">🔁</div>
+            <div class="pillar-body">
+              <h4>Closes the loop</h4>
+              <p>From first contact to follow-up review request — every step is tracked and handled automatically.</p>
             </div>
-            <div class="cc-event">
-              <div class="cc-event-dot g"></div>
-              <div class="cc-event-text"><strong>Appointment confirmed</strong> — James K. replied YES to his reminder. 2pm slot locked in.</div>
-              <div class="cc-event-time">18m ago</div>
-            </div>
-            <div class="cc-event">
-              <div class="cc-event-dot g"></div>
-              <div class="cc-event-text"><strong>AI Receptionist answered</strong> — Booked Sarah P. for Friday 3pm while you were with a client.</div>
-              <div class="cc-event-time">34m ago</div>
-            </div>
-            <div class="cc-event">
-              <div class="cc-event-dot g"></div>
-              <div class="cc-event-text"><strong>5-star review posted</strong> — Sandra L. left a Google review after her appointment.</div>
-              <div class="cc-event-time">1h ago</div>
+          </div>
+          <div class="pillar reveal reveal-delay-2">
+            <div class="pillar-icon">📊</div>
+            <div class="pillar-body">
+              <h4>Real visibility</h4>
+              <p>A live dashboard showing every active automation, message sent, and appointment confirmed — in real time.</p>
             </div>
           </div>
         </div>
-        <div class="cc-right">
-          <div class="cc-right-label">SMS Queue</div>
-          <div class="cc-queue-item">
-            <div class="cc-qi-name">Reminder — David M.</div>
-            <div class="cc-qi-meta">Tomorrow at 10am</div>
-            <div class="cc-qi-status">Sending in 14h</div>
+      </div>
+      <div class="platform-visual reveal reveal-delay-1">
+        <div class="os-grid">
+          <div class="os-tile">
+            <div class="ost-badge">Live</div>
+            <div class="ost-num" data-count="247">0</div>
+            <div class="ost-label">Leads Captured</div>
+            <div class="ost-sub">This Month</div>
           </div>
-          <div class="cc-queue-item">
-            <div class="cc-qi-name">Promo Blast — All Clients</div>
-            <div class="cc-qi-meta">147 recipients</div>
-            <div class="cc-qi-status">Scheduled Thu 10am</div>
+          <div class="os-tile">
+            <div class="ost-badge">Live</div>
+            <div class="ost-num" data-count="98">0</div>
+            <div class="ost-label">SMS Open Rate</div>
+            <div class="ost-sub">vs 20% email</div>
           </div>
-          <div class="cc-queue-item">
-            <div class="cc-qi-name">Review Request — Ana R.</div>
-            <div class="cc-qi-meta">Post-appointment</div>
-            <div class="cc-qi-status">Sending at 6pm</div>
+          <div class="os-tile">
+            <div class="ost-badge">Active</div>
+            <div class="ost-num" data-count="40">0</div>
+            <div class="ost-label">% Fewer No-Shows</div>
+            <div class="ost-sub">Average result</div>
           </div>
-          <div class="cc-health">
-            <div class="cc-right-label" style="margin-top:16px">System Health</div>
-            <div class="ch-row">
-              <div class="ch-name">SMS Gateway</div>
-              <div class="ch-bar"><div class="ch-fill" style="width:100%"></div></div>
-            </div>
-            <div class="ch-row">
-              <div class="ch-name">Lead Capture</div>
-              <div class="ch-bar"><div class="ch-fill" style="width:100%"></div></div>
-            </div>
-            <div class="ch-row">
-              <div class="ch-name">Webhooks</div>
-              <div class="ch-bar"><div class="ch-fill" style="width:96%"></div></div>
-            </div>
+          <div class="os-tile">
+            <div class="ost-badge">Running</div>
+            <div class="ost-num">24<span style="font-size:22px;color:var(--gold)">/7</span></div>
+            <div class="ost-label">Always On</div>
+            <div class="ost-sub">Zero manual input</div>
           </div>
         </div>
       </div>
@@ -1191,6 +1321,18 @@ document.querySelectorAll('.module, .os-tile, .plan').forEach(card => {
     const r = card.getBoundingClientRect();
     card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
     card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+// Command Center tab switching
+document.querySelectorAll('.cc-nav-item').forEach(nav => {
+  nav.addEventListener('click', () => {
+    const tab = nav.dataset.tab;
+    if (!tab) return;
+    nav.parentElement.querySelectorAll('.cc-nav-item').forEach(n => n.classList.remove('active'));
+    nav.classList.add('active');
+    const panel = nav.closest('.cc-body');
+    panel.querySelectorAll('.cc-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === tab));
   });
 });
 
