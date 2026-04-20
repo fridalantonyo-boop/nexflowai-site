@@ -32,7 +32,7 @@ LOG="$SCRIPT_DIR/logs/run_$TS.log"
 echo "[$(date)] Starting scrape: $NICHE / $CITY" >> "$LOG"
 "$VENV/bin/python" "$SCRIPT_DIR/lead_scraper.py" \
   "$NICHE" "$CITY" \
-  --output "$SCRIPT_DIR/leads_master.csv" \
+  --output "$SCRIPT_DIR/leads_master.xlsx" \
   --max 40 \
   >> "$LOG" 2>&1
 echo "[$(date)] Done." >> "$LOG"

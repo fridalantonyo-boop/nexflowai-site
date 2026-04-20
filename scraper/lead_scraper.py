@@ -2,7 +2,6 @@
 """Lead generation scraper: Google Maps -> Hunter.io -> website emails -> CSV."""
 
 import argparse
-import csv
 import os
 import re
 import sys
@@ -10,7 +9,9 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 
+import openpyxl
 import requests
+from openpyxl.styles import Font, PatternFill, Alignment
 from playwright.sync_api import sync_playwright
 
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
@@ -265,31 +266,54 @@ def qualify(review_count: int, extra_notes: str) -> tuple[str, str]:
     return qualified, "; ".join(n for n in notes if n)
 
 
-def load_existing_keys(csv_path: Path) -> set:
-    """Return the set of (name_lower, phone_digits) tuples already in the master CSV."""
-    keys = set()
-    if not csv_path.exists():
-        return keys
-    with csv_path.open("r", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            keys.add(_dedup_key(row.get("Business Name", ""), row.get("Phone", "")))
-    return keys
-
-
 def _dedup_key(name: str, phone: str) -> tuple:
     return (name.strip().lower(), re.sub(r"\D", "", phone or ""))
 
 
-def write_rows(csv_path: Path, rows: list[dict]):
-    new_file = not csv_path.exists()
-    csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
-        if new_file:
-            writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
+def load_existing_keys(xlsx_path: Path) -> set:
+    keys = set()
+    if not xlsx_path.exists():
+        return keys
+    wb = openpyxl.load_workbook(xlsx_path)
+    ws = wb.active
+    headers = [c.value for c in ws[1]]
+    name_col = headers.index("Business Name") if "Business Name" in headers else None
+    phone_col = headers.index("Phone") if "Phone" in headers else None
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        name = row[name_col] if name_col is not None else ""
+        phone = row[phone_col] if phone_col is not None else ""
+        keys.add(_dedup_key(name or "", phone or ""))
+    return keys
+
+
+def write_rows(xlsx_path: Path, rows: list[dict]):
+    xlsx_path.parent.mkdir(parents=True, exist_ok=True)
+    if xlsx_path.exists():
+        wb = openpyxl.load_workbook(xlsx_path)
+        ws = wb.active
+    else:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Leads"
+        _write_header(ws)
+
+    for row in rows:
+        ws.append([row.get(f, "") for f in CSV_FIELDS])
+
+    wb.save(xlsx_path)
+
+
+def _write_header(ws):
+    HEADER_FILL = PatternFill("solid", fgColor="1F3864")
+    HEADER_FONT = Font(bold=True, color="FFFFFF", size=11)
+    ws.append(CSV_FIELDS)
+    for cell in ws[1]:
+        cell.fill = HEADER_FILL
+        cell.font = HEADER_FONT
+        cell.alignment = Alignment(horizontal="center")
+    col_widths = [28, 16, 30, 35, 14, 13, 10, 40]
+    for i, width in enumerate(col_widths, 1):
+        ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
 
 
 def run(niche: str, city: str, output: Path, hunter_key: str, max_results: int, headless: bool):
@@ -339,7 +363,7 @@ def main():
     ap = argparse.ArgumentParser(description="Google Maps lead scraper")
     ap.add_argument("niche", help='Business niche, e.g. "dental office"')
     ap.add_argument("city", help='City, e.g. "Miami FL"')
-    ap.add_argument("--output", default="leads_master.csv", help="Master CSV path (appended)")
+    ap.add_argument("--output", default="leads_master.xlsx", help="Master Excel file path (appended)")
     ap.add_argument("--max", type=int, default=40, help="Max results to extract")
     ap.add_argument("--hunter-key", default=os.environ.get("HUNTER_API_KEY", ""),
                     help="Hunter.io API key (or set HUNTER_API_KEY env var)")
