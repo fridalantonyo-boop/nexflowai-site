@@ -366,7 +366,6 @@ nav{
 .cta-trust-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
 .cta-trust-item::before{content:'✓';color:var(--green);font-weight:600;flex-shrink:0}
 /* premium form */
-.premium-form{position:relative;z-index:1}
 .form-field{margin-bottom:14px;position:relative}
 .form-field input,.form-field select{
   width:100%;padding:13px 16px;
@@ -384,9 +383,12 @@ nav{
 .form-submit{width:100%;padding:15px;background:var(--gold);color:var(--bg);border:none;font-family:var(--font-b);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
 .form-submit:hover{background:var(--gold2)}
 .form-note{font-family:var(--font-m);font-size:10px;color:var(--dim);text-align:center;margin-top:14px;letter-spacing:0.08em}
-#form-success{display:none;padding:40px;text-align:center;background:var(--bg2);border:1px solid var(--line)}
-#form-success h3{font-family:var(--font-d);font-size:32px;font-weight:600;color:var(--white);margin:12px 0 8px}
-#form-success p{font-size:13px;color:var(--muted)}
+.cta-book{padding:44px 36px;background:var(--bg2);border:1px solid var(--line);position:relative;overflow:hidden}
+.cta-book::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.6}
+.cta-book-label{font-family:var(--font-m);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.cta-book-h{font-family:var(--font-d);font-size:36px;font-weight:600;color:var(--white);margin:0 0 14px;line-height:1.1}
+.cta-book-p{font-size:14px;color:var(--muted);line-height:1.65;margin:0 0 26px}
+.cta-book .btn-gold{width:100%;justify-content:center;padding:16px}
 
 /* ── FOOTER ── */
 footer{padding:44px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);flex-wrap:wrap;gap:16px}
@@ -953,36 +955,13 @@ footer::before {
       </div>
     </div>
     <div class="reveal reveal-delay-1">
-      <div id="form-success">
-        <div style="font-family:var(--font-d);font-size:40px;color:var(--green)">✓</div>
-        <h3>You're all set.</h3>
-        <p>We'll reach out within 24 hours to schedule your setup call.</p>
-      </div>
-      <form id="contact-form" name="contact" method="POST" data-netlify="true" class="premium-form">
-        <input type="hidden" name="form-name" value="contact">
-        <div class="form-field">
-          <label class="form-label">Your Name</label>
-          <input type="text" name="name" placeholder="Business owner name" required />
-        </div>
-        <div class="form-field">
-          <label class="form-label">Business Name</label>
-          <input type="text" name="business" placeholder="e.g. Luxe Nail Studio" />
-        </div>
-        <div class="form-field">
-          <label class="form-label">Phone Number</label>
-          <input type="tel" name="phone" placeholder="(702) 000-0000" required />
-        </div>
-        <div class="form-field">
-          <label class="form-label">Email Address</label>
-          <input type="email" name="email" placeholder="you@yourbusiness.com" required />
-        </div>
-        <div class="form-consent">
-          <input type="checkbox" id="sms_consent" name="sms_consent">
-          <label for="sms_consent">I agree to receive SMS messages from <strong>NexFlow AI</strong> including setup updates and service information. Msg &amp; data rates may apply. Reply STOP to opt out. <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a></label>
-        </div>
-        <button type="submit" class="form-submit">Get My Setup →</button>
+      <div class="cta-book">
+        <div class="cta-book-label">Book a Call</div>
+        <h3 class="cta-book-h">Let's talk.</h3>
+        <p class="cta-book-p">Every NexFlow build is custom. Grab a free 15-minute call — we'll walk through your business, show you the platform, and give you an exact quote.</p>
+        <a href="https://calendly.com/nexflowaisolutions/nexflowai" target="_blank" rel="noopener" class="btn-gold">Pick a Time →</a>
         <p class="form-note">or call/text (702) 860-6977 · nexflowaisolutions@gmail.com</p>
-      </form>
+      </div>
     </div>
   </div>
 </section>
@@ -1151,7 +1130,7 @@ document.querySelectorAll('.module, .os-tile, .plan').forEach(card => {
 });
 
 // Magnetic gold buttons
-document.querySelectorAll('.btn-gold, .form-submit').forEach(btn => {
+document.querySelectorAll('.btn-gold').forEach(btn => {
   btn.addEventListener('mousemove', (e) => {
     const r = btn.getBoundingClientRect();
     const x = e.clientX - r.left - r.width/2;
@@ -1161,19 +1140,6 @@ document.querySelectorAll('.btn-gold, .form-submit').forEach(btn => {
   btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
 });
 
-// Form
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const form = e.target;
-  fetch('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams(new FormData(form)).toString()
-  }).then(() => {
-    form.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-  }).catch(() => alert('Something went wrong. Please email nexflowaisolutions@gmail.com'));
-});
 </script>
 </body>
 </html>
