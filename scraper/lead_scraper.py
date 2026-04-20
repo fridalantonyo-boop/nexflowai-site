@@ -16,6 +16,18 @@ from playwright.sync_api import sync_playwright
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 HUNTER_ENDPOINT = "https://api.hunter.io/v2/domain-search"
 
+JUNK_EMAIL_PREFIXES = {
+    "noreply", "no-reply", "donotreply", "do-not-reply",
+    "support", "help", "info", "hello", "contact", "sales",
+    "billing", "admin", "webmaster", "hostmaster", "postmaster",
+    "abuse", "privacy", "legal", "careers", "jobs", "hr",
+    "marketing", "newsletter", "notifications", "alerts", "team",
+    "office", "media", "press", "service", "services", "hello",
+}
+
+RETRY_ATTEMPTS = 3
+RETRY_BACKOFF = [1, 3, 7]  # seconds between retries
+
 CSV_FIELDS = [
     "Business Name",
     "Phone",
@@ -38,6 +50,8 @@ def scrape_google_maps(niche: str, city: str, max_results: int = 40, headless: b
         ctx = browser.new_context(locale="en-US")
         page = ctx.new_page()
         page.goto(f"https://www.google.com/maps/search/{query.replace(' ', '+')}", timeout=60000)
+
+        _dismiss_consent(page)
 
         try:
             page.wait_for_selector('div[role="feed"]', timeout=20000)
@@ -95,6 +109,39 @@ def scrape_google_maps(niche: str, city: str, max_results: int = 40, headless: b
     return results
 
 
+def _dismiss_consent(page):
+    """Click through Google's consent/cookie wall if it appears."""
+    consent_selectors = [
+        'button[aria-label="Accept all"]',
+        'button[aria-label="Agree to the use of cookies and other data for the purposes described"]',
+        'form[action*="consent"] button[type="submit"]',
+        '#L2AGLb',  # legacy Google consent button id
+    ]
+    for sel in consent_selectors:
+        try:
+            btn = page.locator(sel).first
+            if btn.is_visible(timeout=2000):
+                btn.click()
+                time.sleep(1.0)
+                return
+        except Exception:
+            continue
+
+
+def _get_with_retry(url: str, headers: dict = None, params: dict = None, timeout: int = 15):
+    """GET with exponential backoff. Returns requests.Response or raises on final failure."""
+    last_exc = None
+    for attempt, wait in enumerate(RETRY_BACKOFF):
+        try:
+            r = requests.get(url, headers=headers, params=params, timeout=timeout)
+            return r
+        except Exception as e:
+            last_exc = e
+            if attempt < len(RETRY_BACKOFF) - 1:
+                time.sleep(wait)
+    raise last_exc
+
+
 def _safe_text(page, selector):
     try:
         return page.locator(selector).first.inner_text().strip()
@@ -132,7 +179,7 @@ def hunter_domain_search(domain: str, api_key: str):
     if not domain or not api_key:
         return "", ""
     try:
-        r = requests.get(
+        r = _get_with_retry(
             HUNTER_ENDPOINT,
             params={"domain": domain, "api_key": api_key, "limit": 10},
             timeout=20,
@@ -181,11 +228,15 @@ def scrape_website_emails(url: str):
             continue
         seen.add(link)
         try:
-            r = requests.get(link, headers=headers, timeout=15)
+            r = _get_with_retry(link, headers=headers, timeout=15)
             if r.status_code != 200:
                 continue
             found = EMAIL_RE.findall(r.text)
-            found = [e for e in found if not e.lower().endswith((".png", ".jpg", ".gif", ".svg", ".webp"))]
+            found = [
+                e for e in found
+                if not e.lower().endswith((".png", ".jpg", ".gif", ".svg", ".webp"))
+                and e.split("@")[0].lower() not in JUNK_EMAIL_PREFIXES
+            ]
             if found:
                 return found[0], f"site:{urlparse(link).path or '/'}"
         except Exception:
