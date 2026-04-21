@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lead generation scraper: Google Maps -> Hunter.io -> website emails -> CSV."""
+"""Lead generation scraper: Google Maps -> Hunter.io -> website emails -> Excel."""
 
 import argparse
 import os
@@ -9,9 +9,9 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 
-import openpyxl
 import requests
-from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Alignment, Font, PatternFill
 from playwright.sync_api import sync_playwright
 
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
@@ -23,13 +23,12 @@ JUNK_EMAIL_PREFIXES = {
     "billing", "admin", "webmaster", "hostmaster", "postmaster",
     "abuse", "privacy", "legal", "careers", "jobs", "hr",
     "marketing", "newsletter", "notifications", "alerts", "team",
-    "office", "media", "press", "service", "services", "hello",
+    "office", "media", "press", "service", "services",
 }
 
-RETRY_ATTEMPTS = 3
-RETRY_BACKOFF = [1, 3, 7]  # seconds between retries
+RETRY_BACKOFF = [1, 3, 7]
 
-CSV_FIELDS = [
+FIELDS = [
     "Business Name",
     "Phone",
     "Email",
@@ -271,54 +270,62 @@ def _dedup_key(name: str, phone: str) -> tuple:
 
 
 def load_existing_keys(xlsx_path: Path) -> set:
+    """Return the set of (name_lower, phone_digits) tuples already in the workbook."""
     keys = set()
     if not xlsx_path.exists():
         return keys
-    wb = openpyxl.load_workbook(xlsx_path)
+    wb = load_workbook(xlsx_path, read_only=True)
     ws = wb.active
-    headers = [c.value for c in ws[1]]
-    name_col = headers.index("Business Name") if "Business Name" in headers else None
-    phone_col = headers.index("Phone") if "Phone" in headers else None
+    headers = [c.value for c in next(ws.iter_rows(min_row=1, max_row=1))]
+    try:
+        name_i = headers.index("Business Name")
+        phone_i = headers.index("Phone")
+    except ValueError:
+        return keys
     for row in ws.iter_rows(min_row=2, values_only=True):
-        name = row[name_col] if name_col is not None else ""
-        phone = row[phone_col] if phone_col is not None else ""
-        keys.add(_dedup_key(name or "", phone or ""))
+        if row and row[name_i]:
+            keys.add(_dedup_key(str(row[name_i]), str(row[phone_i] or "")))
     return keys
+
+
+def _new_workbook(path: Path):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Leads"
+    ws.append(FIELDS)
+    header_fill = PatternFill(start_color="1F4E78", end_color="1F4E78", fill_type="solid")
+    header_font = Font(color="FFFFFF", bold=True)
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal="center")
+    widths = [32, 18, 32, 36, 18, 14, 12, 40]
+    for i, w in enumerate(widths, start=1):
+        ws.column_dimensions[ws.cell(row=1, column=i).column_letter].width = w
+    ws.freeze_panes = "A2"
+    return wb
 
 
 def write_rows(xlsx_path: Path, rows: list[dict]):
     xlsx_path.parent.mkdir(parents=True, exist_ok=True)
     if xlsx_path.exists():
-        wb = openpyxl.load_workbook(xlsx_path)
+        wb = load_workbook(xlsx_path)
         ws = wb.active
     else:
-        wb = openpyxl.Workbook()
+        wb = _new_workbook(xlsx_path)
         ws = wb.active
-        ws.title = "Leads"
-        _write_header(ws)
-
+    qualified_fill = PatternFill(start_color="D9EAD3", end_color="D9EAD3", fill_type="solid")
     for row in rows:
-        ws.append([row.get(f, "") for f in CSV_FIELDS])
-
+        ws.append([row[f] for f in FIELDS])
+        if row["Qualified"] == "yes":
+            for cell in ws[ws.max_row]:
+                cell.fill = qualified_fill
     wb.save(xlsx_path)
-
-
-def _write_header(ws):
-    HEADER_FILL = PatternFill("solid", fgColor="1F3864")
-    HEADER_FONT = Font(bold=True, color="FFFFFF", size=11)
-    ws.append(CSV_FIELDS)
-    for cell in ws[1]:
-        cell.fill = HEADER_FILL
-        cell.font = HEADER_FONT
-        cell.alignment = Alignment(horizontal="center")
-    col_widths = [28, 16, 30, 35, 14, 13, 10, 40]
-    for i, width in enumerate(col_widths, 1):
-        ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
 
 
 def run(niche: str, city: str, output: Path, hunter_key: str, max_results: int, headless: bool):
     existing = load_existing_keys(output)
-    print(f"Master CSV: {output} ({len(existing)} existing rows)")
+    print(f"Master workbook: {output} ({len(existing)} existing rows)")
 
     businesses = scrape_google_maps(niche, city, max_results=max_results, headless=headless)
     print(f"Scraped {len(businesses)} businesses from Google Maps.")
@@ -361,22 +368,28 @@ def run(niche: str, city: str, output: Path, hunter_key: str, max_results: int, 
 
 def main():
     ap = argparse.ArgumentParser(description="Google Maps lead scraper")
-    ap.add_argument("niche", help='Business niche, e.g. "dental office"')
-    ap.add_argument("city", help='City, e.g. "Miami FL"')
-    ap.add_argument("--output", default="leads_master.xlsx", help="Master Excel file path (appended)")
+    ap.add_argument("niche", nargs="?", help='Business niche, e.g. "dental office"')
+    ap.add_argument("city", nargs="?", help='City, e.g. "Miami FL"')
+    ap.add_argument("--output", default="leads_master.xlsx", help="Master Excel file (appended)")
     ap.add_argument("--max", type=int, default=40, help="Max results to extract")
     ap.add_argument("--hunter-key", default=os.environ.get("HUNTER_API_KEY", ""),
                     help="Hunter.io API key (or set HUNTER_API_KEY env var)")
     ap.add_argument("--no-headless", action="store_true", help="Show browser window")
     args = ap.parse_args()
 
+    niche = args.niche or input("Business niche (e.g. dental office): ").strip()
+    city = args.city or input("City (e.g. Miami FL): ").strip()
+    if not niche or not city:
+        print("Niche and city are required.", file=sys.stderr)
+        sys.exit(1)
+
     if not args.hunter_key:
         print("Warning: no Hunter.io key provided. Falling back to website scraping only.",
               file=sys.stderr)
 
     run(
-        niche=args.niche,
-        city=args.city,
+        niche=niche,
+        city=city,
         output=Path(args.output).expanduser().resolve(),
         hunter_key=args.hunter_key,
         max_results=args.max,

@@ -1,40 +1,44 @@
 # Lead Scraper
 
-## Manual run
+Outputs to `leads_master.xlsx` in this folder. Re-running appends only new
+rows (dedup on business name + phone).
 
-```bash
-cd scraper
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python -m playwright install chromium
-export HUNTER_API_KEY=xxxxxxx
-python lead_scraper.py "dental office" "Miami FL" --output leads_master.csv
-```
+## Easy mode (double-click)
 
-Results append to `leads_master.csv`. Duplicates are filtered by
-`(business name, phone digits)`, so re-running only adds new leads.
+1. Put your Hunter.io key in a file called `.env` in this folder:
+   ```
+   HUNTER_API_KEY=your_key_here
+   ```
+2. Double-click **`Run Scraper.command`**.
+3. It asks for the niche and city in a Terminal window.
+4. When it finishes, `leads_master.xlsx` opens automatically.
 
-## Schedule on Mac mini (8 AM daily via launchd)
+First launch takes ~1 minute to install dependencies. After that it's fast.
 
-1. Copy `.env.example` to `.env` and add your Hunter.io key.
-2. Edit `NICHE` and `CITY` at the top of `run_daily.sh`.
-3. Make runner executable: `chmod +x run_daily.sh`
-4. Point the plist at the absolute path, then install it:
+> **First time on Mac:** if macOS blocks the `.command` file, right-click it
+> → Open → Open. You only need to do that once.
 
-```bash
-ABS=$(cd scraper && pwd)
-sed -i '' "s|/REPLACE/WITH/ABSOLUTE/PATH/TO/scraper|$ABS|g" \
-  scraper/com.nexflow.leadscraper.plist
-cp scraper/com.nexflow.leadscraper.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.nexflow.leadscraper.plist
-```
+## Daily auto-run at 8 AM (launchd)
+
+1. Edit `NICHE` and `CITY` at the top of `run_daily.sh`.
+2. Install the launchd job:
+   ```bash
+   ABS=$(cd scraper && pwd)
+   sed -i '' "s|/REPLACE/WITH/ABSOLUTE/PATH/TO/scraper|$ABS|g" \
+     scraper/com.nexflow.leadscraper.plist
+   cp scraper/com.nexflow.leadscraper.plist ~/Library/LaunchAgents/
+   launchctl load ~/Library/LaunchAgents/com.nexflow.leadscraper.plist
+   ```
+3. Enable System Settings → Energy → "Wake for network access" so the Mac
+   is awake at 8 AM.
 
 Verify: `launchctl list | grep nexflow`
 Unload: `launchctl unload ~/Library/LaunchAgents/com.nexflow.leadscraper.plist`
 
-`run_daily.sh` creates the venv and installs Playwright on first run, then
-writes a timestamped log under `scraper/logs/`.
+## Advanced (CLI)
 
-> Caveat: launchd only fires at 8 AM if the Mac is awake. In System
-> Settings → Energy, enable "Wake for network access" or set a Power
-> Schedule to wake the machine a minute before 8 AM.
+```bash
+python lead_scraper.py "dental office" "Miami FL" --output leads_master.xlsx --max 40
+```
+
+Flags: `--max N`, `--no-headless` (show browser), `--hunter-key KEY`.
