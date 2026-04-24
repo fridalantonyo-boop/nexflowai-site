@@ -1,3 +1,6 @@
 /privacy-policy    /privacy.html     200
 /terms-of-service  /terms.html       200
 /thank-you         /thank-you.html   200
+
+https://audit.nexflowaisolutions.com/*  https://form.typeform.com/to/Klck50zm  301!
+http://audit.nexflowaisolutions.com/*   https://form.typeform.com/to/Klck50zm  301!
