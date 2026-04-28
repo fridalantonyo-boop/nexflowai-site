@@ -204,8 +204,9 @@ nav{
 .platform-pillars{display:flex;flex-direction:column;gap:0;margin-top:52px}
 .pillar{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--line);cursor:default;transition:background 0.2s}
 .pillar:first-child{border-top:1px solid var(--line)}
-.pillar-icon{width:40px;height:40px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;transition:border-color 0.2s,background 0.2s}
-.pillar:hover .pillar-icon{border-color:var(--gold);background:var(--goldfaint)}
+.pillar-icon{width:42px;height:42px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);transition:border-color 0.25s,background 0.25s,color 0.25s}
+.pillar-icon svg{width:20px;height:20px;display:block}
+.pillar:hover .pillar-icon{border-color:var(--gold);background:var(--goldfaint);color:var(--gold)}
 .pillar-body h4{font-family:var(--font-d);font-size:20px;font-weight:600;color:var(--white);margin-bottom:6px}
 .pillar-body p{font-size:13px;color:var(--muted);line-height:1.7}
 
@@ -236,7 +237,9 @@ nav{
 .mod-pill.active{color:var(--green);border-color:rgba(45,204,122,0.25);background:var(--greenfaint)}
 .mod-pill.active::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);animation:pulse-green 2s ease-in-out infinite}
 .mod-pill.sched{color:var(--gold);border-color:rgba(201,168,76,0.25);background:var(--goldfaint)}
-.module-icon{font-size:28px;margin-bottom:16px;display:block;filter:grayscale(0.3)}
+.module-icon{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--dim);margin-bottom:18px;color:var(--gold);transition:border-color 0.25s,background 0.25s,transform 0.3s}
+.module-icon svg{width:22px;height:22px;display:block}
+.module:hover .module-icon{border-color:rgba(201,168,76,0.45);background:var(--goldfaint);transform:translateY(-2px)}
 .module h3{font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.2}
 .module p{font-size:13px;color:var(--muted);line-height:1.72}
 .module-result{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--font-m);font-size:10px;color:var(--gold);letter-spacing:0.1em;display:flex;align-items:center;gap:6px}
@@ -308,7 +311,7 @@ nav{
   font-family:var(--font-m);font-size:9px;letter-spacing:0.18em;color:var(--green);
   background:var(--greenfaint);padding:5px 10px;border:1px solid rgba(45,204,122,0.25);
   border-radius:999px;display:inline-flex;align-items:center;gap:6px;
-  text-transform:uppercase;font-weight:600;
+  text-transform:uppercase;font-weight:500;
 }
 .cc-topbar-badge .pulse{
   width:6px;height:6px;border-radius:50%;background:var(--green);
@@ -677,7 +680,7 @@ footer::before {
   <div class="hero-right">
     <div class="cmd-widget">
       <div class="cw-header">
-        <div class="cw-title">NexFlow Command Center</div>
+        <div class="cw-title">Live Activity · Today</div>
         <div class="cw-badge">● Live</div>
       </div>
       <div class="cw-metrics">
@@ -752,7 +755,7 @@ footer::before {
   .cc-embed-wrap {
     position: relative;
     width: 100%;
-    background: #0a0a0a;
+    background: var(--bg);
     overflow: hidden;
     aspect-ratio: 16 / 11;
   }
@@ -765,7 +768,7 @@ footer::before {
     width: 100%;
     height: 100%;
     border: 0;
-    background: #0a0a0a;
+    background: var(--bg);
     opacity: 0;
     transition: opacity 600ms ease;
   }
@@ -775,16 +778,16 @@ footer::before {
     display: grid; place-items: center;
     background:
       radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.06), transparent 70%),
-      #0a0a0a;
+      var(--bg);
     pointer-events: none;
     transition: opacity 400ms ease;
   }
   .cc-embed-wrap iframe.loaded + .cc-embed-skeleton { opacity: 0; }
   .cc-skel-mark {
     width: 56px; height: 56px; border-radius: 12px;
-    background: linear-gradient(135deg, #c9a84c, #8a6f2c);
+    background: linear-gradient(135deg, var(--gold3), var(--gold));
     display: grid; place-items: center;
-    color: #0a0a0a; font-family: var(--font-d); font-weight: 700; font-size: 26px;
+    color: var(--bg); font-family: var(--font-d); font-weight: 600; font-size: 26px;
     box-shadow: 0 0 40px rgba(201,168,76,0.5);
     animation: cc-skel-pulse 2s ease-in-out infinite;
   }
@@ -891,42 +894,54 @@ footer::before {
     <div class="modules-grid">
       <div class="module reveal">
         <div class="module-top"><span class="mod-num">01</span><span class="mod-pill active">Active</span></div>
-        <span class="module-icon">🎯</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg>
+        </span>
         <h3>Lead Capture</h3>
         <p>A dedicated landing page and intake form for your business. Every new inquiry is captured, logged, and immediately followed up via automated SMS — so no lead goes cold.</p>
         <div class="module-result">Turn interest into booked appointments</div>
       </div>
       <div class="module reveal reveal-delay-1">
         <div class="module-top"><span class="mod-num">02</span><span class="mod-pill active">Active</span></div>
-        <span class="module-icon">⏰</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8.5"/><path d="M12 8v5l3 2"/><path d="M9 1.5h6"/><path d="M5.5 4.5l1.5-1.5M18.5 4.5l-1.5-1.5"/></svg>
+        </span>
         <h3>Appointment Reminders</h3>
         <p>Automated texts 24hrs and 1hr before each appointment. Clients confirm or reschedule with a single reply. No more surprise no-shows eating your revenue.</p>
         <div class="module-result">30–50% reduction in no-shows</div>
       </div>
       <div class="module reveal reveal-delay-2">
         <div class="module-top"><span class="mod-num">03</span><span class="mod-pill active">Active</span></div>
-        <span class="module-icon">🤖</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="13" width="4.5" height="6.5" rx="1.5"/><rect x="17" y="13" width="4.5" height="6.5" rx="1.5"/><path d="M19.25 19.5v1a3 3 0 0 1-3 3h-2.5"/><circle cx="12" cy="22" r="1.2"/></svg>
+        </span>
         <h3>AI Receptionist</h3>
         <p>An AI that answers every missed call instantly — responds to inquiries, qualifies leads, and books appointments automatically. Never lose a customer to voicemail again.</p>
         <div class="module-result">24/7 coverage without hiring staff</div>
       </div>
       <div class="module reveal">
         <div class="module-top"><span class="mod-num">04</span><span class="mod-pill sched">Scheduled</span></div>
-        <span class="module-icon">📣</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5L20 4v16L3.5 13.5z"/><path d="M3.5 10.5v3"/><path d="M9.5 14v2.5a3 3 0 0 0 6 0v-1"/></svg>
+        </span>
         <h3>SMS Marketing</h3>
         <p>Weekly promos sent to your full customer list — AI writes the message, you approve it, the system sends it. 98% open rate fills slow weeks automatically.</p>
         <div class="module-result">98% open rate vs 20% email</div>
       </div>
       <div class="module reveal reveal-delay-1">
         <div class="module-top"><span class="mod-num">05</span><span class="mod-pill active">Active</span></div>
-        <span class="module-icon">⭐</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 14.85 8.7 21.5 9.55 16.55 14.2 17.85 21 12 17.7 6.15 21 7.45 14.2 2.5 9.55 9.15 8.7"/></svg>
+        </span>
         <h3>Review Follow-Ups</h3>
         <p>After every completed visit, clients receive a personalized text asking for a Google review. Your rating builds while you work — without asking anyone yourself.</p>
         <div class="module-result">More 5-star reviews, compounding</div>
       </div>
       <div class="module reveal reveal-delay-2">
         <div class="module-top"><span class="mod-num">06</span><span class="mod-pill active">Active</span></div>
-        <span class="module-icon">🌐</span>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M2.5 8.5h19"/><circle cx="6" cy="6.25" r="0.6" fill="currentColor"/><circle cx="8.5" cy="6.25" r="0.6" fill="currentColor"/><circle cx="11" cy="6.25" r="0.6" fill="currentColor"/></svg>
+        </span>
         <h3>Website Build</h3>
         <p>No site, or yours needs a full rebuild? A clean, fast, mobile-first website is included in setup — designed to convert visitors into booked appointments.</p>
         <div class="module-result">Show up when customers search</div>
@@ -945,21 +960,27 @@ footer::before {
         <p class="sec-p reveal reveal-delay-2">Most tools automate one thing. NexFlow connects every part of your customer journey into a single intelligent system — so you capture more, lose fewer, and keep coming back.</p>
         <div class="platform-pillars">
           <div class="pillar reveal">
-            <div class="pillar-icon">⚡</div>
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10"/></svg>
+            </div>
             <div class="pillar-body">
               <h4>Instant response</h4>
               <p>Every lead, missed call, and appointment triggers an immediate automated action. No delays. No manual work.</p>
             </div>
           </div>
           <div class="pillar reveal reveal-delay-1">
-            <div class="pillar-icon">🔁</div>
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.2 6.5L3 16"/><path d="M3 12a9 9 0 0 1 15.2-6.5L21 8"/><path d="M21 4v4h-4M3 20v-4h4"/></svg>
+            </div>
             <div class="pillar-body">
               <h4>Closes the loop</h4>
               <p>From first contact to follow-up review request — every step is tracked and handled automatically.</p>
             </div>
           </div>
           <div class="pillar reveal reveal-delay-2">
-            <div class="pillar-icon">📊</div>
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20.5h18"/><path d="M6 20.5V12.5M11 20.5V6M16 20.5V14.5M21 20.5V8.5"/></svg>
+            </div>
             <div class="pillar-body">
               <h4>Real visibility</h4>
               <p>A live dashboard showing every active automation, message sent, and appointment confirmed — in real time.</p>
@@ -1105,9 +1126,10 @@ footer::before {
 
 <!-- CHAT WIDGET -->
 <style>
-#chat-btn{position:fixed;bottom:28px;right:28px;z-index:1000;width:52px;height:52px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 24px rgba(201,168,76,0.35);transition:transform 0.2s,background 0.2s}
-#chat-btn:hover{background:var(--gold2);transform:scale(1.08)}
-#chat-btn .badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--green);border-radius:50%;border:2px solid var(--bg);animation:pulse-green 2s ease-in-out infinite}
+#chat-btn{position:fixed;bottom:28px;right:28px;z-index:1000;width:54px;height:54px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--bg);box-shadow:0 4px 24px rgba(201,168,76,0.35);transition:transform 0.2s,background 0.2s,box-shadow 0.3s}
+#chat-btn svg{width:22px;height:22px;display:block}
+#chat-btn:hover{background:var(--gold2);transform:scale(1.08);box-shadow:0 8px 32px rgba(201,168,76,0.55)}
+#chat-btn .badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--green);border-radius:50%;border:2px solid var(--bg);animation:pulse-green 2s ease-in-out infinite}
 #chat-panel{position:fixed;bottom:92px;right:28px;z-index:999;width:360px;max-height:520px;background:var(--bg2);border:1px solid var(--line);display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.5)}
 #chat-panel.open{display:flex}
 #chat-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.5}
@@ -1133,7 +1155,10 @@ footer::before {
 @media(max-width:480px){#chat-panel{width:calc(100vw - 32px);right:16px;bottom:80px}#chat-btn{right:16px;bottom:16px}}
 </style>
 
-<button id="chat-btn" onclick="toggleChat()" title="Chat with NexFlow AI">💬<span class="badge"></span></button>
+<button id="chat-btn" onclick="toggleChat()" title="Chat with NexFlow AI" aria-label="Open chat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  <span class="badge"></span>
+</button>
 <div id="chat-panel">
   <div class="cp-header">
     <div class="cp-title">NexFlow Assistant</div>
