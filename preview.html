@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NexFlow AI — Template Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ["'Instrument Serif'", "serif"],
+            body: ["'Barlow'", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{
+      --foreground: 0 0% 100%;
+      --glass-bg: rgba(255,255,255,0.12);
+      --glass-border: rgba(255,255,255,0.25);
+      --glass-shadow: 0 4px 30px rgba(0,0,0,0.08);
+      --glass-blur: 16px;
+    }
+    html, body { background:#000; color:#fff; }
+    body { font-family:'Barlow', sans-serif; -webkit-font-smoothing:antialiased; }
+    .font-heading { font-family:'Instrument Serif', serif; }
+    .font-body { font-family:'Barlow', sans-serif; }
+
+    /* ── LIQUID GLASS ── */
+    .liquid-glass{
+      background: rgba(255,255,255,0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass::before{
+      content:''; position:absolute; inset:0; border-radius:inherit; padding:1.4px;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.45) 0%,
+        rgba(255,255,255,0.15) 20%,
+        rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%,
+        rgba(255,255,255,0.15) 80%,
+        rgba(255,255,255,0.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;
+    }
+    .liquid-glass-strong{
+      background: rgba(255,255,255,0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass-strong::before{
+      content:''; position:absolute; inset:0; border-radius:inherit; padding:1.4px;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.5) 0%,
+        rgba(255,255,255,0.2) 20%,
+        rgba(255,255,255,0) 40%,
+        rgba(255,255,255,0) 60%,
+        rgba(255,255,255,0.2) 80%,
+        rgba(255,255,255,0.5) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;
+    }
+
+    /* ── BLUR TEXT ANIMATION ── */
+    .blur-word{
+      display:inline-block;
+      filter: blur(10px);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: filter 0.9s cubic-bezier(.2,.7,.2,1), opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.2,1);
+    }
+    .blur-word.in{ filter: blur(0); opacity: 1; transform: translateY(0); }
+    .blur-fade{
+      filter: blur(10px);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: filter 0.7s ease, opacity 0.7s ease, transform 0.7s ease;
+    }
+    .blur-fade.in{ filter: blur(0); opacity: 1; transform: translateY(0); }
+
+    /* desaturated stats video */
+    .desat{ filter: saturate(0); }
+
+    /* video gradient fades */
+    .fade-top{ position:absolute; top:0; left:0; right:0; height:200px;
+      background: linear-gradient(to bottom, #000, transparent); pointer-events:none; z-index:5; }
+    .fade-bot{ position:absolute; bottom:0; left:0; right:0; height:200px;
+      background: linear-gradient(to top, #000, transparent); pointer-events:none; z-index:5; }
+    .fade-bot-300{ position:absolute; bottom:0; left:0; right:0; height:300px;
+      background: linear-gradient(to top, #000, transparent); pointer-events:none; z-index:5; }
+
+    /* hero video positioning per spec */
+    .hero-video{
+      position:absolute; left:0; top:20%; width:100%; height:auto;
+      object-fit:contain; z-index:0;
+    }
+    @media (max-width: 900px){
+      .hero-video{ top: 35%; }
+    }
+
+    /* nav pill */
+    .nav-pill a:hover{ color: #fff; }
+  </style>
+</head>
+<body class="bg-black text-white font-body">
+
+<div class="bg-black relative">
+<div class="z-10 relative">
+
+<!-- ════════════════ NAVBAR ════════════════ -->
+<nav class="fixed top-4 left-0 right-0 z-50 px-6 lg:px-16 py-3 flex items-center justify-between">
+  <a href="/" class="flex items-center gap-3">
+    <div class="h-12 w-12 liquid-glass-strong rounded-full flex items-center justify-center">
+      <span class="font-heading italic text-xl text-white relative z-10">N</span>
+    </div>
+    <span class="hidden md:block font-heading italic text-xl text-white tracking-tight">NexFlow AI</span>
+  </a>
+  <div class="hidden md:flex items-center liquid-glass rounded-full px-1.5 py-1">
+    <a href="#platform" class="px-3 py-2 text-sm font-medium text-white/85 font-body relative z-10">Platform</a>
+    <a href="#modules" class="px-3 py-2 text-sm font-medium text-white/85 font-body relative z-10">Modules</a>
+    <a href="#how" class="px-3 py-2 text-sm font-medium text-white/85 font-body relative z-10">Process</a>
+    <a href="#founder" class="px-3 py-2 text-sm font-medium text-white/85 font-body relative z-10">Founder</a>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="bg-white text-black rounded-full px-3.5 py-1.5 text-sm font-semibold flex items-center gap-1 ml-1">
+      Apply for Audit
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+  <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="md:hidden bg-white text-black rounded-full px-3.5 py-1.5 text-xs font-semibold">Apply</a>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="relative overflow-visible" style="height:1000px">
+  <video id="hero-vid" class="hero-video" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4"></video>
+  <div class="absolute inset-0 bg-black/15 z-0"></div>
+  <div class="fade-bot-300"></div>
+
+  <div class="relative z-10 flex flex-col items-center text-center px-6 h-full" style="padding-top:150px">
+
+    <!-- Badge -->
+    <div class="liquid-glass rounded-full px-1 py-1 flex items-center gap-2 mb-8 blur-fade">
+      <span class="bg-white text-black rounded-full px-3 py-1 text-xs font-semibold relative z-10">New</span>
+      <span class="text-sm text-white/90 font-body pr-3 relative z-10">NexFlow AI is now live.</span>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="text-6xl md:text-7xl lg:text-[5.5rem] font-heading italic text-white leading-[0.85] max-w-2xl tracking-[-0.04em] mb-7" data-blur-text>
+      Your business, running itself.
+    </h1>
+
+    <!-- Subtext -->
+    <p class="text-base md:text-lg text-white/80 font-body font-light leading-snug max-w-xl mb-9 blur-fade">
+      The complete operating system for your service business — automating every customer touchpoint from first contact to five-star review, 24/7.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex items-center gap-5 blur-fade">
+      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white flex items-center gap-2">
+        <span class="relative z-10">Apply for Free Audit</span>
+        <svg class="w-4 h-4 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a href="#platform" class="text-sm text-white/90 flex items-center gap-2 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        See the Platform
+      </a>
+    </div>
+
+    <!-- Partners / industries bar -->
+    <div class="mt-auto pb-12 pt-16 w-full">
+      <div class="flex justify-center mb-8 blur-fade">
+        <span class="liquid-glass rounded-full px-4 py-1.5 text-xs text-white/80 font-body relative z-10">Built for the operators behind</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-x-12 md:gap-x-16 gap-y-4 blur-fade">
+        <span class="text-2xl md:text-3xl font-heading italic text-white">Med Spas</span>
+        <span class="text-2xl md:text-3xl font-heading italic text-white">Salons</span>
+        <span class="text-2xl md:text-3xl font-heading italic text-white">Auto Shops</span>
+        <span class="text-2xl md:text-3xl font-heading italic text-white">Real Estate</span>
+        <span class="text-2xl md:text-3xl font-heading italic text-white">Home Services</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bg-black">
+
+<!-- ════════════════ START / HOW IT WORKS ════════════════ -->
+<section id="how" class="relative overflow-hidden">
+  <video id="start-vid" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto" data-hls="https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8"></video>
+  <div class="fade-top"></div>
+  <div class="fade-bot"></div>
+  <div class="relative z-10 flex flex-col items-center text-center px-6 py-32 md:py-40" style="min-height:500px">
+    <div class="liquid-glass rounded-full px-3.5 py-1 mb-7"><span class="text-xs font-medium text-white font-body relative z-10">How It Works</span></div>
+    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] max-w-2xl mb-6" data-blur-text>You run the business. We run the systems.</h2>
+    <p class="text-white/65 font-body font-light text-sm md:text-base max-w-xl mb-9 blur-fade">Tell us your bottleneck. We map every leak, build the automations, and deploy. Days, not months. Custom to your business — not a template.</p>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="liquid-glass-strong rounded-full px-6 py-3 text-sm font-medium text-white flex items-center gap-2 blur-fade">
+      <span class="relative z-10">Apply for Free Audit</span>
+      <svg class="w-4 h-4 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════ FEATURES CHESS ════════════════ -->
+<section id="platform" class="relative px-6 lg:px-16 py-32 max-w-7xl mx-auto">
+  <div class="text-center mb-20">
+    <div class="inline-block liquid-glass rounded-full px-3.5 py-1 mb-5 blur-fade"><span class="text-xs font-medium text-white font-body relative z-10">The Platform</span></div>
+    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] max-w-2xl mx-auto" data-blur-text>One dashboard. Every automation.</h2>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="flex flex-col md:flex-row items-center gap-12 mb-24">
+    <div class="flex-1 blur-fade">
+      <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading italic text-white leading-[0.95] mb-5">Designed to capture. Built to convert.</h3>
+      <p class="text-white/65 font-body font-light text-base leading-relaxed mb-8 max-w-md">Every lead, missed call, and inbound message routed instantly. Your team focuses on closing — NexFlow handles the rest. Real visibility, real-time, every signal in one console.</p>
+      <a href="#modules" class="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white inline-flex items-center gap-2">
+        <span class="relative z-10">See the modules</span>
+        <svg class="w-4 h-4 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+    <div class="flex-1 w-full blur-fade">
+      <div class="liquid-glass rounded-2xl overflow-hidden aspect-[4/3] relative">
+        <iframe src="dashboard-embed/index.html" title="NexFlow Command Center" class="absolute inset-0 w-full h-full border-0" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+    <div class="flex-1 blur-fade">
+      <h3 class="text-3xl md:text-4xl lg:text-5xl font-heading italic text-white leading-[0.95] mb-5">It scales. Without you.</h3>
+      <p class="text-white/65 font-body font-light text-base leading-relaxed mb-8 max-w-md">AI agents handle calls, follow-ups, and reviews 24/7. Your business runs at full capacity even while you sleep. No manual updates. Ever.</p>
+      <a href="#modules" class="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white inline-flex items-center gap-2">
+        <span class="relative z-10">See how it works</span>
+        <svg class="w-4 h-4 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+    </div>
+    <div class="flex-1 w-full blur-fade">
+      <div class="liquid-glass rounded-2xl overflow-hidden aspect-[4/3] relative bg-black">
+        <video class="absolute inset-0 w-full h-full object-cover opacity-90" autoplay loop muted playsinline
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260417_061226_74f0749c-a22d-42b3-895e-5d6203bc741c.mp4"></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FEATURES GRID / MODULES ════════════════ -->
+<section id="modules" class="relative px-6 lg:px-16 py-32 max-w-7xl mx-auto">
+  <div class="text-center mb-16">
+    <div class="inline-block liquid-glass rounded-full px-3.5 py-1 mb-5 blur-fade"><span class="text-xs font-medium text-white font-body relative z-10">Modules</span></div>
+    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] max-w-2xl mx-auto" data-blur-text>Five systems. One backbone.</h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="liquid-glass rounded-2xl p-6 blur-fade">
+      <div class="liquid-glass-strong rounded-full w-10 h-10 flex items-center justify-center mb-5">
+        <svg class="w-5 h-5 text-white relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+      </div>
+      <p class="text-xs font-medium text-white/60 mb-2 font-body tracking-widest">01 · VOICE</p>
+      <h4 class="text-2xl font-heading italic text-white mb-2 leading-tight">AI Voice Agents</h4>
+      <p class="text-white/60 font-body font-light text-sm leading-relaxed">Answer every call. 24/7. Books to your calendar.</p>
+    </div>
+    <div class="liquid-glass rounded-2xl p-6 blur-fade">
+      <div class="liquid-glass-strong rounded-full w-10 h-10 flex items-center justify-center mb-5">
+        <svg class="w-5 h-5 text-white relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10"/></svg>
+      </div>
+      <p class="text-xs font-medium text-white/60 mb-2 font-body tracking-widest">02 · CAPTURE</p>
+      <h4 class="text-2xl font-heading italic text-white mb-2 leading-tight">Lead Capture &amp; Routing</h4>
+      <p class="text-white/60 font-body font-light text-sm leading-relaxed">Forms, ads, DMs — funneled and qualified instantly.</p>
+    </div>
+    <div class="liquid-glass rounded-2xl p-6 blur-fade">
+      <div class="liquid-glass-strong rounded-full w-10 h-10 flex items-center justify-center mb-5">
+        <svg class="w-5 h-5 text-white relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.2 6.5L3 16"/><path d="M3 12a9 9 0 0 1 15.2-6.5L21 8"/><path d="M21 4v4h-4M3 20v-4h4"/></svg>
+      </div>
+      <p class="text-xs font-medium text-white/60 mb-2 font-body tracking-widest">03 · SYNC</p>
+      <h4 class="text-2xl font-heading italic text-white mb-2 leading-tight">CRM &amp; Pipeline Sync</h4>
+      <p class="text-white/60 font-body font-light text-sm leading-relaxed">Every lead, call, and conversion in one live pipeline.</p>
+    </div>
+    <div class="liquid-glass rounded-2xl p-6 blur-fade">
+      <div class="liquid-glass-strong rounded-full w-10 h-10 flex items-center justify-center mb-5">
+        <svg class="w-5 h-5 text-white relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <p class="text-xs font-medium text-white/60 mb-2 font-body tracking-widest">04 · SENTRY</p>
+      <h4 class="text-2xl font-heading italic text-white mb-2 leading-tight">Risk Intelligence</h4>
+      <p class="text-white/60 font-body font-light text-sm leading-relaxed">Sentry scans your perimeter on a schedule.</p>
+    </div>
+    <div class="liquid-glass rounded-2xl p-8 blur-fade md:col-span-2 lg:col-span-4 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+      <div class="liquid-glass-strong rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+        <svg class="w-5 h-5 text-white relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="flex-1 text-center md:text-left">
+        <p class="text-xs font-medium text-white/60 mb-2 font-body tracking-widest">05 · REVIEWS</p>
+        <h4 class="text-2xl md:text-3xl font-heading italic text-white mb-2 leading-tight">Review Follow-Ups</h4>
+        <p class="text-white/65 font-body font-light text-sm md:text-base leading-relaxed max-w-2xl mx-auto md:mx-0">Auto-request reviews from happy customers. Respond to every rating. Reputation that compounds, on autopilot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ STATS ════════════════ -->
+<section class="relative overflow-hidden">
+  <video id="stats-vid" class="absolute inset-0 w-full h-full object-cover z-0 desat" autoplay loop muted playsinline preload="auto" data-hls="https://stream.mux.com/NcU3HlHeF7CUL86azTTzpy3Tlb00d6iF3BmCdFslMJYM.m3u8"></video>
+  <div class="absolute inset-0 bg-black/40 z-0"></div>
+  <div class="fade-top"></div>
+  <div class="fade-bot"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-6xl mx-auto">
+    <div class="liquid-glass rounded-3xl p-12 md:p-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 text-center md:text-left">
+        <div>
+          <div class="text-5xl md:text-6xl lg:text-7xl font-heading italic text-white leading-none mb-3">5</div>
+          <div class="text-white/60 font-body font-light text-sm">Systems live<br><span class="text-white/40 text-xs">Voice · Capture · Sync · Sentry · Reviews</span></div>
+        </div>
+        <div>
+          <div class="text-5xl md:text-6xl lg:text-7xl font-heading italic text-white leading-none mb-3">24<span class="text-white/60">/7</span></div>
+          <div class="text-white/60 font-body font-light text-sm">Always on<br><span class="text-white/40 text-xs">No missed windows</span></div>
+        </div>
+        <div>
+          <div class="text-5xl md:text-6xl lg:text-7xl font-heading italic text-white leading-none mb-3">0</div>
+          <div class="text-white/60 font-body font-light text-sm">Missed leads<br><span class="text-white/40 text-xs">Routed instantly</span></div>
+        </div>
+        <div>
+          <div class="text-5xl md:text-6xl lg:text-7xl font-heading italic text-white leading-none mb-3">Days</div>
+          <div class="text-white/60 font-body font-light text-sm">To go live<br><span class="text-white/40 text-xs">Not months</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ TESTIMONIALS (placeholder until live ones) ════════════════ -->
+<section class="relative px-6 lg:px-16 py-32 max-w-7xl mx-auto">
+  <div class="text-center mb-16">
+    <div class="inline-block liquid-glass rounded-full px-3.5 py-1 mb-5 blur-fade"><span class="text-xs font-medium text-white font-body relative z-10">Why Operators Choose NexFlow</span></div>
+    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.9] max-w-2xl mx-auto" data-blur-text>Built from the security mindset.</h2>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="liquid-glass rounded-2xl p-8 blur-fade">
+      <p class="text-white/85 font-body font-light text-sm italic leading-relaxed mb-6">"Every workflow tracked, every signal captured, nothing falling through. That's not a marketing line — that's how the platform is engineered."</p>
+      <div class="text-white font-body font-medium text-sm">Built different</div>
+      <div class="text-white/50 font-body font-light text-xs">Cybersecurity-first architecture</div>
+    </div>
+    <div class="liquid-glass rounded-2xl p-8 blur-fade">
+      <p class="text-white/85 font-body font-light text-sm italic leading-relaxed mb-6">"We don't replace your stack — we plug into it. Keep your CRM, calendar, and tools. NexFlow is the operations layer underneath."</p>
+      <div class="text-white font-body font-medium text-sm">Operator-first</div>
+      <div class="text-white/50 font-body font-light text-xs">No rip and replace</div>
+    </div>
+    <div class="liquid-glass rounded-2xl p-8 blur-fade">
+      <p class="text-white/85 font-body font-light text-sm italic leading-relaxed mb-6">"Five years inside the systems businesses run on. NexFlow is the system I wish those companies had — built and managed by us, owned by you."</p>
+      <div class="text-white font-body font-medium text-sm">Antonyo Fridal</div>
+      <div class="text-white/50 font-body font-light text-xs">Founder, NexFlow AI</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOUNDER ════════════════ -->
+<section id="founder" class="relative px-6 lg:px-16 py-32 max-w-7xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-[380px_1fr] gap-16 items-center">
+    <div class="liquid-glass rounded-2xl p-10 blur-fade flex flex-col items-center gap-8">
+      <div class="relative">
+        <div class="absolute -inset-3 rounded-full liquid-glass-strong"></div>
+        <img src="founder.jpg" alt="Antonyo Fridal" class="relative w-48 h-48 rounded-full object-cover border-2 border-white/30">
+      </div>
+      <div class="w-full border-t border-white/10 pt-6 flex flex-col gap-3 text-sm">
+        <div class="flex justify-between"><span class="text-white/50 text-xs uppercase tracking-widest font-body">Founder</span><span class="font-heading italic text-white text-base">Antonyo Fridal</span></div>
+        <div class="flex justify-between"><span class="text-white/50 text-xs uppercase tracking-widest font-body">Background</span><span class="font-heading italic text-white text-base">Cybersecurity · 5 yrs</span></div>
+        <div class="flex justify-between"><span class="text-white/50 text-xs uppercase tracking-widest font-body">Building</span><span class="font-heading italic text-white text-base">NexFlow AI</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="inline-block liquid-glass rounded-full px-3.5 py-1 mb-5 blur-fade"><span class="text-xs font-medium text-white font-body relative z-10">The Founder</span></div>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading italic tracking-tight leading-[0.95] mb-6 max-w-xl" data-blur-text>Built by an operator. Not a marketer.</h2>
+      <p class="text-white/70 font-body font-light text-base md:text-lg leading-relaxed mb-5 max-w-2xl blur-fade">I'm Antonyo Fridal — five years in tech and cybersecurity, working inside the systems that businesses run on. I've watched the same pattern over and over: leads slip through, calls go unanswered, follow-ups never get sent, and good companies lose revenue to manual work that should never have been manual in the first place.</p>
+      <p class="text-white/70 font-body font-light text-base md:text-lg leading-relaxed mb-7 max-w-2xl blur-fade">NexFlow is the system I wish those companies had. Built from the security mindset — every workflow tracked, every signal captured, nothing falling through. If a process can be automated correctly, it should be.</p>
+      <div class="flex flex-wrap gap-2 blur-fade">
+        <span class="liquid-glass rounded-full px-4 py-1.5 text-xs text-white/85 font-body relative z-10">5 yrs · Tech</span>
+        <span class="liquid-glass rounded-full px-4 py-1.5 text-xs text-white/85 font-body relative z-10">Cybersecurity</span>
+        <span class="liquid-glass rounded-full px-4 py-1.5 text-xs text-white/85 font-body relative z-10">Systems Thinker</span>
+        <span class="liquid-glass rounded-full px-4 py-1.5 text-xs text-white/85 font-body relative z-10">Operator-First</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ CTA + FOOTER ════════════════ -->
+<section id="contact" class="relative overflow-hidden">
+  <video id="cta-vid" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto" data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
+  <div class="absolute inset-0 bg-black/35 z-0"></div>
+  <div class="fade-top"></div>
+  <div class="fade-bot"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-40 max-w-6xl mx-auto">
+    <div class="text-center">
+      <h2 class="text-5xl md:text-6xl lg:text-7xl font-heading italic leading-[0.85] max-w-3xl mx-auto mb-7" data-blur-text>Apply for your free audit.</h2>
+      <p class="text-white/75 font-body font-light text-base md:text-lg max-w-xl mx-auto mb-10 blur-fade">Tell us about your business in 60 seconds. We'll send back a custom audit showing exactly where you're losing leads, calls, and follow-ups — and what NexFlow would automate first.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4 blur-fade">
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="liquid-glass-strong rounded-full px-6 py-3 text-sm font-medium text-white inline-flex items-center gap-2">
+          <span class="relative z-10">Apply for Free Audit</span>
+          <svg class="w-4 h-4 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <a href="#modules" class="bg-white text-black rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2">
+          View the Stack
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-32 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-white/40 text-xs font-body">© 2026 NexFlow AI Solutions LLC. All rights reserved.</div>
+      <div class="flex gap-6 text-white/40 text-xs font-body">
+        <a href="privacy.html" class="hover:text-white/70">Privacy</a>
+        <a href="terms.html" class="hover:text-white/70">Terms</a>
+        <a href="mailto:nexflowaisolutions@gmail.com" class="hover:text-white/70">Contact</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+</div>
+
+<script>
+  // HLS attach
+  function attachHls(v){
+    const src = v.getAttribute('data-hls');
+    if (!src) return;
+    if (v.canPlayType('application/vnd.apple.mpegurl')) { v.src = src; v.play().catch(()=>{}); }
+    else if (window.Hls && Hls.isSupported()){
+      const h = new Hls({ enableWorker:true });
+      h.loadSource(src); h.attachMedia(v);
+      h.on(Hls.Events.MANIFEST_PARSED, ()=> v.play().catch(()=>{}));
+    }
+  }
+  document.querySelectorAll('video[data-hls]').forEach(attachHls);
+
+  // Blur text — split each [data-blur-text] heading into words and animate on scroll
+  document.querySelectorAll('[data-blur-text]').forEach(el => {
+    const text = el.textContent.trim();
+    el.textContent = '';
+    text.split(/\s+/).forEach((word, i) => {
+      const span = document.createElement('span');
+      span.className = 'blur-word';
+      span.textContent = word + ' ';
+      span.style.transitionDelay = (i * 0.08) + 's';
+      el.appendChild(span);
+    });
+  });
+
+  // Reveal observer for blur-fade and blur-word elements
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        e.target.querySelectorAll && e.target.querySelectorAll('.blur-word').forEach(w => w.classList.add('in'));
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.blur-fade, [data-blur-text]').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

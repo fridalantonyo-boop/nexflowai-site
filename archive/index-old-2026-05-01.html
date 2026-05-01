@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexFlow AI — The Business OS for Local Service Companies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #07080a;
+  --bg2:      #0c0d10;
+  --bg3:      #111318;
+  --bg4:      #16181e;
+  --line:     rgba(255,255,255,0.065);
+  --line2:    rgba(255,255,255,0.04);
+  --gold:     #c9a84c;
+  --gold2:    #e8c96a;
+  --gold3:    #f5dfa0;
+  --goldfaint:rgba(201,168,76,0.07);
+  --goldglow: rgba(201,168,76,0.18);
+  --green:    #2dcc7a;
+  --greenfaint:rgba(45,204,122,0.12);
+  --text:     #ddd8cf;
+  --muted:    #6e6a63;
+  --dim:      #2e2c28;
+  --white:    #f4f0e8;
+  --font-d:   'Cormorant Garamond', Georgia, serif;
+  --font-b:   'DM Sans', sans-serif;
+  --font-m:   'DM Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--font-b);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+/* noise overlay */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:0.35;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:64px;
+  background:rgba(7,8,10,0.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+}
+.nav-logo{font-family:var(--font-d);font-size:21px;font-weight:600;letter-spacing:0.03em;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:0.03em;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-status{display:flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-left:auto;margin-right:32px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse-green 2s ease-in-out infinite}
+@keyframes pulse-green{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:0.6;box-shadow:0 0 12px var(--green)}}
+.nav-cta{font-size:12px!important;font-weight:600!important;color:var(--bg)!important;background:var(--gold);padding:9px 20px;letter-spacing:0.07em;text-transform:uppercase;transition:background 0.2s!important;white-space:nowrap}
+.nav-cta:hover{background:var(--gold2);color:var(--bg)!important}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1fr;gap:64px;
+  align-items:center;
+  padding:120px 52px 80px;
+  position:relative;overflow:hidden;max-width:1280px;margin:0 auto;
+}
+/* dot grid */
+.hero-bg{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background-image:radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size:32px 32px;pointer-events:none;z-index:0;
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 60% 40%, rgba(201,168,76,0.055) 0%, transparent 70%);
+}
+.hero-left{position:relative;z-index:1}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-m);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;
+  opacity:0;animation:fadeUp 0.6s 0.1s ease forwards;
+}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--gold);opacity:0.6}
+.hero h1{
+  font-family:var(--font-d);font-size:clamp(54px,5.5vw,88px);font-weight:600;
+  line-height:1.0;letter-spacing:-0.01em;color:var(--white);
+  margin-bottom:26px;
+  opacity:0;animation:fadeUp 0.6s 0.22s ease forwards;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:17px;color:var(--muted);font-weight:300;
+  max-width:480px;line-height:1.75;margin-bottom:44px;
+  opacity:0;animation:fadeUp 0.6s 0.36s ease forwards;
+}
+.hero-btns{
+  display:flex;gap:12px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.6s 0.48s ease forwards;
+}
+.btn-gold{
+  background:var(--gold);color:var(--bg);padding:14px 32px;
+  font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;transition:background 0.2s,transform 0.15s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-ghost{
+  background:transparent;color:var(--text);padding:13px 30px;
+  font-size:12px;font-weight:500;letter-spacing:0.06em;text-decoration:none;
+  border:1px solid var(--dim);transition:border-color 0.2s,color 0.2s;display:inline-block;
+}
+.btn-ghost:hover{border-color:var(--muted);color:var(--white)}
+.hero-trust{
+  margin-top:48px;padding-top:40px;border-top:1px solid var(--line);
+  display:flex;gap:40px;
+  opacity:0;animation:fadeUp 0.6s 0.6s ease forwards;
+}
+.ht-item{display:flex;flex-direction:column;gap:4px}
+.ht-num{font-family:var(--font-d);font-size:38px;font-weight:600;color:var(--white);line-height:1}
+.ht-num span{color:var(--gold);font-size:22px}
+.ht-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em}
+
+/* ── COMMAND WIDGET ── */
+.hero-right{
+  position:relative;z-index:1;
+  opacity:0;animation:fadeLeft 0.7s 0.3s ease forwards;
+}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.cmd-widget{
+  background:var(--bg2);border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.cmd-widget::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0.6;
+}
+.cmd-widget::after{
+  content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;
+  background:radial-gradient(circle,var(--goldglow) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cw-header{
+  padding:16px 22px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cw-title{font-family:var(--font-m);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.cw-title::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-green 2s ease-in-out infinite}
+.cw-badge{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);background:var(--greenfaint);padding:3px 10px;border:1px solid rgba(45,204,122,0.2)}
+/* metrics row */
+.cw-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.cwm{background:var(--bg2);padding:20px;text-align:center}
+.cwm-n{font-family:var(--font-d);font-size:36px;font-weight:600;color:var(--white);line-height:1}
+.cwm-l{font-family:var(--font-m);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+/* modules */
+.cw-modules{padding:18px 22px;border-bottom:1px solid var(--line)}
+.cw-modules-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.cw-mod{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line2)}
+.cw-mod:last-child{border-bottom:none}
+.cw-mod-left{display:flex;align-items:center;gap:10px}
+.mod-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.mod-dot.live{background:var(--green);animation:pulse-green 2.5s ease-in-out infinite}
+.mod-dot.sched{background:var(--gold);animation:pulse-gold 2.5s ease-in-out infinite}
+@keyframes pulse-gold{0%,100%{opacity:1;box-shadow:0 0 5px var(--gold)}50%{opacity:0.5;box-shadow:0 0 10px var(--gold)}}
+.mod-name{font-size:12px;color:var(--text)}
+.mod-status{font-family:var(--font-m);font-size:9px;letter-spacing:0.1em;text-transform:uppercase}
+.mod-status.live{color:var(--green)}
+.mod-status.sched{color:var(--gold)}
+/* last action */
+.cw-last{padding:16px 22px}
+.cw-last-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.cw-last-msg{font-size:12px;color:var(--muted);line-height:1.5;font-style:italic;border-left:2px solid var(--gold);padding-left:12px}
+.cw-last-time{font-family:var(--font-m);font-size:9px;color:var(--dim);margin-top:6px;display:flex;align-items:center;gap:5px}
+.cw-last-time::before{content:'';display:block;width:4px;height:4px;border-radius:50%;background:var(--green)}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--bg2);padding:16px 0;
+}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 30s linear infinite}
+.marquee-track span{font-family:var(--font-d);font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 24px}
+.marquee-track span.dot{color:var(--gold);padding:0 6px;font-size:8px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTIONS ── */
+.section{max-width:1120px;margin:0 auto;padding:110px 52px}
+.sec-label{font-family:var(--font-m);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-label::before{content:'';display:block;width:20px;height:1px;background:var(--gold);opacity:0.6}
+.sec-h2{font-family:var(--font-d);font-size:clamp(38px,4.5vw,64px);font-weight:600;line-height:1.06;letter-spacing:-0.01em;color:var(--white);margin-bottom:20px}
+.sec-h2 em{font-style:italic;color:var(--gold)}
+.sec-p{font-size:17px;color:var(--muted);font-weight:300;max-width:540px;line-height:1.78}
+
+/* ── PLATFORM INTRO ── */
+.platform-intro{border-top:1px solid var(--line)}
+.platform-cols{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;margin-top:0}
+.platform-pillars{display:flex;flex-direction:column;gap:0;margin-top:52px}
+.pillar{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--line);cursor:default;transition:background 0.2s}
+.pillar:first-child{border-top:1px solid var(--line)}
+.pillar-icon{width:42px;height:42px;border:1px solid var(--dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);transition:border-color 0.25s,background 0.25s,color 0.25s}
+.pillar-icon svg{width:20px;height:20px;display:block}
+.pillar:hover .pillar-icon{border-color:var(--gold);background:var(--goldfaint);color:var(--gold)}
+.pillar-body h4{font-family:var(--font-d);font-size:20px;font-weight:600;color:var(--white);margin-bottom:6px}
+.pillar-body p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* platform visual - the OS grid */
+.platform-visual{position:relative}
+.os-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.os-tile{background:var(--bg2);padding:26px 22px;position:relative;overflow:hidden;transition:background 0.2s}
+.os-tile:hover{background:var(--bg3)}
+.os-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease}
+.os-tile:hover::after{transform:scaleX(1)}
+.ost-badge{font-family:var(--font-m);font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:5px;margin-bottom:14px}
+.ost-badge::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green)}
+.ost-num{font-family:var(--font-d);font-size:38px;font-weight:600;color:var(--white);line-height:1}
+.ost-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.1em}
+.ost-sub{font-size:11px;color:var(--dim);margin-top:10px;font-family:var(--font-m)}
+
+/* ── MODULES (SERVICES) ── */
+.modules-bg{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.modules-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:24px}
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.module{background:var(--bg2);padding:40px 34px;position:relative;overflow:hidden;transition:background 0.2s;cursor:default}
+.module:hover{background:var(--bg3)}
+.module::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--goldfaint) 0%,transparent 60%);opacity:0;transition:opacity 0.3s}
+.module:hover::before{opacity:1}
+.module-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.mod-num{font-family:var(--font-m);font-size:10px;color:var(--dim);letter-spacing:0.14em}
+.mod-pill{font-family:var(--font-m);font-size:8px;letter-spacing:0.14em;text-transform:uppercase;padding:3px 9px;border:1px solid;display:flex;align-items:center;gap:5px}
+.mod-pill.active{color:var(--green);border-color:rgba(45,204,122,0.25);background:var(--greenfaint)}
+.mod-pill.active::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);animation:pulse-green 2s ease-in-out infinite}
+.mod-pill.sched{color:var(--gold);border-color:rgba(201,168,76,0.25);background:var(--goldfaint)}
+.module-icon{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--dim);margin-bottom:18px;color:var(--gold);transition:border-color 0.25s,background 0.25s,transform 0.3s}
+.module-icon svg{width:22px;height:22px;display:block}
+.module:hover .module-icon{border-color:rgba(201,168,76,0.45);background:var(--goldfaint);transform:translateY(-2px)}
+.module h3{font-family:var(--font-d);font-size:26px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.2}
+.module p{font-size:13px;color:var(--muted);line-height:1.72}
+.module-result{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--font-m);font-size:10px;color:var(--gold);letter-spacing:0.1em;display:flex;align-items:center;gap:6px}
+.module-result::before{content:'→';opacity:0.6}
+
+/* ── COMMAND CENTER PREVIEW ── */
+.command-center-section{border-top:1px solid var(--line);position:relative;overflow:hidden}
+.command-center-section::before{
+  content:'';position:absolute;inset:auto 0 0 0;height:60%;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(201,168,76,0.10),transparent 70%);
+  z-index:0;
+}
+.command-center-section .section{position:relative;z-index:1}
+.cc-header{margin-bottom:60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
+.cc-stage{position:relative;isolation:isolate}
+.cc-stage::before{
+  content:'';position:absolute;inset:-30px -10px;border-radius:24px;pointer-events:none;
+  background:
+    radial-gradient(ellipse 50% 40% at 20% 0%,rgba(201,168,76,0.18),transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 100%,rgba(201,168,76,0.12),transparent 70%);
+  filter:blur(40px);opacity:0.9;z-index:-1;
+  animation:cc-stage-drift 18s ease-in-out infinite;
+}
+@keyframes cc-stage-drift{
+  0%,100%{transform:translate3d(0,0,0) scale(1);opacity:0.85}
+  50%{transform:translate3d(20px,-10px,0) scale(1.04);opacity:1}
+}
+.cc-panel{
+  background:var(--bg2);border:1px solid var(--line);
+  position:relative;overflow:hidden;border-radius:14px;
+  box-shadow:0 50px 120px -40px rgba(0,0,0,0.65),0 0 0 1px rgba(201,168,76,0.08);
+  transition:transform 0.6s cubic-bezier(0.22,1,0.36,1),box-shadow 0.6s ease,border-color 0.6s ease;
+}
+.cc-panel:hover{
+  transform:translateY(-4px);
+  border-color:rgba(201,168,76,0.32);
+  box-shadow:0 70px 140px -40px rgba(201,168,76,0.22),0 0 0 1px rgba(201,168,76,0.18);
+}
+.cc-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),transparent);
+  opacity:0.65;
+}
+.cc-panel::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:140px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(201,168,76,0.04),transparent);
+  z-index:1;
+}
+.cc-topbar{
+  padding:12px 18px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:14px;background:var(--bg3);
+  position:relative;z-index:2;
+}
+.cc-dots{display:flex;gap:6px}
+.cc-dot{width:11px;height:11px;border-radius:50%;box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.2)}
+.cc-dot:nth-child(1){background:#ff5f57}
+.cc-dot:nth-child(2){background:#febc2e}
+.cc-dot:nth-child(3){background:#28c840}
+.cc-urlbar{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(0,0,0,0.35);border:1px solid var(--line);border-radius:6px;
+  padding:6px 14px;max-width:380px;margin:0 auto;
+  font-family:var(--font-m);font-size:11px;letter-spacing:0.04em;color:var(--muted);
+}
+.cc-urlbar svg{width:11px;height:11px;color:var(--gold);opacity:0.7;flex-shrink:0}
+.cc-urlbar .domain{color:var(--text)}
+.cc-urlbar .path{color:var(--muted)}
+.cc-topbar-badge{
+  font-family:var(--font-m);font-size:9px;letter-spacing:0.18em;color:var(--green);
+  background:var(--greenfaint);padding:5px 10px;border:1px solid rgba(45,204,122,0.25);
+  border-radius:999px;display:inline-flex;align-items:center;gap:6px;
+  text-transform:uppercase;font-weight:500;
+}
+.cc-topbar-badge .pulse{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(45,204,122,0.7);
+  animation:cc-pulse-dot 2s ease-in-out infinite;
+}
+@keyframes cc-pulse-dot{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.45;transform:scale(0.7)}
+}
+@media (max-width:760px){
+  .cc-urlbar{max-width:none}
+}
+.cc-body{display:grid;grid-template-columns:200px 1fr 200px;gap:0;min-height:420px}
+/* sidebar */
+.cc-sidebar{border-right:1px solid var(--line);padding:20px 0}
+.cc-nav-item{padding:10px 20px;font-size:12px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:10px;transition:background 0.15s,color 0.15s;letter-spacing:0.02em;user-select:none}
+.cc-nav-item:hover{background:var(--bg3);color:var(--text)}
+.cc-nav-item.active{color:var(--white);background:var(--bg4)}
+.cc-nav-item.active::before{content:'';display:block;width:2px;height:100%;background:var(--gold);position:absolute;left:0}
+.cc-nav-item{position:relative}
+.cc-nav-icon{width:16px;text-align:center;font-size:13px}
+.cc-nav-badge{margin-left:auto;background:var(--goldfaint);color:var(--gold);font-family:var(--font-m);font-size:8px;padding:1px 6px;border-radius:2px}
+/* main area */
+.cc-main{padding:24px;overflow:hidden}
+.cc-pane{display:none;animation:cc-fade 0.25s ease}
+.cc-pane.active{display:block}
+@keyframes cc-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.cc-main-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.cms{background:var(--bg3);border:1px solid var(--line);padding:16px;text-align:center}
+.cms-n{font-family:var(--font-d);font-size:30px;font-weight:600;color:var(--white);line-height:1}
+.cms-n span{color:var(--gold);font-size:18px}
+.cms-l{font-family:var(--font-m);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:4px}
+.cc-activity{background:var(--bg3);border:1px solid var(--line);padding:16px}
+.cc-activity-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.cc-event{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2)}
+.cc-event:last-child{border-bottom:none}
+.cc-event-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.cc-event-dot.g{background:var(--green)}
+.cc-event-dot.y{background:var(--gold)}
+.cc-event-text{font-size:11px;color:var(--muted);line-height:1.5;flex:1}
+.cc-event-text strong{color:var(--text);font-weight:500}
+.cc-event-time{font-family:var(--font-m);font-size:9px;color:var(--dim);white-space:nowrap;margin-top:2px}
+/* right panel */
+.cc-right{border-left:1px solid var(--line);padding:20px 16px}
+.cc-right-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.cc-queue-item{padding:10px;border:1px solid var(--line);margin-bottom:8px;background:var(--bg3)}
+.cc-qi-name{font-size:11px;color:var(--text);margin-bottom:3px}
+.cc-qi-meta{font-family:var(--font-m);font-size:9px;color:var(--dim)}
+.cc-qi-status{font-family:var(--font-m);font-size:8px;color:var(--gold);margin-top:4px;letter-spacing:0.1em;text-transform:uppercase}
+.cc-health{margin-top:20px}
+.ch-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line2)}
+.ch-row:last-child{border-bottom:none}
+.ch-name{font-size:10px;color:var(--muted)}
+.ch-bar{width:60px;height:3px;background:var(--bg);border-radius:2px;overflow:hidden}
+.ch-fill{height:100%;background:var(--green);border-radius:2px}
+
+/* ── HOW IT WORKS ── */
+.hiw-layout{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.hiw-steps{display:flex;flex-direction:column;gap:0;margin-top:52px}
+.hiw-step{display:flex;gap:28px;padding:30px 0;border-bottom:1px solid var(--line);cursor:default}
+.hiw-step:first-child{border-top:1px solid var(--line)}
+.step-n{font-family:var(--font-d);font-size:48px;font-weight:600;color:var(--dim);line-height:1;min-width:48px;transition:color 0.2s}
+.hiw-step:hover .step-n{color:var(--gold)}
+.step-body h4{font-family:var(--font-d);font-size:21px;font-weight:600;color:var(--white);margin-bottom:7px}
+.step-body p{font-size:13px;color:var(--muted);line-height:1.7}
+/* phone mock */
+.hiw-visual{background:var(--bg3);border:1px solid var(--line);padding:36px;position:relative;overflow:hidden}
+.hiw-visual::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(ellipse,var(--goldglow),transparent 70%)}
+.phone-mock{background:var(--bg);border:1px solid var(--dim);border-radius:24px;padding:26px 18px;max-width:272px;margin:0 auto}
+.pm-notch{width:80px;height:5px;background:var(--dim);border-radius:3px;margin:0 auto 26px}
+.pm-msg{background:var(--bg3);border-radius:14px 14px 14px 4px;padding:13px 16px;margin-bottom:8px;font-size:12px;color:var(--text);line-height:1.55;border:1px solid var(--line)}
+.pm-msg.sent{background:var(--goldfaint);border-color:rgba(201,168,76,0.15);border-radius:14px 14px 4px 14px;color:var(--gold2);text-align:right}
+.pm-time{font-size:9px;color:var(--dim);font-family:var(--font-m);margin-bottom:12px;padding-left:4px}
+.pm-label{font-family:var(--font-m);font-size:9px;text-align:center;color:var(--dim);letter-spacing:0.12em;margin-top:18px;text-transform:uppercase}
+
+/* ── INTEGRATIONS ORBIT ── */
+.integrations-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.integrations-copy .sec-p{margin-top:14px}
+.int-bullets{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:10px}
+.int-bullets li{position:relative;padding-left:24px;font-size:14px;color:var(--muted);line-height:1.55}
+.int-bullets li::before{content:'';position:absolute;left:0;top:9px;width:10px;height:1px;background:var(--gold)}
+.orbit{position:relative;width:100%;aspect-ratio:1/1;max-width:460px;margin:0 auto;--orbit-r:180px;--orbit-r-mid:116px;--orbit-r-inner:70px}
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px dashed rgba(201,168,76,0.18);transform:translate(-50%,-50%);pointer-events:none}
+.orbit-ring-outer{width:88%;height:88%}
+.orbit-ring-mid{width:56%;height:56%;border-style:solid;border-color:rgba(201,168,76,0.1)}
+.orbit-ring-inner{width:34%;height:34%;border-style:dashed;border-color:rgba(201,168,76,0.2);animation:ring-spin 24s linear infinite;transform-origin:center}
+.orbit-core{position:absolute;top:50%;left:50%;width:22%;height:22%;border-radius:50%;background:radial-gradient(circle,var(--bg3) 0%,var(--bg2) 100%);border:1px solid var(--line);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(201,168,76,0.18),inset 0 0 30px rgba(201,168,76,0.08);z-index:3}
+.orbit-core-mark{font-family:var(--font-d);font-size:clamp(11px,1.15vw,15px);font-weight:600;color:var(--white);letter-spacing:-0.01em;text-align:center;line-height:1.1}
+.orbit-core-mark span{color:var(--gold)}
+.orbit-spin{position:absolute;inset:0}
+.orbit-chip{position:absolute;top:50%;left:50%;width:52px;height:52px;margin:-26px 0 0 -26px;animation:orbit-path 52s linear infinite;animation-delay:calc(var(--i) * -4.33s);z-index:2}
+.orbit-chip-inner{width:100%;height:100%;background:var(--bg3);border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s,box-shadow 0.3s}
+.orbit-chip-inner:hover{border-color:var(--gold);box-shadow:0 0 24px rgba(201,168,76,0.22)}
+.orbit-chip-inner img{width:24px;height:24px;display:block}
+.orbit-chip-mid{position:absolute;top:50%;left:50%;width:36px;height:36px;margin:-18px 0 0 -18px;animation:orbit-path-mid 38s linear infinite;animation-delay:calc(var(--i) * -6.33s);z-index:2}
+.orbit-chip-mid .orbit-chip-inner img{width:16px;height:16px}
+.orbit-pulse{position:absolute;top:50%;left:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,0.65);animation:orbit-path-pulse 14s linear infinite;animation-delay:calc(var(--i) * -3.5s);z-index:2}
+.orbit-pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:var(--gold);opacity:0.25;animation:pulse-bloom 1.8s ease-in-out infinite}
+@keyframes orbit-path{
+  from{transform:rotate(0deg) translateX(var(--orbit-r)) rotate(0deg)}
+  to{transform:rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg)}
+}
+@keyframes orbit-path-mid{
+  from{transform:rotate(0deg) translateX(var(--orbit-r-mid)) rotate(0deg)}
+  to{transform:rotate(-360deg) translateX(var(--orbit-r-mid)) rotate(360deg)}
+}
+@keyframes orbit-path-pulse{
+  from{transform:rotate(0deg) translateX(var(--orbit-r-inner))}
+  to{transform:rotate(360deg) translateX(var(--orbit-r-inner))}
+}
+@keyframes ring-spin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes pulse-bloom{0%,100%{transform:scale(1);opacity:0.25}50%{transform:scale(1.8);opacity:0}}
+@media(max-width:880px){
+  .integrations-wrap{grid-template-columns:1fr;gap:56px}
+  .orbit{max-width:360px;--orbit-r:140px;--orbit-r-mid:92px;--orbit-r-inner:56px}
+  .orbit-chip{width:44px;height:44px;margin:-22px 0 0 -22px}
+  .orbit-chip-inner img{width:20px;height:20px}
+  .orbit-chip-mid{width:30px;height:30px;margin:-15px 0 0 -15px}
+  .orbit-chip-mid .orbit-chip-inner img{width:14px;height:14px}
+}
+
+/* ── STATS ── */
+.stats-band{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats-inner{max-width:1120px;margin:0 auto;padding:70px 52px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.stat-box{background:var(--bg);padding:44px 32px;text-align:center;transition:background 0.2s}
+.stat-box:hover{background:var(--bg2)}
+.stat-num{font-family:var(--font-d);font-size:60px;font-weight:600;color:var(--white);line-height:1;display:block}
+.stat-num sub{font-size:26px;color:var(--gold);vertical-align:baseline}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.14em;margin-top:10px;display:block;line-height:1.6}
+
+/* ── FOUNDER ── */
+.founder-section{border-top:1px solid var(--line);background:var(--bg);position:relative;overflow:hidden}
+.founder-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(201,168,76,0.06),transparent 70%);pointer-events:none}
+.founder-cols{display:grid;grid-template-columns:380px 1fr;gap:90px;align-items:center}
+.founder-mark{display:flex;flex-direction:column;align-items:center;gap:36px;padding:48px 36px;background:var(--bg2);border:1px solid var(--line);border-radius:4px;position:relative;overflow:hidden}
+.founder-mark::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.7}
+.founder-badge{position:relative;width:220px;height:220px;display:flex;align-items:center;justify-content:center}
+.founder-badge-ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--gold);opacity:0.55;pointer-events:none}
+.founder-badge-ring::before{content:'';position:absolute;inset:-14px;border-radius:50%;border:1px solid var(--gold);opacity:0.18}
+.founder-badge-ring::after{content:'';position:absolute;inset:-28px;border-radius:50%;border:1px solid var(--gold);opacity:0.08}
+.founder-badge-pulse{position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.22) 0%,transparent 65%);animation:founderPulse 4s ease-in-out infinite;z-index:0}
+.founder-photo{position:relative;z-index:1;width:200px;height:200px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.45);box-shadow:0 12px 40px rgba(0,0,0,0.5),0 0 0 6px rgba(201,168,76,0.06)}
+.founder-badge-initials{font-family:var(--font-d);font-size:84px;font-weight:600;color:var(--gold);letter-spacing:-0.04em;line-height:1;position:relative;z-index:1;width:200px;height:200px;border-radius:50%;background:var(--bg2);border:2px solid rgba(201,168,76,0.45);align-items:center;justify-content:center}
+@keyframes founderPulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+.founder-meta{width:100%;display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:28px}
+.founder-meta-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}
+.fm-k{font-family:var(--font-m);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.fm-v{font-family:var(--font-d);color:var(--white);font-weight:500}
+.founder-copy .sec-p{max-width:560px;margin-bottom:20px}
+.founder-copy .sec-p:last-of-type{margin-bottom:0}
+.founder-tags{margin-top:36px;display:flex;flex-wrap:wrap;gap:10px}
+.founder-tag{font-family:var(--font-m);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg2)}
+
+/* ── CTA / FORM ── */
+.cta-section{border-top:1px solid var(--line);background:var(--bg);position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:400px;background:radial-gradient(ellipse,rgba(201,168,76,0.05),transparent 70%);pointer-events:none}
+.cta-inner{max-width:1120px;margin:0 auto;padding:110px 52px;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start}
+.cta-left .sec-h2{max-width:480px}
+.cta-left .sec-p{margin-top:16px}
+.cta-trust{margin-top:48px;display:flex;flex-direction:column;gap:16px}
+.cta-trust-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.cta-trust-item::before{content:'✓';color:var(--green);font-weight:600;flex-shrink:0}
+/* premium form */
+.form-field{margin-bottom:14px;position:relative}
+.form-field input,.form-field select{
+  width:100%;padding:13px 16px;
+  background:var(--bg2);border:1px solid var(--dim);
+  color:var(--white);font-family:var(--font-b);font-size:13px;
+  outline:none;transition:border-color 0.2s,background 0.2s;
+  appearance:none;-webkit-appearance:none;
+}
+.form-field input:focus,.form-field select:focus{border-color:var(--gold);background:var(--bg3)}
+.form-field input::placeholder{color:var(--dim)}
+.form-label{font-family:var(--font-m);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:block}
+.form-consent{display:flex;align-items:flex-start;gap:10px;font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:20px;margin-top:4px}
+.form-consent input[type="checkbox"]{margin-top:2px;flex-shrink:0;accent-color:var(--gold)}
+.form-consent a{color:var(--gold);text-decoration:none}
+.form-submit{width:100%;padding:15px;background:var(--gold);color:var(--bg);border:none;font-family:var(--font-b);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.form-submit:hover{background:var(--gold2)}
+.form-note{font-family:var(--font-m);font-size:10px;color:var(--dim);text-align:center;margin-top:14px;letter-spacing:0.08em}
+.cta-book{padding:44px 36px;background:var(--bg2);border:1px solid var(--line);position:relative;overflow:hidden}
+.cta-book::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.6}
+.cta-book-label{font-family:var(--font-m);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.cta-book-h{font-family:var(--font-d);font-size:36px;font-weight:600;color:var(--white);margin:0 0 14px;line-height:1.1}
+.cta-book-p{font-size:14px;color:var(--muted);line-height:1.65;margin:0 0 26px}
+.cta-book .btn-gold{width:100%;justify-content:center;padding:16px}
+
+/* ── FOOTER ── */
+footer{padding:44px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-d);font-size:18px;font-weight:600;color:var(--muted)}
+.footer-logo span{color:var(--gold)}
+.footer-links{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.footer-links a{font-size:12px;color:var(--dim);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--muted)}
+.footer-legal{font-size:10px;color:var(--dim);max-width:500px;line-height:1.6;font-family:var(--font-m)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── PREMIUM POLISH ── */
+/* Metallic gold on italic accents */
+.hero h1 em, .sec-h2 em {
+  background: linear-gradient(135deg, #f5dfa0 0%, #e8c96a 35%, #c9a84c 55%, #8a6d28 85%, #e8c96a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 8s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+/* Tighter editorial hero headline */
+.hero h1 { letter-spacing: -0.022em; }
+
+/* Marquee edge fade + pause on hover */
+.marquee-wrap {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+/* Scanning line across command widget */
+.cmd-widget::before {
+  height: 1px;
+  animation: scanline 6s ease-in-out infinite;
+}
+@keyframes scanline {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.9; transform: translateY(1px); }
+}
+.cmd-widget { transition: box-shadow 0.4s ease, border-color 0.4s ease; }
+.cmd-widget:hover {
+  border-color: rgba(201,168,76,0.25);
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.08), 0 30px 80px -20px rgba(201,168,76,0.15), inset 0 0 60px rgba(201,168,76,0.03);
+}
+
+/* Spotlight cursor-follow on modules and os tiles */
+.module, .os-tile, .plan {
+  background-image: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(201,168,76,0.06), transparent 40%);
+}
+
+/* Button glow */
+.btn-gold {
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(201,168,76,0.4);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.3s;
+}
+.btn-gold:hover {
+  box-shadow: 0 10px 30px -8px rgba(201,168,76,0.5), 0 0 0 1px rgba(245,223,160,0.3);
+}
+.form-submit { transition: background 0.2s, box-shadow 0.3s; }
+.form-submit:hover { box-shadow: 0 10px 30px -8px rgba(201,168,76,0.5); }
+
+/* Hero background slow drift */
+.hero-bg { animation: drift 40s ease-in-out infinite alternate; }
+@keyframes drift {
+  from { transform: translate(0,0); }
+  to   { transform: translate(-16px,-12px); }
+}
+
+/* Subtle hairline accent on section labels (stronger than default) */
+.sec-label::before { width: 40px; background: linear-gradient(90deg, var(--gold), transparent); opacity: 1; }
+
+/* Smoother pillar/step hover */
+.pillar, .hiw-step { transition: background 0.25s ease, padding-left 0.25s ease; }
+.pillar:hover, .hiw-step:hover { background: linear-gradient(90deg, var(--goldfaint), transparent 60%); padding-left: 12px; }
+
+/* Nav subtle gold under-line on hover */
+.nav-links a { position: relative; }
+.nav-links a:not(.nav-cta)::after {
+  content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:var(--gold); transition:width 0.25s ease;
+}
+.nav-links a:not(.nav-cta):hover::after { width:100%; }
+
+/* Aurora behind hero */
+.hero::before {
+  content:''; position:absolute; top:10%; left:40%; width:700px; height:700px;
+  background: radial-gradient(circle, rgba(201,168,76,0.12), transparent 60%);
+  filter: blur(40px); pointer-events:none; z-index:0;
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from { transform: translate(-40px,-20px) scale(1); opacity:0.7; }
+  to   { transform: translate(60px,30px) scale(1.15); opacity:1; }
+}
+
+/* CC panel gold border-glow on hover */
+.cc-panel { transition: box-shadow 0.5s ease, border-color 0.5s ease; }
+.cc-panel:hover {
+  border-color: rgba(201,168,76,0.22);
+  box-shadow: 0 40px 100px -30px rgba(201,168,76,0.2), 0 0 0 1px rgba(201,168,76,0.05);
+}
+
+/* Form focus ring */
+.form-field input:focus, .form-field select:focus {
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+}
+
+/* Footer gold dot */
+footer { position:relative; }
+footer::before {
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:60px; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg, .cmd-widget::before, .hero h1 em, .sec-h2 em { animation: none !important; }
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .nav-status{display:none}
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:48px}
+  .platform-cols,.hiw-layout,.cta-inner,.cc-header,.founder-cols{grid-template-columns:1fr;gap:40px}
+  .founder-mark{max-width:340px;margin:0 auto}
+  .modules-grid{grid-template-columns:1fr}
+  .cc-body{grid-template-columns:1fr}
+  .cc-right{display:none}
+  .cc-sidebar{border-right:none;border-bottom:1px solid var(--line);padding:8px 4px;display:flex;overflow-x:auto;gap:4px;scrollbar-width:none}
+  .cc-sidebar::-webkit-scrollbar{display:none}
+  .cc-nav-item{white-space:nowrap;flex-shrink:0;padding:10px 14px;font-size:11px}
+  .cc-nav-item.active::before{width:100%;height:2px;top:auto;bottom:0;left:0}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .hero-trust{gap:24px;flex-wrap:wrap}
+  .section{padding:70px 24px}
+  footer{padding:32px 24px;flex-direction:column;align-items:flex-start}
+  .os-grid{grid-template-columns:1fr}
+  .cw-metrics{grid-template-columns:repeat(3,1fr)}
+  .cc-main-stats{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){
+  .hero h1{font-size:46px}
+  .stats-inner{grid-template-columns:1fr 1fr}
+  .cc-main-stats{grid-template-columns:1fr 1fr}
+  .cta-inner{padding:70px 24px}
+}
+
+/* ── HERO VIDEO BG ── */
+.hero-video-wrap{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hero-video{position:absolute;top:50%;left:50%;width:100%;height:100%;transform:translate(-50%,-50%);object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.hero-video.ready{opacity:0.55}
+.hero-video-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.75) 35%, rgba(10,10,10,0.45) 70%, rgba(10,10,10,0.6) 100%),
+    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 50%, rgba(10,10,10,0.55) 100%),
+    linear-gradient(180deg, rgba(10,10,10,0.6) 0%, transparent 18%, transparent 82%, rgba(10,10,10,0.95) 100%);
+}
+
+/* ── INTEGRATIONS VIDEO BG ── */
+.int-video-wrap{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.int-video{position:absolute;top:50%;left:50%;width:100%;height:100%;transform:translate(-50%,-50%);object-fit:cover;opacity:0;transition:opacity 1.4s ease}
+.int-video.ready{opacity:0.5}
+.int-video-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.65) 38%, rgba(10,10,10,0.35) 100%),
+    radial-gradient(ellipse 80% 70% at 70% 50%, transparent 30%, rgba(10,10,10,0.55) 100%),
+    linear-gradient(180deg, rgba(10,10,10,0.85) 0%, transparent 18%, transparent 80%, rgba(10,10,10,0.92) 100%);
+}
+.integrations-wrap{position:relative;z-index:1}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+</head>
+<body>
+
+<div class="hero-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Nex<span>Flow</span> AI</a>
+  <div class="nav-status"><span class="status-dot"></span>All Systems Live</div>
+  <ul class="nav-links">
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#founder">Founder</a></li>
+    <li><a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="nav-cta">Apply for Free Audit</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1">
+<section class="hero">
+  <div class="hero-video-wrap">
+    <video id="hero-video" class="hero-video" muted autoplay loop playsinline preload="auto" poster=""></video>
+    <div class="hero-video-overlay"></div>
+  </div>
+  <div class="hero-left">
+    <p class="hero-eyebrow">Business OS for Local Service Companies</p>
+    <h1>Your business,<br><em>running itself.</em></h1>
+    <p class="hero-sub">NexFlow AI is the complete operating system for your service business — automating every customer touchpoint from first contact to five-star review, 24/7.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-gold">Get Your Setup</a>
+      <a href="#platform" class="btn-ghost">See the Platform</a>
+    </div>
+    <div class="hero-trust">
+      <div class="ht-item">
+        <span class="ht-num"><span data-count="50">0</span><span>%</span></span>
+        <span class="ht-label">Fewer No-Shows</span>
+      </div>
+      <div class="ht-item">
+        <span class="ht-num"><span data-count="100">0</span><span>%</span></span>
+        <span class="ht-label">Done-for-You</span>
+      </div>
+      <div class="ht-item">
+        <span class="ht-num"><span data-count="6">0</span></span>
+        <span class="ht-label">Active Modules</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND WIDGET -->
+  <div class="hero-right">
+    <div class="cmd-widget">
+      <div class="cw-header">
+        <div class="cw-title">Live Activity · Today</div>
+        <div class="cw-badge">● Live</div>
+      </div>
+      <div class="cw-metrics">
+        <div class="cwm">
+          <div class="cwm-n" data-count="12">0</div>
+          <div class="cwm-l">Leads Today</div>
+        </div>
+        <div class="cwm">
+          <div class="cwm-n" data-count="3">0</div>
+          <div class="cwm-l">No-Shows Saved</div>
+        </div>
+        <div class="cwm">
+          <div class="cwm-n" data-count="8">0</div>
+          <div class="cwm-l">Reviews Sent</div>
+        </div>
+      </div>
+      <div class="cw-modules">
+        <div class="cw-modules-label">Active Modules</div>
+        <div class="cw-mod">
+          <div class="cw-mod-left"><span class="mod-dot live"></span><span class="mod-name">Lead Capture</span></div>
+          <span class="mod-status live">Active</span>
+        </div>
+        <div class="cw-mod">
+          <div class="cw-mod-left"><span class="mod-dot live"></span><span class="mod-name">Appointment Reminders</span></div>
+          <span class="mod-status live">Active</span>
+        </div>
+        <div class="cw-mod">
+          <div class="cw-mod-left"><span class="mod-dot live"></span><span class="mod-name">AI Receptionist</span></div>
+          <span class="mod-status live">Active</span>
+        </div>
+        <div class="cw-mod">
+          <div class="cw-mod-left"><span class="mod-dot sched"></span><span class="mod-name">SMS Marketing</span></div>
+          <span class="mod-status sched">Scheduled</span>
+        </div>
+        <div class="cw-mod">
+          <div class="cw-mod-left"><span class="mod-dot live"></span><span class="mod-name">Review Follow-Ups</span></div>
+          <span class="mod-status live">Active</span>
+        </div>
+      </div>
+      <div class="cw-last">
+        <div class="cw-last-label">Last Action</div>
+        <div class="cw-last-msg">"Hi Maria, just a reminder about your appointment tomorrow at 2pm…"</div>
+        <div class="cw-last-time">Sent automatically · just now</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Lead Capture</span><span class="dot">◆</span>
+    <span>Appointment Reminders</span><span class="dot">◆</span>
+    <span>AI Receptionist</span><span class="dot">◆</span>
+    <span>SMS Marketing</span><span class="dot">◆</span>
+    <span>Review Automation</span><span class="dot">◆</span>
+    <span>Website Build</span><span class="dot">◆</span>
+    <span>24/7 Automation</span><span class="dot">◆</span>
+    <span>Lead Capture</span><span class="dot">◆</span>
+    <span>Appointment Reminders</span><span class="dot">◆</span>
+    <span>AI Receptionist</span><span class="dot">◆</span>
+    <span>SMS Marketing</span><span class="dot">◆</span>
+    <span>Review Automation</span><span class="dot">◆</span>
+    <span>Website Build</span><span class="dot">◆</span>
+    <span>24/7 Automation</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<!-- COMMAND CENTER (LIVE EMBEDDED DASHBOARD) -->
+<style>
+  .cc-embed-wrap {
+    position: relative;
+    width: 100%;
+    background: var(--bg);
+    overflow: hidden;
+    aspect-ratio: 16 / 11;
+  }
+  @media (max-width: 900px) {
+    .cc-embed-wrap { aspect-ratio: 4 / 5; }
+  }
+  .cc-embed-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--bg);
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+  .cc-embed-wrap iframe.loaded { opacity: 1; }
+  .cc-embed-skeleton {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.06), transparent 70%),
+      var(--bg);
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+  .cc-embed-wrap iframe.loaded + .cc-embed-skeleton { opacity: 0; }
+  .cc-skel-mark {
+    width: 56px; height: 56px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold3), var(--gold));
+    display: grid; place-items: center;
+    color: var(--bg); font-family: var(--font-d); font-weight: 600; font-size: 26px;
+    box-shadow: 0 0 40px rgba(201,168,76,0.5);
+    animation: cc-skel-pulse 2s ease-in-out infinite;
+  }
+  @keyframes cc-skel-pulse {
+    0%,100% { transform: scale(1); box-shadow: 0 0 40px rgba(201,168,76,0.4); }
+    50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(201,168,76,0.7); }
+  }
+</style>
+<section class="command-center-section" id="platform">
+  <div class="section">
+    <div class="cc-header reveal">
+      <div>
+        <span class="sec-label">Command Center</span>
+        <h2 class="sec-h2">One dashboard.<br><em>Every automation.</em></h2>
+      </div>
+      <p class="sec-p">The same operating console your clients log into — every active module, message sent, and appointment confirmed, in real time. Click around. It's live.</p>
+    </div>
+    <div class="cc-stage reveal">
+      <div class="cc-panel">
+        <div class="cc-topbar">
+          <div class="cc-dots"><div class="cc-dot"></div><div class="cc-dot"></div><div class="cc-dot"></div></div>
+          <div class="cc-urlbar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="domain">nexflow.ai</span><span class="path">/dashboard</span>
+          </div>
+          <div class="cc-topbar-badge"><span class="pulse"></span>Live</div>
+        </div>
+        <div class="cc-embed-wrap">
+          <iframe
+            id="cc-dashboard-frame"
+            src="dashboard-embed/index.html"
+            title="NexFlow Command Center live demo"
+            referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin"
+            onload="this.classList.add('loaded')"
+          ></iframe>
+          <div class="cc-embed-skeleton" aria-hidden="true">
+            <div class="cc-skel-mark">N</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section id="integrations" style="border-top:1px solid var(--line);position:relative;overflow:hidden">
+  <div class="int-video-wrap">
+    <video id="int-video" class="int-video" muted autoplay loop playsinline preload="auto"></video>
+    <div class="int-video-overlay"></div>
+  </div>
+  <div class="section integrations-wrap">
+    <div class="integrations-copy">
+      <span class="sec-label reveal">Integrations</span>
+      <h2 class="sec-h2 reveal reveal-delay-1">No rip<br><em>and replace.</em></h2>
+      <p class="sec-p reveal reveal-delay-2">Keep the CRM, email platform, calendar, and booking tools you already use. NexFlow plugs in alongside them — no migration, no retraining, no starting over.</p>
+      <ul class="int-bullets reveal reveal-delay-2">
+        <li>Your CRM, email, and calendar stay exactly where they are</li>
+        <li>We sync into your existing customer data and workflows</li>
+        <li>55+ integrations supported out of the box</li>
+      </ul>
+    </div>
+    <div class="orbit reveal reveal-delay-1">
+      <div class="orbit-ring orbit-ring-outer"></div>
+      <div class="orbit-ring orbit-ring-mid"></div>
+      <div class="orbit-ring orbit-ring-inner"></div>
+      <div class="orbit-core">
+        <div class="orbit-core-mark">Nex<span>Flow</span></div>
+      </div>
+      <div class="orbit-spin">
+        <div class="orbit-pulse" style="--i:0"></div>
+        <div class="orbit-pulse" style="--i:1"></div>
+        <div class="orbit-pulse" style="--i:2"></div>
+        <div class="orbit-pulse" style="--i:3"></div>
+        <div class="orbit-chip-mid" style="--i:0"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/paypal/003087" alt="PayPal" loading="lazy"></div></div>
+        <div class="orbit-chip-mid" style="--i:1"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/venmo/3D95CE" alt="Venmo" loading="lazy"></div></div>
+        <div class="orbit-chip-mid" style="--i:2"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/zoom/0B5CFF" alt="Zoom" loading="lazy"></div></div>
+        <div class="orbit-chip-mid" style="--i:3"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/dropbox/0061FF" alt="Dropbox" loading="lazy"></div></div>
+        <div class="orbit-chip-mid" style="--i:4"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/hubspot/FF7A59" alt="HubSpot" loading="lazy"></div></div>
+        <div class="orbit-chip-mid" style="--i:5"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/notion/ffffff" alt="Notion" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:0"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/google/ffffff" alt="Google" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:1"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/googlecalendar/4285F4" alt="Google Calendar" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:2"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/gmail/EA4335" alt="Gmail" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:3"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/facebook/1877F2" alt="Facebook" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:4"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:5"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:6"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/stripe/635BFF" alt="Stripe" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:7"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/square/ffffff" alt="Square" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:8"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/quickbooks/2CA01C" alt="QuickBooks" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:9"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/yelp/D32323" alt="Yelp" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:10"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/mailchimp/FFE01B" alt="Mailchimp" loading="lazy"></div></div>
+        <div class="orbit-chip" style="--i:11"><div class="orbit-chip-inner"><img src="https://cdn.simpleicons.org/calendly/006BFF" alt="Calendly" loading="lazy"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules-bg" id="modules">
+  <div class="section">
+    <div class="modules-header">
+      <div>
+        <span class="sec-label reveal">Modules</span>
+        <h2 class="sec-h2 reveal reveal-delay-1">Six systems.<br><em>One setup.</em></h2>
+      </div>
+      <p class="sec-p reveal reveal-delay-2" style="max-width:340px">Each module runs independently and connects to the others. Toggle on what you need, upgrade any time.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module reveal">
+        <div class="module-top"><span class="mod-num">01</span><span class="mod-pill active">Active</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg>
+        </span>
+        <h3>Lead Capture</h3>
+        <p>A dedicated landing page and intake form for your business. Every new inquiry is captured, logged, and immediately followed up via automated SMS — so no lead goes cold.</p>
+        <div class="module-result">Turn interest into booked appointments</div>
+      </div>
+      <div class="module reveal reveal-delay-1">
+        <div class="module-top"><span class="mod-num">02</span><span class="mod-pill active">Active</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8.5"/><path d="M12 8v5l3 2"/><path d="M9 1.5h6"/><path d="M5.5 4.5l1.5-1.5M18.5 4.5l-1.5-1.5"/></svg>
+        </span>
+        <h3>Appointment Reminders</h3>
+        <p>Automated texts 24hrs and 1hr before each appointment. Clients confirm or reschedule with a single reply. No more surprise no-shows eating your revenue.</p>
+        <div class="module-result">30–50% reduction in no-shows</div>
+      </div>
+      <div class="module reveal reveal-delay-2">
+        <div class="module-top"><span class="mod-num">03</span><span class="mod-pill active">Active</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="13" width="4.5" height="6.5" rx="1.5"/><rect x="17" y="13" width="4.5" height="6.5" rx="1.5"/><path d="M19.25 19.5v1a3 3 0 0 1-3 3h-2.5"/><circle cx="12" cy="22" r="1.2"/></svg>
+        </span>
+        <h3>AI Receptionist</h3>
+        <p>An AI that answers every missed call instantly — responds to inquiries, qualifies leads, and books appointments automatically. Never lose a customer to voicemail again.</p>
+        <div class="module-result">24/7 coverage without hiring staff</div>
+      </div>
+      <div class="module reveal">
+        <div class="module-top"><span class="mod-num">04</span><span class="mod-pill sched">Scheduled</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5L20 4v16L3.5 13.5z"/><path d="M3.5 10.5v3"/><path d="M9.5 14v2.5a3 3 0 0 0 6 0v-1"/></svg>
+        </span>
+        <h3>SMS Marketing</h3>
+        <p>Weekly promos sent to your full customer list — AI writes the message, you approve it, the system sends it. 98% open rate fills slow weeks automatically.</p>
+        <div class="module-result">98% open rate vs 20% email</div>
+      </div>
+      <div class="module reveal reveal-delay-1">
+        <div class="module-top"><span class="mod-num">05</span><span class="mod-pill active">Active</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2.5 14.85 8.7 21.5 9.55 16.55 14.2 17.85 21 12 17.7 6.15 21 7.45 14.2 2.5 9.55 9.15 8.7"/></svg>
+        </span>
+        <h3>Review Follow-Ups</h3>
+        <p>After every completed visit, clients receive a personalized text asking for a Google review. Your rating builds while you work — without asking anyone yourself.</p>
+        <div class="module-result">More 5-star reviews, compounding</div>
+      </div>
+      <div class="module reveal reveal-delay-2">
+        <div class="module-top"><span class="mod-num">06</span><span class="mod-pill active">Active</span></div>
+        <span class="module-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M2.5 8.5h19"/><circle cx="6" cy="6.25" r="0.6" fill="currentColor"/><circle cx="8.5" cy="6.25" r="0.6" fill="currentColor"/><circle cx="11" cy="6.25" r="0.6" fill="currentColor"/></svg>
+        </span>
+        <h3>Website Build</h3>
+        <p>No site, or yours needs a full rebuild? A clean, fast, mobile-first website is included in setup — designed to convert visitors into booked appointments.</p>
+        <div class="module-result">Show up when customers search</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM INTRO -->
+<section class="platform-intro">
+  <div class="section">
+    <div class="platform-cols">
+      <div>
+        <span class="sec-label reveal">The Platform</span>
+        <h2 class="sec-h2 reveal reveal-delay-1">Not just automations.<br><em>An operating system.</em></h2>
+        <p class="sec-p reveal reveal-delay-2">Most tools automate one thing. NexFlow connects every part of your customer journey into a single intelligent system — so you capture more, lose fewer, and keep coming back.</p>
+        <div class="platform-pillars">
+          <div class="pillar reveal">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10"/></svg>
+            </div>
+            <div class="pillar-body">
+              <h4>Instant response</h4>
+              <p>Every lead, missed call, and appointment triggers an immediate automated action. No delays. No manual work.</p>
+            </div>
+          </div>
+          <div class="pillar reveal reveal-delay-1">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.2 6.5L3 16"/><path d="M3 12a9 9 0 0 1 15.2-6.5L21 8"/><path d="M21 4v4h-4M3 20v-4h4"/></svg>
+            </div>
+            <div class="pillar-body">
+              <h4>Closes the loop</h4>
+              <p>From first contact to follow-up review request — every step is tracked and handled automatically.</p>
+            </div>
+          </div>
+          <div class="pillar reveal reveal-delay-2">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20.5h18"/><path d="M6 20.5V12.5M11 20.5V6M16 20.5V14.5M21 20.5V8.5"/></svg>
+            </div>
+            <div class="pillar-body">
+              <h4>Real visibility</h4>
+              <p>A live dashboard showing every active automation, message sent, and appointment confirmed — in real time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="platform-visual reveal reveal-delay-1">
+        <div class="os-grid">
+          <div class="os-tile">
+            <div class="ost-badge">Live</div>
+            <div class="ost-num" data-count="247">0</div>
+            <div class="ost-label">Leads Captured</div>
+            <div class="ost-sub">This Month</div>
+          </div>
+          <div class="os-tile">
+            <div class="ost-badge">Live</div>
+            <div class="ost-num" data-count="98">0</div>
+            <div class="ost-label">SMS Open Rate</div>
+            <div class="ost-sub">vs 20% email</div>
+          </div>
+          <div class="os-tile">
+            <div class="ost-badge">Active</div>
+            <div class="ost-num" data-count="40">0</div>
+            <div class="ost-label">% Fewer No-Shows</div>
+            <div class="ost-sub">Average result</div>
+          </div>
+          <div class="os-tile">
+            <div class="ost-badge">Running</div>
+            <div class="ost-num">24<span style="font-size:22px;color:var(--gold)">/7</span></div>
+            <div class="ost-label">Always On</div>
+            <div class="ost-sub">Zero manual input</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="border-top:1px solid var(--line)">
+  <div class="section">
+    <div class="hiw-layout">
+      <div>
+        <span class="sec-label reveal">How It Works</span>
+        <h2 class="sec-h2 reveal reveal-delay-1">Built for you.<br><em>Running forever.</em></h2>
+        <div class="hiw-steps">
+          <div class="hiw-step reveal">
+            <span class="step-n">01</span>
+            <div class="step-body">
+              <h4>Onboarding call</h4>
+              <p>We connect your phone number, booking system, and customer list. No code. No complicated setup. You answer a few questions — we handle the rest.</p>
+            </div>
+          </div>
+          <div class="hiw-step reveal reveal-delay-1">
+            <span class="step-n">02</span>
+            <div class="step-body">
+              <h4>All modules go live</h4>
+              <p>Every automation launches customized with your business name, voice, and offer. Reminders, follow-ups, review requests: all running.</p>
+            </div>
+          </div>
+          <div class="hiw-step reveal reveal-delay-2">
+            <span class="step-n">03</span>
+            <div class="step-body">
+              <h4>You just run your business</h4>
+              <p>The system works 24/7. No apps to babysit. You'll notice fewer no-shows within the first week and more reviews within the first month.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hiw-visual reveal reveal-delay-1">
+        <div class="phone-mock">
+          <div class="pm-notch"></div>
+          <div class="pm-msg">Hi Sarah! Reminder for your appointment at <strong>Luxe Nail Studio</strong> tomorrow at 2:00 PM. Reply YES to confirm or RESCHEDULE to change.</div>
+          <div class="pm-time">Delivered · 10:01 AM</div>
+          <div class="pm-msg sent">YES, confirmed! See you then 💅</div>
+          <div class="pm-time" style="text-align:right">Read · 10:04 AM</div>
+          <div class="pm-label">Sent automatically by NexFlow AI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-box reveal">
+      <span class="stat-num"><span data-count="40">0</span><sub>%</sub></span>
+      <span class="stat-label">Average reduction<br>in no-shows</span>
+    </div>
+    <div class="stat-box reveal reveal-delay-1">
+      <span class="stat-num"><span data-count="98">0</span><sub>%</sub></span>
+      <span class="stat-label">SMS open rate<br>vs 20% email</span>
+    </div>
+    <div class="stat-box reveal reveal-delay-2">
+      <span class="stat-num"><span data-count="100">0</span><sub>%</sub></span>
+      <span class="stat-label">Custom-built<br>per business</span>
+    </div>
+    <div class="stat-box reveal reveal-delay-3">
+      <span class="stat-num">24<sub>/7</sub></span>
+      <span class="stat-label">System runs<br>without you</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOUNDER -->
+<section class="founder-section" id="founder">
+  <div class="section">
+    <div class="founder-cols">
+      <div class="founder-mark reveal">
+        <div class="founder-badge">
+          <div class="founder-badge-pulse"></div>
+          <img src="founder.jpg" alt="Antonyo Fridal" class="founder-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="founder-badge-initials" style="display:none">AF</div>
+          <div class="founder-badge-ring"></div>
+        </div>
+        <div class="founder-meta">
+          <div class="founder-meta-row"><span class="fm-k">Founder</span><span class="fm-v">Antonyo Fridal</span></div>
+          <div class="founder-meta-row"><span class="fm-k">Background</span><span class="fm-v">Cybersecurity · 5 yrs</span></div>
+          <div class="founder-meta-row"><span class="fm-k">Building</span><span class="fm-v">NexFlow AI</span></div>
+        </div>
+      </div>
+      <div class="founder-copy">
+        <span class="sec-label reveal">The Founder</span>
+        <h2 class="sec-h2 reveal reveal-delay-1">Built by an operator.<br><em>Not a marketer.</em></h2>
+        <p class="sec-p reveal reveal-delay-2">I'm Antonyo Fridal — five years in tech and cybersecurity, working inside the systems that businesses run on. I've watched the same pattern over and over: leads slip through, calls go unanswered, follow-ups never get sent, and good companies lose revenue to manual work that should never have been manual in the first place.</p>
+        <p class="sec-p reveal reveal-delay-2">NexFlow is the system I wish those companies had. Built from the security mindset — every workflow tracked, every signal captured, nothing falling through. If a process can be automated correctly, it should be. That's the entire bet.</p>
+        <div class="founder-tags reveal reveal-delay-2">
+          <span class="founder-tag">5 yrs · Tech</span>
+          <span class="founder-tag">Cybersecurity</span>
+          <span class="founder-tag">Systems Thinker</span>
+          <span class="founder-tag">Operator-First</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / FORM -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="cta-left reveal">
+      <span class="sec-label">Get Started</span>
+      <h2 class="sec-h2">Get your<br><em>custom setup.</em></h2>
+      <p class="sec-p">Tell us about your business and we'll build out your platform — every module running from day one.</p>
+      <div class="cta-trust">
+        <div class="cta-trust-item">Built and managed entirely by our team.</div>
+        <div class="cta-trust-item">You own your customer data — always.</div>
+        <div class="cta-trust-item">Works with your existing booking system.</div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="cta-book">
+        <div class="cta-book-label">Apply for Free Audit</div>
+        <h3 class="cta-book-h">Apply for your free audit.</h3>
+        <p class="cta-book-p">Tell us about your business in 60 seconds. We'll send back a custom audit showing exactly where you're losing leads, calls, and follow-ups — and what NexFlow would automate first.</p>
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="btn-gold">Apply for Free Audit →</a>
+        <p class="form-note">or call/text (702) 860-6977 · nexflowaisolutions@gmail.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Nex<span>Flow</span> AI Solutions</div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="mailto:nexflowaisolutions@gmail.com">nexflowaisolutions@gmail.com</a>
+    <a href="tel:7028606977">(702) 860-6977</a>
+  </div>
+  <p class="footer-legal">By providing your phone number you consent to receive automated SMS messages from NexFlow AI. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe. Florida, USA.</p>
+</footer>
+
+<!-- CHAT WIDGET -->
+<style>
+#chat-btn{position:fixed;bottom:28px;right:28px;z-index:1000;width:54px;height:54px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--bg);box-shadow:0 4px 24px rgba(201,168,76,0.35);transition:transform 0.2s,background 0.2s,box-shadow 0.3s}
+#chat-btn svg{width:22px;height:22px;display:block}
+#chat-btn:hover{background:var(--gold2);transform:scale(1.08);box-shadow:0 8px 32px rgba(201,168,76,0.55)}
+#chat-btn .badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--green);border-radius:50%;border:2px solid var(--bg);animation:pulse-green 2s ease-in-out infinite}
+#chat-panel{position:fixed;bottom:92px;right:28px;z-index:999;width:360px;max-height:520px;background:var(--bg2);border:1px solid var(--line);display:none;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,0.5)}
+#chat-panel.open{display:flex}
+#chat-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.5}
+.cp-header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;background:var(--bg3)}
+.cp-title{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--white)}
+.cp-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-green 2s ease-in-out infinite}
+.cp-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:0;transition:color 0.2s}
+.cp-close:hover{color:var(--white)}
+.cp-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--dim) transparent}
+.msg{max-width:86%;font-size:13px;line-height:1.55;padding:10px 14px;white-space:pre-wrap}
+.msg.bot{background:var(--bg3);border:1px solid var(--line);border-radius:12px 12px 12px 3px;color:var(--text);align-self:flex-start}
+.msg.user{background:var(--goldfaint);border:1px solid rgba(201,168,76,0.18);border-radius:12px 12px 3px 12px;color:var(--gold2);align-self:flex-end}
+.msg.typing{color:var(--muted);font-style:italic}
+.cp-options{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px}
+.cp-opt{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:var(--font-b);font-size:11px;padding:6px 12px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-align:left}
+.cp-opt:hover{border-color:var(--gold);color:var(--white)}
+.cp-input-row{display:flex;border-top:1px solid var(--line);padding:10px 12px;gap:8px}
+#chat-input{flex:1;background:var(--bg3);border:1px solid var(--dim);color:var(--white);font-family:var(--font-b);font-size:13px;padding:8px 12px;outline:none;transition:border-color 0.2s}
+#chat-input:focus{border-color:var(--gold)}
+#chat-input::placeholder{color:var(--dim)}
+#chat-send{background:var(--gold);border:none;color:var(--bg);font-size:14px;width:36px;height:36px;cursor:pointer;transition:background 0.2s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+#chat-send:hover{background:var(--gold2)}
+@media(max-width:480px){#chat-panel{width:calc(100vw - 32px);right:16px;bottom:80px}#chat-btn{right:16px;bottom:16px}}
+</style>
+
+<button id="chat-btn" onclick="toggleChat()" title="Chat with NexFlow AI" aria-label="Open chat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  <span class="badge"></span>
+</button>
+<div id="chat-panel">
+  <div class="cp-header">
+    <div class="cp-title">NexFlow Assistant</div>
+    <button class="cp-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="cp-messages" id="chat-messages"></div>
+  <div class="cp-options" id="chat-options"></div>
+  <div class="cp-input-row">
+    <input id="chat-input" type="text" placeholder="Ask anything about NexFlow..." onkeydown="if(event.key==='Enter')sendChat()" />
+    <button id="chat-send" onclick="sendChat()">→</button>
+  </div>
+</div>
+
+<script>
+const BOOK_LINK = 'https://form.typeform.com/to/Klck50zm';
+const RESPONSES = {
+  greeting:{text:"Hey! 👋 I'm the NexFlow AI assistant. What would you like to know?",options:['What does NexFlow do?','How does it work?','Who is it for?','Apply for free audit']},
+  what:{text:"NexFlow AI is a full business automation platform for local service businesses. We handle your AI receptionist, appointment booking, lead capture, SMS marketing, reputation management, and more — all running 24/7 without you lifting a finger.",options:['How does it work?','Who is it for?','Apply for free audit']},
+  howworks:{text:"Once you sign up, we do the full setup together. We connect your phone number, configure your AI receptionist, build your automations, and test everything before going live. You don't need to be tech-savvy — we handle everything.",options:['How long does setup take?','Who is it for?','Apply for free audit']},
+  setup:{text:"Every build is custom, so the timeline depends on your business, industry, and which modules you need. We map it all out after the audit. Either way, we handle the heavy lifting — you just provide your business details and we build it out.",options:['Who is it for?','Apply for free audit']},
+  whofor:{text:"NexFlow works for any local service business — barbershops, salons, spas, gyms, auto shops, HVAC, restaurants, real estate agents, law offices, and more. If you're losing leads because you can't always answer the phone, NexFlow solves that.",options:['What does NexFlow do?','Apply for free audit']},
+  pricing:{text:"We don't post one-size-fits-all prices because every business is different. Pricing depends on your industry, size, and which modules you need. The fastest way to get an exact number is to apply for a free audit — no commitment.",options:['Apply for free audit']},
+  demo:{text:"The audit is free and takes about 60 seconds to apply. We'll review your business and send back a custom audit showing exactly where you're losing leads, calls, and follow-ups — and what NexFlow would automate first. Click below 👇",options:['Open Audit Form →'],action:BOOK_LINK},
+  contact:{text:"You can reach us at nexflowaisolutions@gmail.com or call/text (702) 860-6977. We typically respond within a few hours.",options:['Apply for free audit']},
+  fallback:{text:"Great question! For specifics I'd recommend applying for a free audit — we'll review your business and walk through everything.",options:['Apply for free audit','What does NexFlow do?']},
+};
+function detectIntent(t){
+  t=t.toLowerCase();
+  if(/what.*do|what is|who are|about|explain|service/.test(t))return'what';
+  if(/how.*work|process/.test(t))return'howworks';
+  if(/setup|long|start|onboard/.test(t))return'setup';
+  if(/who|industry|type|fit/.test(t))return'whofor';
+  if(/price|cost|how much|fee|pay|pricing/.test(t))return'pricing';
+  if(/audit|demo|calendly|typeform|book|schedule|call|meeting|apply|form/.test(t))return'demo';
+  if(/contact|email|reach|phone/.test(t))return'contact';
+  return'fallback';
+}
+let chatOpen=false;
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open',chatOpen);
+  if(chatOpen&&document.getElementById('chat-messages').children.length===0)showResponse('greeting');
+}
+function addMsg(text,type){
+  const el=document.createElement('div');
+  el.className='msg '+type;el.textContent=text;
+  document.getElementById('chat-messages').appendChild(el);
+  document.getElementById('chat-messages').scrollTop=99999;
+  return el;
+}
+function showResponse(key){
+  const r=RESPONSES[key]||RESPONSES.fallback;
+  const opts=document.getElementById('chat-options');
+  opts.innerHTML='';
+  setTimeout(()=>{
+    addMsg(r.text,'bot');
+    r.options.forEach(o=>{
+      const b=document.createElement('button');
+      b.className='cp-opt';b.textContent=o;
+      b.onclick=()=>handleOption(o,r.action);
+      opts.appendChild(b);
+    });
+    document.getElementById('chat-messages').scrollTop=99999;
+  },700);
+}
+function handleOption(opt,action){
+  document.getElementById('chat-options').innerHTML='';
+  addMsg(opt,'user');
+  if(opt.includes('Calendly')||opt.includes('calendly')||opt.includes('Audit Form')||opt.includes('audit form')){window.open(BOOK_LINK,'_blank');return;}
+  showResponse(detectIntent(opt));
+}
+function sendChat(){
+  const inp=document.getElementById('chat-input');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';
+  document.getElementById('chat-options').innerHTML='';
+  addMsg(msg,'user');
+  showResponse(detectIntent(msg));
+}
+</script>
+
+<script>
+// Background video loader (handles both .mp4 and .m3u8)
+function attachBgVideo(id, src){
+  const v = document.getElementById(id);
+  if (!v) return;
+  const isHls = /\.m3u8(\?|$)/.test(src);
+  const reveal = () => v.classList.add('ready');
+  v.addEventListener('playing', reveal, { once: true });
+  v.addEventListener('canplay', reveal, { once: true });
+  if (!isHls) {
+    v.src = src;
+    v.play().catch(()=>{});
+  } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
+    v.src = src;
+    v.play().catch(()=>{});
+  } else if (window.Hls && Hls.isSupported()) {
+    const hls = new Hls({ lowLatencyMode: false, enableWorker: true });
+    hls.loadSource(src);
+    hls.attachMedia(v);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => v.play().catch(()=>{}));
+  }
+}
+attachBgVideo('hero-video', 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4');
+attachBgVideo('int-video',  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260417_061226_74f0749c-a22d-42b3-895e-5d6203bc741c.mp4');
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Count up
+function countUp(el, target, duration = 1400) {
+  const start = performance.now();
+  const isLarge = target >= 100;
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const t = parseInt(e.target.dataset.count);
+      if (!isNaN(t)) countUp(e.target, t);
+      countObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+// Spotlight cursor-follow on cards
+document.querySelectorAll('.module, .os-tile, .plan').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+// Magnetic gold buttons
+document.querySelectorAll('.btn-gold').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width/2;
+    const y = e.clientY - r.top - r.height/2;
+    btn.style.transform = `translate(${x*0.12}px, ${y*0.18}px)`;
+  });
+  btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+});
+
+</script>
+</body>
+</html>

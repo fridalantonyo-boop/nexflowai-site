@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NexFlow AI — Web3 Template Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["'General Sans'", "ui-sans-serif", "system-ui"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { background:#000; color:#fff; }
+    body { font-family:'General Sans', ui-sans-serif, system-ui; -webkit-font-smoothing:antialiased; }
+
+    /* gradient heading per spec */
+    .grad-head{
+      background: linear-gradient(144.5deg, #ffffff 28%, rgba(0,0,0,0) 115%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* pill button — black */
+    .pill-dark{
+      position:relative; display:inline-flex; align-items:center; justify-content:center;
+      border:0.6px solid #fff; border-radius:9999px;
+      background:#000; padding: 11px 29px;
+      color:#fff; font-size:14px; font-weight:500;
+      overflow:hidden; isolation:isolate;
+    }
+    .pill-dark::before{
+      content:''; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+      width:60%; height:14px; border-radius:9999px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0));
+      filter: blur(8px); pointer-events:none; z-index:-1;
+    }
+    /* pill button — white */
+    .pill-light{
+      position:relative; display:inline-flex; align-items:center; justify-content:center;
+      border:0.6px solid #fff; border-radius:9999px;
+      background:#fff; padding: 11px 29px;
+      color:#000; font-size:14px; font-weight:500;
+      overflow:hidden; isolation:isolate;
+    }
+    .pill-light::before{
+      content:''; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+      width:60%; height:14px; border-radius:9999px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(255,255,255,0));
+      filter: blur(6px); pointer-events:none; z-index:-1;
+    }
+
+    /* slide wrapper */
+    .slide{ position:relative; min-height:100vh; overflow:hidden; background:#000; }
+    .slide > video.bg{
+      position:absolute; left:50%; top:50%; min-width:100%; min-height:100%;
+      width:auto; height:auto; transform:translate(-50%,-50%);
+      object-fit:cover; z-index:0;
+    }
+    /* (per-slide videos differ now — keep them centered, no transforms) */
+    .slide > .scrim{
+      position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,0,0,0.65), transparent 70%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,0,0,0.45), transparent 65%),
+        rgba(0,0,0,0.55);
+    }
+    .slide.s1 > .scrim{
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(0,0,0,0.7), transparent 75%),
+        rgba(0,0,0,0.30);
+    }
+    .slide.s2 > .scrim, .slide.s4 > .scrim, .slide.s7 > .scrim{
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,0,0,0.45), rgba(0,0,0,0.85)),
+        rgba(0,0,0,0.55);
+    }
+    .slide.s3 > .scrim, .slide.s6 > .scrim{
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0.92)),
+        rgba(0,0,0,0.65);
+    }
+    .slide.s5 > .scrim{
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0.92)),
+        rgba(0,0,0,0.55);
+    }
+    /* cyan vortex echo — subtle cyan accent ring behind major headings */
+    .cosmic-accent{ position:absolute; inset:0; pointer-events:none; z-index:2; }
+    .cosmic-accent::before{
+      content:''; position:absolute; top:-10%; left:50%; transform:translateX(-50%);
+      width:520px; height:520px; border-radius:50%;
+      background: radial-gradient(circle, rgba(125,211,231,0.18) 0%, rgba(125,211,231,0.08) 30%, transparent 65%);
+      filter: blur(40px); opacity:0.7;
+    }
+    /* cyan dot accent */
+    .dot{ width:5px; height:5px; border-radius:50%; background:#7dd3e7; display:inline-block; box-shadow: 0 0 8px rgba(125,211,231,0.7); }
+
+    /* nav chevron */
+    .chev{ width:14px; height:14px; }
+
+    /* fade-in on scroll */
+    .blur-in{
+      filter: blur(10px); opacity: 0; transform: translateY(20px);
+      transition: filter .8s ease, opacity .8s ease, transform .8s ease;
+    }
+    .blur-in.in{ filter: blur(0); opacity:1; transform: translateY(0); }
+
+    /* (cyan dot defined above) */
+  </style>
+</head>
+<body class="bg-black text-white">
+
+<!-- ════════════════ SLIDE 1 — HERO ════════════════ -->
+<section class="slide s1 flex flex-col">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
+  <div class="scrim"></div>
+
+  <!-- NAV -->
+  <nav class="relative z-10 flex items-center justify-between" style="padding: 20px 120px;">
+    <div class="flex items-center" style="gap:30px">
+      <a href="#" class="block">
+        <div style="width:187px;height:25px;display:flex;align-items:center;gap:10px">
+          <span class="text-white font-medium tracking-wider" style="font-size:18px;letter-spacing:0.04em">NEXFLOW<span class="opacity-70 font-normal">AI</span></span>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center" style="gap:30px">
+        <a href="#how" class="flex items-center text-white text-[14px] font-medium" style="gap:14px">Get Started <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+        <a href="#modules" class="flex items-center text-white text-[14px] font-medium" style="gap:14px">Platform <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+        <a href="#modules" class="flex items-center text-white text-[14px] font-medium" style="gap:14px">Modules <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+        <a href="#founder" class="flex items-center text-white text-[14px] font-medium" style="gap:14px">Founder <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+      </div>
+    </div>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-dark">Apply for Audit</a>
+  </nav>
+
+  <!-- HERO CONTENT -->
+  <div class="relative z-10 flex flex-col items-center text-center" style="padding: 280px 24px 102px; gap:40px">
+    <div class="rounded-[20px] flex items-center" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+      <span class="dot"></span>
+      <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
+      <span class="text-[13px] font-medium text-white">Now Accepting Free Audits</span>
+    </div>
+    <h1 class="grad-head font-medium text-center" style="max-width:813px; font-size:64px; line-height:1.1; letter-spacing:-0.02em">
+      AI Operations at the Speed of Your Business.
+    </h1>
+    <p class="text-[15px] font-normal text-center" style="color:rgba(255,255,255,0.7); max-width:680px; line-height:1.55">
+      Powering seamless customer journeys and real-time response, NexFlow is the operations layer for service businesses that move with purpose — answering every call, capturing every lead, and following up automatically. 24/7.
+    </p>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Apply for Free Audit</a>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 2 — HOW IT WORKS (Milky Way galaxy) ════════════════ -->
+<section id="how" class="slide s2 flex flex-col items-center justify-center text-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 py-32" style="max-width:880px">
+    <div class="rounded-[20px] inline-flex items-center mb-10 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+      <span class="dot"></span>
+      <span class="text-[13px] font-medium text-white">How It Works</span>
+    </div>
+    <h2 class="grad-head font-medium mb-7 blur-in" style="font-size:56px; line-height:1.12; letter-spacing:-0.02em">You run the business. We run the systems.</h2>
+    <p class="text-[16px] font-normal mb-10 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.6">Tell us your bottleneck. We map every leak, build the automations, and deploy. Days, not months. Custom to your business — not a template.</p>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light blur-in">Apply for Free Audit</a>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 3 — MODULES (liquid metal ribbon) ════════════════ -->
+<section id="modules" class="slide s3 flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-14">
+      <div class="rounded-[20px] inline-flex items-center mb-7 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">Modules</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:56px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Six systems. One backbone.</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">01 · VOICE</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">AI Voice Agents</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Answer every call. 24/7. Books to your calendar.</p>
+      </div>
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">02 · CAPTURE</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">Lead Capture &amp; Routing</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Forms, ads, DMs — funneled and qualified instantly.</p>
+      </div>
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">03 · SYNC</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">CRM &amp; Pipeline Sync</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Every lead, call, and conversion in one live pipeline.</p>
+      </div>
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">04 · SENTRY</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">Risk Intelligence</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Sentry scans your perimeter on a schedule.</p>
+      </div>
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">05 · REVIEWS</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">Review Follow-Ups</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Auto-request reviews from happy customers. Respond to every rating.</p>
+      </div>
+      <div class="rounded-2xl p-7 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">06 · CUSTOM</p>
+        <h4 class="text-[24px] font-medium text-white mb-2">Custom Agents &amp; Tasks</h4>
+        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Bespoke AI agents for your unique workflows. One-off automations, scheduled tasks, anything off-script.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 4 — STATS (glass sculpture) ════════════════ -->
+<section class="slide s4 flex items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14">
+      <div class="rounded-[20px] inline-flex items-center mb-7 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">The Outcome</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:56px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Built for results you can measure.</h2>
+    </div>
+    <div class="rounded-3xl p-10 md:p-14 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(16px)">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 text-center md:text-left">
+        <div>
+          <div class="grad-head font-medium leading-none mb-3" style="font-size:64px">6</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Systems live</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Voice · Capture · Sync · Sentry · Reviews · Custom</div>
+        </div>
+        <div>
+          <div class="grad-head font-medium leading-none mb-3" style="font-size:64px">24/7</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Always on</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">No missed windows</div>
+        </div>
+        <div>
+          <div class="grad-head font-medium leading-none mb-3" style="font-size:64px">0</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Missed leads</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Routed instantly</div>
+        </div>
+        <div>
+          <div class="grad-head font-medium leading-none mb-3" style="font-size:64px">Days</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">To go live</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Not months</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 5 — FOUNDER (cosmic vortex returns) ════════════════ -->
+<section id="founder" class="slide s5 flex items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
+  <div class="scrim"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-7xl mx-auto w-full">
+    <div class="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-14 items-center">
+      <div class="rounded-2xl p-10 blur-in flex flex-col items-center gap-7" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(16px)">
+        <div class="relative">
+          <div class="absolute -inset-3 rounded-full" style="background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%); filter: blur(12px)"></div>
+          <img src="founder.jpg" alt="Antonyo Fridal" class="relative w-44 h-44 rounded-full object-cover" style="border:2px solid rgba(255,255,255,0.4)">
+        </div>
+        <div class="w-full border-t border-white/10 pt-5 flex flex-col gap-3 text-sm">
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Founder</span><span class="text-white font-medium">Antonyo Fridal</span></div>
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Background</span><span class="text-white font-medium">Cybersecurity · 5 yrs</span></div>
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Building</span><span class="text-white font-medium">NexFlow AI</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+          <span class="dot"></span>
+          <span class="text-[13px] font-medium text-white">The Founder</span>
+        </div>
+        <h2 class="grad-head font-medium mb-7 blur-in" style="font-size:56px; line-height:1.1; letter-spacing:-0.02em; max-width:620px">Built by an operator. Not a marketer.</h2>
+        <p class="text-[16px] font-normal mb-5 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">I'm Antonyo Fridal — five years in tech and cybersecurity, working inside the systems that businesses run on. I've watched the same pattern over and over: leads slip through, calls go unanswered, follow-ups never get sent, and good companies lose revenue to manual work that should never have been manual in the first place.</p>
+        <p class="text-[16px] font-normal mb-8 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">NexFlow is the system I wish those companies had. Built from the security mindset — every workflow tracked, every signal captured, nothing falling through. If a process can be automated correctly, it should be.</p>
+        <div class="flex flex-wrap gap-2 blur-in">
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">5 yrs · Tech</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Cybersecurity</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Systems Thinker</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Operator-First</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 6 — WHY OPERATORS (galaxy returns) ════════════════ -->
+<section class="slide s6 flex items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-14">
+      <div class="rounded-[20px] inline-flex items-center mb-7 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">Why Operators Choose NexFlow</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:56px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Built from the security mindset.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="rounded-2xl p-8 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[14px] italic mb-6" style="color:rgba(255,255,255,0.85); line-height:1.65">"Every workflow tracked, every signal captured, nothing falling through. That's not a marketing line — that's how the platform is engineered."</p>
+        <div class="text-white font-medium text-[14px]">Built different</div>
+        <div class="text-[12px]" style="color:rgba(255,255,255,0.5)">Cybersecurity-first architecture</div>
+      </div>
+      <div class="rounded-2xl p-8 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[14px] italic mb-6" style="color:rgba(255,255,255,0.85); line-height:1.65">"We don't replace your stack — we plug into it. Keep your CRM, calendar, and tools. NexFlow is the operations layer underneath."</p>
+        <div class="text-white font-medium text-[14px]">Operator-first</div>
+        <div class="text-[12px]" style="color:rgba(255,255,255,0.5)">No rip and replace</div>
+      </div>
+      <div class="rounded-2xl p-8 blur-in" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px)">
+        <p class="text-[14px] italic mb-6" style="color:rgba(255,255,255,0.85); line-height:1.65">"Five years inside the systems businesses run on. NexFlow is the system I wish those companies had — built and managed by us, owned by you."</p>
+        <div class="text-white font-medium text-[14px]">Antonyo Fridal</div>
+        <div class="text-[12px]" style="color:rgba(255,255,255,0.5)">Founder, NexFlow AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 7 — CTA (liquid metal finale) ════════════════ -->
+<section id="contact" class="slide s7 flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center">
+      <div class="rounded-[20px] inline-flex items-center mb-8 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
+        <span class="text-[13px] font-medium text-white">Now Accepting Free Audits</span>
+      </div>
+      <h2 class="grad-head font-medium mb-6 blur-in mx-auto" style="font-size:64px; line-height:1.05; letter-spacing:-0.02em; max-width:780px">Apply for your free audit.</h2>
+      <p class="text-[16px] font-normal mb-10 blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">Tell us about your business in 60 seconds. We'll send back a custom audit showing exactly where you're losing leads, calls, and follow-ups — and what NexFlow would automate first.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4 blur-in">
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Apply for Free Audit</a>
+        <a href="#modules" class="pill-dark">View the Stack</a>
+      </div>
+    </div>
+    <div class="mt-32 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-[12px]" style="color:rgba(255,255,255,0.4)">© 2026 NexFlow AI Solutions LLC. All rights reserved.</div>
+      <div class="flex gap-6 text-[12px]" style="color:rgba(255,255,255,0.4)">
+        <a href="privacy.html" class="hover:text-white">Privacy</a>
+        <a href="terms.html" class="hover:text-white">Terms</a>
+        <a href="mailto:nexflowaisolutions@gmail.com" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function attachHls(v){
+    const src = v.getAttribute('data-hls'); if (!src) return;
+    if (v.canPlayType('application/vnd.apple.mpegurl')) { v.src = src; v.play().catch(()=>{}); return; }
+    if (window.Hls && Hls.isSupported()){
+      const h = new Hls({ enableWorker:true });
+      h.loadSource(src); h.attachMedia(v);
+      h.on(Hls.Events.MANIFEST_PARSED, ()=> v.play().catch(()=>{}));
+    }
+  }
+  document.querySelectorAll('video[data-hls]').forEach(attachHls);
+
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.blur-in').forEach(el => io.observe(el));
+
+  // Mobile padding adjustment for hero
+  function fitHero(){
+    const hero = document.querySelector('.slide:first-of-type > div:last-of-type');
+    if (!hero) return;
+    const isSmall = window.innerWidth < 768;
+    hero.style.padding = isSmall ? '200px 24px 102px' : '280px 24px 102px';
+    const nav = document.querySelector('nav');
+    if (nav) nav.style.padding = isSmall ? '20px 24px' : '20px 120px';
+    const h1 = document.querySelector('.slide:first-of-type h1');
+    if (h1) h1.style.fontSize = isSmall ? '36px' : '64px';
+  }
+  fitHero(); window.addEventListener('resize', fitHero);
+</script>
+
+</body>
+</html>
