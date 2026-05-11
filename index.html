@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NexFlow AI — Hybrid Preview</title>
+  <title>NexFlow AI — Designed to perform. Built to automate.</title>
+  <meta name="description" content="AI operations for any part of your business. NexFlow designs, builds, and runs custom AI agents — voice receptionists, custom workflow agents, and Sentry cyber risk monitoring.">
 
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
@@ -24,11 +25,87 @@
   </script>
   <style>
     html, body { background:#000; color:#fff; }
+    html{ scroll-behavior:smooth; }
     body { font-family:'General Sans', ui-sans-serif, system-ui; -webkit-font-smoothing:antialiased; }
+
+    /* ── SECTION FLOW — premium Framer easing ── */
+    .slide.section-flow{
+      opacity:0; transform: translateY(56px) scale(0.97);
+      transition:
+        opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .slide.section-flow.in-view{ opacity:1; transform: translateY(0) scale(1); }
+    /* hero never animates in — already visible */
+    .slide.section-flow.is-hero{ opacity:1; transform:none; }
+
+    /* dashboard cinematic pop-in */
+    .dash-shell.pop{
+      opacity:0; transform: perspective(1400px) rotateX(8deg) translateY(60px) scale(0.92);
+      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1), transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-origin: 50% 100%;
+    }
+    .dash-shell.pop.in-view{ opacity:1; transform: perspective(1400px) rotateX(0deg) translateY(0) scale(1); }
+
+    /* premium icon tile — centered, Apple-style */
+    .ic-tile, .ic-tile-sm{
+      display:inline-flex; align-items:center; justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.10);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 18px rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      color:#7dd3e7;
+      flex-shrink:0;
+    }
+    .ic-tile{
+      width:54px; height:54px; border-radius:16px;
+      margin-bottom:18px;
+    }
+    .ic-tile-sm{
+      width:44px; height:44px; border-radius:13px;
+      margin-bottom:16px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 6px 14px rgba(0,0,0,0.35);
+    }
+    .ic-tile svg, .ic-tile-sm svg{ display:block; }
 
     /* ── STAT NUMBERS — responsive so they don't clip on mobile ── */
     .stat-num{ font-size:64px; }
     @media (max-width:640px){ .stat-num{ font-size:42px; } }
+
+    /* ── MOBILE RESPONSIVE CLAMPS ── */
+    @media (max-width:640px){
+      .slide.is-hero h1{ font-size:42px !important; line-height:1.05 !important; letter-spacing:-0.02em !important; }
+      .concept-pair h2{ font-size:36px !important; line-height:1.08 !important; }
+      .fw-card h3{ font-size:22px !important; line-height:1.15 !important; }
+      .fw-card{ padding:24px !important; }
+      .fw-card .ic-tile{ width:46px; height:46px; border-radius:13px; margin-bottom:14px; }
+      #contact h2{ font-size:38px !important; line-height:1.05 !important; }
+      .hero-pill-btn span{ font-size:11px !important; }
+      .scene-h3{ font-size:30px !important; line-height:1.1 !important; }
+      /* chat panel — full width on mobile, anchor bottom */
+      #chat-panel{ width:calc(100vw - 24px) !important; right:12px !important; left:12px !important; bottom:84px !important; height:calc(100vh - 120px) !important; max-height:none !important; }
+      #chat-fab{ width:54px !important; height:54px !important; bottom:16px !important; right:16px !important; }
+      /* phones */
+      .phone{ max-width:300px !important; }
+      .phone-feed{ padding:14px 12px 12px !important; }
+      .phone-feed .b{ font-size:12px !important; }
+      .phone-lock-bg{ padding:42px 9px 14px !important; }
+      .phone-lock-bg .lock-time{ font-size:40px !important; }
+      .phone-lock-bg .lock-date{ font-size:10px !important; margin-bottom:8px !important; }
+      .ios-notif{ padding:6px 8px 7px !important; gap:7px !important; }
+      .ios-notif .title{ font-size:10.5px !important; }
+      .ios-notif .desc{ font-size:10px !important; }
+      /* nav — hide secondary links, keep logo + book audit */
+      nav .md\:flex{ display:none !important; }
+      /* dashboard pop — gentler 3D on mobile */
+      .dash-shell.pop{ transform: translateY(40px) scale(0.95) !important; }
+      .dash-shell.pop.in-view{ transform: translateY(0) scale(1) !important; }
+    }
+    @media (max-width:380px){
+      .slide.is-hero h1{ font-size:36px !important; }
+      .concept-pair h2{ font-size:30px !important; }
+    }
 
     /* ── GRADIENT HEADING ── */
     .grad-head{
@@ -52,9 +129,18 @@
     }
     .pill-light::before{ background: radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(255,255,255,0)); filter: blur(6px); }
 
-    /* ── SLIDE ── */
-    .slide{ position:relative; min-height:100vh; overflow:hidden; background:#000; }
+    /* ── SLIDE — continuous flow, no forced viewport height ── */
+    .slide{ position:relative; min-height:auto; overflow:hidden; background:#000; }
     .slide.short{ min-height:auto; }
+    /* hero — tall but not forced to 100vh (avoid empty space before next section) */
+    .slide.is-hero{ min-height:auto; }
+    /* Tighter section rhythm — flows as one, less empty space */
+    .slide > div.relative,
+    .slide > div[class*="relative z-10"]{ padding-top:80px; padding-bottom:80px; }
+    @media (max-width:768px){ .slide > div.relative, .slide > div[class*="relative z-10"]{ padding-top:54px; padding-bottom:54px; } }
+    /* tighter inner margin between intro block and grids */
+    .concept-pair{ margin-bottom:48px !important; }
+    @media (max-width:768px){ .concept-pair{ margin-bottom:36px !important; } }
     .slide > video.bg{
       position:absolute; left:50%; top:50%; min-width:100%; min-height:100%;
       width:auto; height:auto; transform:translate(-50%,-50%);
@@ -77,13 +163,7 @@
         rgba(0,0,0,0.65);
     }
     /* cyan vortex echo */
-    .cosmic-accent{ position:absolute; inset:0; pointer-events:none; z-index:2; }
-    .cosmic-accent::before{
-      content:''; position:absolute; top:-10%; left:50%; transform:translateX(-50%);
-      width:520px; height:520px; border-radius:50%;
-      background: radial-gradient(circle, rgba(125,211,231,0.18) 0%, rgba(125,211,231,0.08) 30%, transparent 65%);
-      filter: blur(40px); opacity:0.7;
-    }
+    .cosmic-accent{ display:none; }
 
     /* ── GLASS CARDS ── */
     .glass{
@@ -98,9 +178,23 @@
     /* dot accent */
     .dot{ width:5px; height:5px; border-radius:50%; background:#7dd3e7; display:inline-block; box-shadow: 0 0 8px rgba(125,211,231,0.7); }
 
-    /* fade-in on scroll */
-    .blur-in{ filter: blur(10px); opacity: 0; transform: translateY(20px); transition: filter .8s ease, opacity .8s ease, transform .8s ease; }
-    .blur-in.in{ filter: blur(0); opacity:1; transform: translateY(0); }
+    /* fade-in on scroll — premium Framer-style easing */
+    .blur-in{
+      filter: blur(8px); opacity: 0; transform: translateY(28px) scale(0.985);
+      transition:
+        filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+    .blur-in.in{ filter: blur(0); opacity:1; transform: translateY(0) scale(1); }
+    /* Staggered child reveal — set --i on parent grid + apply to .blur-in inside */
+    .stagger > .blur-in:nth-child(1){ transition-delay: 0ms; }
+    .stagger > .blur-in:nth-child(2){ transition-delay: 90ms; }
+    .stagger > .blur-in:nth-child(3){ transition-delay: 180ms; }
+    .stagger > .blur-in:nth-child(4){ transition-delay: 270ms; }
+    .stagger > .blur-in:nth-child(5){ transition-delay: 360ms; }
+    .stagger > .blur-in:nth-child(6){ transition-delay: 450ms; }
 
     /* numbered step */
     .step-num{
@@ -199,33 +293,110 @@
     .orbit-chip-inner img{ width:26px; height:26px; display:block; }
     .orbit-chip.mid-chip .orbit-chip-inner img{ width:18px; height:18px; }
 
-    /* chat widget */
+    /* CHAT WIDGET — premium NexFlow assistant */
     #chat-fab{
-      position:fixed; bottom:20px; right:20px; z-index:60;
-      width:56px; height:56px; border-radius:50%;
-      background:#fff; color:#000; cursor:pointer;
+      position:fixed; bottom:22px; right:22px; z-index:60;
+      width:60px; height:60px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e8f6fa 50%, #b9e3ec 100%);
+      color:#0a0a0a; cursor:pointer;
       display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 6px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
-      transition: transform .15s ease;
+      box-shadow: 0 12px 40px rgba(125,211,231,0.35), 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15);
+      transition: transform .2s ease, box-shadow .2s ease;
     }
-    #chat-fab:hover{ transform: translateY(-2px); }
+    #chat-fab:hover{ transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 48px rgba(125,211,231,0.5), 0 6px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2); }
+    #chat-fab::after{
+      content:''; position:absolute; top:-2px; right:-2px;
+      width:14px; height:14px; border-radius:50%; background:#34d399;
+      border:2px solid #000; animation: pulse-g 2s ease-in-out infinite;
+    }
     #chat-panel{
-      position:fixed; bottom:90px; right:20px; z-index:60;
-      width:340px; max-width:calc(100vw - 40px); height:480px; max-height:70vh;
-      border-radius:20px; overflow:hidden;
-      background:rgba(15,15,15,0.85); border:1px solid rgba(255,255,255,0.15);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      position:fixed; bottom:96px; right:22px; z-index:60;
+      width:380px; max-width:calc(100vw - 44px); height:560px; max-height:78vh;
+      border-radius:24px; overflow:hidden;
+      background:linear-gradient(180deg, rgba(20,20,22,0.96) 0%, rgba(10,10,12,0.98) 100%);
+      border:1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
       display:none; flex-direction:column;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'General Sans', sans-serif;
     }
-    #chat-panel.open{ display:flex; }
-    .chat-head{ padding:14px 18px; border-bottom:1px solid rgba(255,255,255,0.10); display:flex; align-items:center; gap:10px; }
-    .chat-msgs{ flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:10px; }
-    .chat-msg{ padding:10px 14px; border-radius:16px; max-width:80%; font-size:13px; line-height:1.45; }
-    .chat-msg.bot{ align-self:flex-start; background:rgba(255,255,255,0.08); color:#fff; }
-    .chat-msg.user{ align-self:flex-end; background:#fff; color:#000; }
-    .chat-opts{ padding:0 18px 14px; display:flex; flex-direction:column; gap:8px; }
-    .chat-opt{ width:100%; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px; cursor:pointer; text-align:left; transition: background .15s; }
-    .chat-opt:hover{ background:rgba(255,255,255,0.10); }
+    #chat-panel.open{ display:flex; animation: chatIn .35s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes chatIn{ from{ opacity:0; transform: translateY(20px) scale(0.97); } to{ opacity:1; transform: translateY(0) scale(1); } }
+    .chat-head{
+      padding:18px 20px; border-bottom:1px solid rgba(255,255,255,0.06);
+      display:flex; align-items:center; gap:12px;
+      background:linear-gradient(180deg, rgba(125,211,231,0.04), transparent);
+    }
+    .chat-head .av{
+      width:38px; height:38px; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, rgba(125,211,231,0.6), rgba(125,211,231,0.1) 70%);
+      border:1px solid rgba(125,211,231,0.5);
+      display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:600; color:#fff; letter-spacing:0.04em;
+    }
+    .chat-head .info{ flex:1; }
+    .chat-head .info .nm{ font-size:14px; font-weight:600; color:#fff; letter-spacing:-0.01em; }
+    .chat-head .info .st{ font-size:11px; color:#34d399; display:flex; align-items:center; gap:5px; margin-top:2px; }
+    .chat-head .info .st::before{ content:''; width:6px; height:6px; border-radius:50%; background:#34d399; box-shadow:0 0 6px #34d399; animation: pulse-g 2s ease-in-out infinite; }
+    .chat-head .close{ width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.06); border:0; color:rgba(255,255,255,0.6); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: background .15s, color .15s; }
+    .chat-head .close:hover{ background:rgba(255,255,255,0.12); color:#fff; }
+    .chat-msgs{
+      flex:1; overflow-y:auto; padding:20px 18px;
+      display:flex; flex-direction:column; gap:10px;
+      scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.15) transparent;
+    }
+    .chat-msgs::-webkit-scrollbar{ width:6px; }
+    .chat-msgs::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.15); border-radius:3px; }
+    .chat-msg{
+      padding:11px 14px; border-radius:18px; max-width:84%; font-size:13.5px; line-height:1.45;
+      letter-spacing:-0.005em;
+      animation: msgIn .3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes msgIn{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform: translateY(0); } }
+    .chat-msg.bot{ align-self:flex-start; background:rgba(255,255,255,0.07); color:#fff; border-bottom-left-radius:6px; border:1px solid rgba(255,255,255,0.06); }
+    .chat-msg.user{ align-self:flex-end; background: linear-gradient(180deg, #5fbecf 0%, #4ea7b9 100%); color:#fff; border-bottom-right-radius:6px; font-weight:500; }
+    .chat-msg b{ color:#7dd3e7; font-weight:600; }
+    .chat-typing{
+      align-self:flex-start; background:rgba(255,255,255,0.07); padding:12px 16px; border-radius:18px;
+      border-bottom-left-radius:6px; display:flex; gap:5px;
+    }
+    .chat-typing span{
+      width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.55);
+      animation: typeDot 1.2s ease-in-out infinite;
+    }
+    .chat-typing span:nth-child(2){ animation-delay:.15s; }
+    .chat-typing span:nth-child(3){ animation-delay:.3s; }
+    .chat-opts{
+      padding:0 18px 12px; display:flex; flex-direction:column; gap:8px;
+      flex-shrink:0;
+    }
+    .chat-opt{
+      width:100%; padding:10px 16px; border-radius:14px;
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.10);
+      color:#fff; font-size:13px; cursor:pointer; text-align:left;
+      transition: background .15s, border-color .15s, transform .15s;
+      font-family: inherit;
+    }
+    .chat-opt:hover{ background:rgba(125,211,231,0.10); border-color:rgba(125,211,231,0.30); transform: translateX(2px); }
+    .chat-input{
+      padding:12px 16px 16px; border-top:1px solid rgba(255,255,255,0.06);
+      display:flex; gap:8px; align-items:center;
+    }
+    .chat-input input{
+      flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10);
+      border-radius:999px; padding:10px 16px; font-size:13px; color:#fff;
+      font-family: inherit; outline:none; transition: border-color .15s;
+    }
+    .chat-input input:focus{ border-color:rgba(125,211,231,0.4); background:rgba(255,255,255,0.07); }
+    .chat-input input::placeholder{ color:rgba(255,255,255,0.4); }
+    .chat-input button{
+      width:36px; height:36px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(180deg, #5fbecf 0%, #4ea7b9 100%);
+      border:0; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition: transform .15s;
+    }
+    .chat-input button:hover{ transform: scale(1.06); }
+    .chat-input button:disabled{ opacity:0.4; cursor:not-allowed; }
 
     /* dashboard shell + mock */
     .dash-shell{
@@ -381,15 +552,555 @@
     .agent-pill{ font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:3px 8px; border-radius:999px; }
     .agent-pill.live{ color:#34d399; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.25); }
     .agent-pill.idle{ color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); }
+
+    /* ── READABILITY UPGRADE — small text bolder, slightly larger, higher contrast (still secondary to headlines) ── */
+    /* hero sub */
+    .slide.is-hero p{ font-size:17px !important; color:rgba(255,255,255,0.82) !important; font-weight:400 !important; }
+    /* concept-pair sub paragraphs */
+    .concept-pair p{ font-size:16px !important; color:rgba(255,255,255,0.80) !important; font-weight:400 !important; }
+    /* eyebrows — bolder */
+    .concept-eyebrow{ font-weight:600 !important; color:rgba(255,255,255,0.62) !important; }
+    .fw-eyebrow{ font-weight:600 !important; color:rgba(255,255,255,0.68) !important; font-size:11px !important; }
+    /* framework cards */
+    .fw-card p{ font-size:14.5px !important; color:rgba(255,255,255,0.80) !important; font-weight:400 !important; line-height:1.6 !important; }
+    .fw-feat{ font-size:13px !important; color:rgba(255,255,255,0.88) !important; }
+    /* process + workflow + general glass cards */
+    .glass h4{ font-weight:600 !important; }
+    .glass p{ color:rgba(255,255,255,0.80) !important; font-weight:400 !important; }
+    #how .glass p{ font-size:14.5px !important; line-height:1.6 !important; }
+    #workflows .glass p{ font-size:13.5px !important; color:rgba(255,255,255,0.78) !important; line-height:1.55 !important; }
+    /* workflow + process card eyebrow numbers */
+    #workflows p.text-\[10px\], #how p.text-\[10px\]{ font-weight:700 !important; color:rgba(255,255,255,0.55) !important; }
+    /* benefit cards */
+    .benefit-card h4{ font-weight:600 !important; color:#fff !important; font-size:17.5px !important; }
+    .benefit-card p{ font-size:14px !important; color:rgba(255,255,255,0.80) !important; font-weight:400 !important; line-height:1.6 !important; }
+    /* dashboard intro */
+    #dashboard .concept-pair p{ color:rgba(255,255,255,0.80) !important; }
+    .dash-stat .k{ font-weight:600 !important; color:rgba(255,255,255,0.62) !important; }
+    .dash-stat .t{ font-weight:500 !important; }
+    .feed-row .ev{ color:rgba(255,255,255,0.92) !important; font-size:11.5px !important; }
+    .feed-row .ts{ color:rgba(255,255,255,0.5) !important; font-weight:500 !important; }
+    /* scene copy paragraphs (next to phones) */
+    #demo .scene-h3 ~ p{ font-size:16px !important; color:rgba(255,255,255,0.80) !important; font-weight:400 !important; line-height:1.6 !important; }
+    #demo .blur-in ul li{ font-size:14px !important; color:rgba(255,255,255,0.88) !important; }
+    /* integrations description */
+    #integrations p{ font-size:16px !important; color:rgba(255,255,255,0.80) !important; font-weight:400 !important; }
+    #integrations ul li{ font-size:14px !important; color:rgba(255,255,255,0.85) !important; }
+    /* FAQ */
+    .faq-item summary{ font-weight:600 !important; font-size:15.5px !important; }
+    .faq-body{ color:rgba(255,255,255,0.82) !important; font-size:14.5px !important; line-height:1.65 !important; }
+    /* final CTA sub */
+    #contact .blur-in p{ font-size:17px !important; color:rgba(255,255,255,0.78) !important; }
+    /* footer */
+    #contact .border-t p, #contact .border-t li, #contact .border-t a{ color:rgba(255,255,255,0.65) !important; }
+    #contact .border-t li a:hover{ color:#fff !important; }
+    #contact .border-t p strong{ color:rgba(255,255,255,0.85) !important; }
+    /* nav links */
+    nav a[href^="#"]{ font-weight:500 !important; color:rgba(255,255,255,0.92) !important; }
+    /* hero pill */
+    .hero-pill-btn span{ font-weight:600 !important; }
+    /* chat msg readability */
+    .chat-msg{ font-size:14px !important; }
+    /* phone bubble text — slightly bolder */
+    .phone-feed .b{ font-weight:500 !important; }
+    .ios-notif .desc{ color:rgba(235,235,245,0.92) !important; }
+    .ios-notif .title{ font-weight:600 !important; }
+    /* small grey 12-13px get bumped to readable */
+    p.text-\[12px\], p.text-\[13px\]{ color:rgba(255,255,255,0.75) !important; }
+
+    /* concept H2 pair — aiconsultin-style "Headline. / Sub." */
+    .concept-eyebrow{ font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:14px; }
+    .concept-pair h2{ font-size:56px; line-height:1.05; letter-spacing:-0.02em; font-weight:500; }
+    .concept-pair h2 .muted{ color:rgba(255,255,255,0.35); display:block; }
+    @media (max-width:640px){ .concept-pair h2{ font-size:38px; } }
+
+    /* live demo — voice + chat mock cards */
+    .demo-card{
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.10);
+      border-radius:22px; padding:26px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+    .demo-head{
+      display:flex; align-items:center; gap:12px; padding-bottom:18px;
+      border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:18px;
+    }
+    .demo-avatar{
+      width:38px; height:38px; border-radius:50%;
+      background: radial-gradient(circle, rgba(125,211,231,0.4), rgba(125,211,231,0.05) 70%);
+      border:1px solid rgba(125,211,231,0.45);
+      display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:600; color:#fff;
+    }
+    .demo-title{ font-size:14px; font-weight:500; color:#fff; }
+    .demo-sub{ font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:0.06em; }
+    .demo-meta{ margin-left:auto; font-size:11px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:8px; }
+    .demo-pulse{ width:7px; height:7px; border-radius:50%; background:#34d399; box-shadow:0 0 8px #34d399; animation: pulse-g 1.8s ease-in-out infinite; }
+
+    .bubble{ padding:11px 14px; border-radius:16px; font-size:13px; line-height:1.5; max-width:88%; }
+    .bubble.bot{ background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.92); border-top-left-radius:6px; align-self:flex-start; }
+    .bubble.user{ background:#7dd3e7; color:#0a0a0a; border-top-right-radius:6px; align-self:flex-end; font-weight:500; }
+    .bubble-row{ display:flex; flex-direction:column; gap:10px; }
+    .bubble-event{
+      align-self:center; font-size:10px; letter-spacing:0.16em; text-transform:uppercase;
+      color:rgba(125,211,231,0.85); padding:5px 12px;
+      border-radius:999px; background:rgba(125,211,231,0.08); border:1px solid rgba(125,211,231,0.18);
+    }
+
+    /* waveform */
+    .wave{ display:flex; align-items:center; gap:3px; height:32px; flex:1; }
+    .wave span{
+      width:3px; border-radius:2px; background:rgba(125,211,231,0.75);
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    @keyframes wave{ 0%,100%{ height:30%; opacity:.4 } 50%{ height:100%; opacity:1 } }
+
+    /* benefit cards */
+    .benefit-card{
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.10);
+      border-radius:18px; padding:24px;
+      backdrop-filter: blur(12px); transition: border-color .25s, transform .25s;
+    }
+    .benefit-card:hover{ border-color:rgba(125,211,231,0.35); transform:translateY(-2px); }
+    .benefit-icon{
+      width:42px; height:42px; border-radius:12px;
+      background: radial-gradient(circle, rgba(125,211,231,0.3), rgba(125,211,231,0.05) 70%);
+      border:1px solid rgba(125,211,231,0.3);
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:16px; color:#7dd3e7;
+    }
+    .benefit-card h4{ font-size:17px; font-weight:500; color:#fff; margin-bottom:6px; letter-spacing:-0.01em; }
+    .benefit-card p{ font-size:13px; color:rgba(255,255,255,0.62); line-height:1.55; }
+
+    /* FAQ accordion */
+    .faq-item{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px; overflow:hidden; transition: border-color .2s;
+    }
+    .faq-item[open]{ border-color: rgba(125,211,231,0.3); background:rgba(255,255,255,0.05); }
+    .faq-item summary{
+      list-style:none; cursor:pointer; padding:20px 24px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      font-size:16px; font-weight:500; color:#fff;
+    }
+    .faq-item summary::-webkit-details-marker{ display:none; }
+    .faq-icon{
+      width:22px; height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.5); transition: transform .25s, color .2s;
+    }
+    .faq-item[open] .faq-icon{ transform: rotate(45deg); color:#7dd3e7; }
+    .faq-body{ padding:0 24px 22px; font-size:14px; color:rgba(255,255,255,0.7); line-height:1.6; }
+
+    /* ── HERO FLOWER (animated bloom) ── */
+    .bloom-wrap{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      z-index:0; pointer-events:none;
+    }
+    .bloom{
+      position:relative; width:min(820px, 110vw); aspect-ratio:1/1;
+      filter: drop-shadow(0 0 80px rgba(125,211,231,0.18));
+    }
+    .bloom svg{ width:100%; height:100%; display:block; }
+    .bloom .ring-outer{ animation: spinCW 90s linear infinite; transform-origin:50% 50%; }
+    .bloom .ring-mid{ animation: spinCCW 60s linear infinite; transform-origin:50% 50%; }
+    .bloom .ring-inner{ animation: spinCW 40s linear infinite; transform-origin:50% 50%; }
+    .bloom .core-pulse{ animation: corePulse 5s ease-in-out infinite; transform-origin:50% 50%; }
+    @keyframes corePulse{ 0%,100%{ opacity:.85; transform:scale(1) } 50%{ opacity:1; transform:scale(1.04) } }
+    .bloom-glow{
+      position:absolute; inset:18%; border-radius:50%;
+      background: radial-gradient(circle, rgba(125,211,231,0.22) 0%, rgba(125,211,231,0.06) 35%, transparent 65%);
+      filter: blur(40px); animation: corePulse 6s ease-in-out infinite;
+    }
+    @media (max-width:640px){ .bloom{ width:130vw; } }
+
+    /* hero pill button hover */
+    .hero-pill-btn:hover{ background:rgba(255,255,255,0.13)!important; border-color:rgba(255,255,255,0.30)!important; }
+    .hero-pill-btn:hover svg{ color:#fff!important; transform: translateY(1px); transition: transform .2s; }
+
+    /* iOS LOCK SCREEN — notifications phone */
+    .phone-lock-bg{
+      flex:1; position:relative; overflow:hidden;
+      background:
+        radial-gradient(ellipse at top, rgba(28,28,30,1) 0%, rgba(0,0,0,1) 60%),
+        #000;
+      padding: 48px 11px 18px;
+      display:flex; flex-direction:column; gap:6px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+    .phone-lock-bg .lock-time{
+      text-align:center; color:#fff; margin-bottom:2px;
+      font-weight:200; font-size:46px; line-height:1;
+      letter-spacing:-0.035em;
+    }
+    .phone-lock-bg .lock-date{
+      text-align:center; color:rgba(255,255,255,0.85); font-size:11px;
+      font-weight:500; margin-bottom:10px; letter-spacing:-0.005em;
+    }
+    .ios-stack{ display:flex; flex-direction:column; gap:5px; flex:1; position:relative; padding: 0 2px; min-height:0; }
+    .ios-notif{
+      background: rgba(40,40,42,0.78); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+      border-radius:13px; padding:7px 9px 8px;
+      display:grid; grid-template-columns: 26px 1fr; gap:8px; align-items:start;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 6px 14px rgba(0,0,0,0.4);
+      opacity:0; transform: translateY(-12px) scale(0.94);
+      transition: opacity .45s ease, transform .45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .ios-notif.show{ opacity:1; transform: translateY(0) scale(1); }
+    .ios-notif .app-icon{
+      width:26px; height:26px; border-radius:6px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; color:#fff;
+      box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.10);
+      overflow:hidden;
+    }
+    .ios-notif .app-icon svg, .ios-notif .app-icon img{ display:block; }
+    .ios-notif .body{ min-width:0; display:flex; flex-direction:column; gap:0; }
+    .ios-notif .meta{
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:9px; color:rgba(235,235,245,0.6); letter-spacing:-0.005em;
+    }
+    .ios-notif .meta .app{ text-transform:uppercase; font-weight:600; letter-spacing:0.04em; }
+    .ios-notif .title{ font-size:11.5px; color:#fff; font-weight:600; letter-spacing:-0.01em; line-height:1.25; margin-top:1px; }
+    .ios-notif .desc{ font-size:10.5px; color:rgba(235,235,245,0.85); line-height:1.3; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+
+    /* iOS-style app icon tiles */
+    .ai-phone{ background: linear-gradient(180deg, #6FE57E 0%, #34C759 100%); }
+    .ai-msg{ background: linear-gradient(180deg, #6FE57E 0%, #34C759 100%); }
+    .ai-cal{ background:#fff; color:#FF3B30; flex-direction:column; padding:1px 0 0; gap:0; }
+    .ai-cal .cal-mo{ font-size:4.5px; font-weight:700; letter-spacing:0.1em; line-height:1; }
+    .ai-cal .cal-d{ font-size:12px; font-weight:600; color:#1c1c1e; line-height:1.05; }
+    .ai-mail{ background:#fff; padding:3px; }
+    .ai-crm{ background:#fff; padding:3px; }
+    .ai-slack{ background:#fff; padding:3px; }
+
+    .phone-lock-status{
+      position:absolute; top:0; left:0; right:0; height:54px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 28px 0; font-size:14px; color:#fff; font-weight:600;
+      font-family:-apple-system, BlinkMacSystemFont, sans-serif; letter-spacing:-0.01em;
+      z-index:6;
+    }
+    .phone-lock-status .icons{ display:flex; gap:6px; align-items:center; }
+
+    /* CALL BREAKDOWN timeline */
+    .call-breakdown{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.10);
+      border-radius:24px; padding:32px; backdrop-filter: blur(20px);
+    }
+    .cb-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding-bottom:20px; margin-bottom:20px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .cb-title{ display:flex; align-items:center; gap:14px; }
+    .cb-title .icon{
+      width:42px; height:42px; border-radius:12px;
+      background:radial-gradient(circle, rgba(125,211,231,0.35), rgba(125,211,231,0.05) 70%);
+      border:1px solid rgba(125,211,231,0.35);
+      display:flex; align-items:center; justify-content:center; color:#7dd3e7;
+    }
+    .cb-title h4{ font-size:18px; font-weight:500; color:#fff; letter-spacing:-0.01em; }
+    .cb-title .sub{ font-size:11px; color:rgba(255,255,255,0.45); letter-spacing:0.06em; margin-top:2px; }
+    .cb-status{
+      display:flex; align-items:center; gap:8px;
+      font-size:11px; color:#34d399; letter-spacing:0.14em; text-transform:uppercase;
+    }
+    .cb-status::before{ content:''; width:7px; height:7px; border-radius:50%; background:#34d399; box-shadow:0 0 8px #34d399; animation: pulse-g 1.8s ease-in-out infinite; }
+
+    .cb-timeline{ position:relative; padding-left:0; }
+    .cb-step{
+      position:relative; display:grid; grid-template-columns: 130px 1fr auto;
+      gap:18px; padding:14px 0; align-items:center;
+      border-bottom:1px dashed rgba(255,255,255,0.06);
+    }
+    .cb-step:last-child{ border-bottom:none; }
+    .cb-step .cb-time{
+      font-size:11px; color:rgba(255,255,255,0.45);
+      letter-spacing:0.04em; font-variant-numeric:tabular-nums; font-weight:500;
+    }
+    .cb-step .cb-event{
+      display:flex; align-items:center; gap:12px;
+    }
+    .cb-step .cb-dot{
+      width:28px; height:28px; border-radius:50%; flex-shrink:0;
+      background:rgba(125,211,231,0.10); border:1px solid rgba(125,211,231,0.30);
+      display:flex; align-items:center; justify-content:center; color:#7dd3e7;
+    }
+    .cb-step.done .cb-dot{ background:rgba(52,211,153,0.10); border-color:rgba(52,211,153,0.4); color:#34d399; }
+    .cb-step .cb-label{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .cb-step .cb-label .l1{ font-size:14px; color:#fff; font-weight:500; letter-spacing:-0.01em; }
+    .cb-step .cb-label .l2{ font-size:12px; color:rgba(255,255,255,0.55); }
+    .cb-pill{
+      font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+      padding:4px 10px; border-radius:999px;
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.7);
+    }
+    .cb-pill.success{ background:rgba(52,211,153,0.08); border-color:rgba(52,211,153,0.3); color:#34d399; }
+
+    /* iPhone — realistic frame */
+    .phone{
+      position:relative; width:100%; max-width:360px; margin:0 auto;
+      aspect-ratio: 360/740;
+      border-radius:54px; padding:11px;
+      background:
+        linear-gradient(135deg, #2a2a2c 0%, #1a1a1c 40%, #2a2a2c 100%);
+      box-shadow:
+        0 50px 90px rgba(0,0,0,0.7),
+        0 0 0 1.5px #3a3a3c,
+        0 0 0 2.5px #1a1a1c,
+        inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    /* glossy side highlights */
+    .phone::after{
+      content:''; position:absolute; inset:11px; border-radius:43px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.06) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.06) 100%);
+      pointer-events:none; z-index:2;
+    }
+    .phone-screen{
+      width:100%; height:100%; border-radius:43px;
+      background:#000; overflow:hidden; position:relative;
+      display:flex; flex-direction:column;
+    }
+    /* Dynamic Island */
+    .phone-island{
+      position:absolute; top:10px; left:50%; transform:translateX(-50%);
+      width:120px; height:34px; border-radius:24px; background:#000; z-index:5;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .phone-statusbar{
+      flex-shrink:0; padding:18px 28px 0;
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:14px; color:#fff; font-weight:600;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      letter-spacing:-0.01em;
+      height:54px;
+    }
+    .phone-statusbar .clock{ width:40px; }
+    .phone-statusbar .icons{ display:flex; gap:6px; align-items:center; color:#fff; }
+    .phone-header{
+      flex-shrink:0; padding: 12px 18px 14px;
+      display:flex; align-items:center; gap:12px;
+      border-bottom:0.5px solid rgba(255,255,255,0.08);
+      background:rgba(28,28,30,0.85); backdrop-filter:blur(20px);
+    }
+    .phone-avatar{
+      width:36px; height:36px; border-radius:50%;
+      background:radial-gradient(circle, rgba(125,211,231,0.4), rgba(125,211,231,0.05) 70%);
+      border:1px solid rgba(125,211,231,0.5);
+      display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:600; color:#fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+    .phone-info{ flex:1; min-width:0; }
+    .phone-info .nm{
+      font-size:14px; font-weight:600; color:#fff; line-height:1.2;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      letter-spacing:-0.01em;
+    }
+    .phone-info .st{
+      font-size:11px; color:#34d399; display:flex; align-items:center; gap:5px; margin-top:3px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+    .phone-info .st::before{ content:''; width:6px; height:6px; border-radius:50%; background:#34d399; box-shadow:0 0 6px #34d399; animation: pulse-g 1.8s ease-in-out infinite; }
+    .phone-timer{
+      font-size:12px; color:rgba(255,255,255,0.4); font-variant-numeric: tabular-nums;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+
+    .phone-feed{
+      flex:1; overflow:hidden; padding:18px 14px 14px;
+      display:flex; flex-direction:column; gap:8px;
+      position:relative;
+      background:#000;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+    .phone-feed .b{
+      padding:9px 14px; border-radius:20px; font-size:13px; line-height:1.4; max-width:78%;
+      opacity:0; transform:translateY(8px); transition: opacity .35s ease, transform .35s ease;
+      letter-spacing:-0.005em;
+    }
+    .phone-feed .b.show{ opacity:1; transform:translateY(0); }
+    .phone-feed .b.bot{ background:#2c2c2e; color:#fff; align-self:flex-start; border-bottom-left-radius:6px; }
+    .phone-feed .b.user{
+      background: linear-gradient(180deg, #5fbecf 0%, #4ea7b9 100%);
+      color:#fff; align-self:flex-end; border-bottom-right-radius:6px; font-weight:400;
+    }
+    .phone-feed .typing{
+      align-self:flex-start; background:#2c2c2e; padding:11px 15px; border-radius:20px;
+      border-bottom-left-radius:6px; display:flex; gap:4px;
+      opacity:0; transform:translateY(8px); transition: opacity .25s, transform .25s;
+    }
+    .phone-feed .typing.show{ opacity:1; transform:translateY(0); }
+    .phone-feed .typing span{
+      width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.55);
+      animation: typeDot 1.2s ease-in-out infinite;
+    }
+    .phone-feed .typing span:nth-child(2){ animation-delay:.15s; }
+    .phone-feed .typing span:nth-child(3){ animation-delay:.3s; }
+    @keyframes typeDot{ 0%,60%,100%{ opacity:.3; transform:translateY(0) } 30%{ opacity:1; transform:translateY(-3px) } }
+    .phone-feed .event{
+      align-self:center; font-size:10px; letter-spacing:0.14em; text-transform:uppercase;
+      color:rgba(125,211,231,0.95); padding:5px 12px;
+      border-radius:999px; background:rgba(125,211,231,0.10); border:1px solid rgba(125,211,231,0.22);
+      opacity:0; transform:translateY(8px); transition: opacity .35s ease, transform .35s ease;
+      margin-top:4px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    }
+    .phone-feed .event.show{ opacity:1; transform:translateY(0); }
+
+    .phone-footer{
+      flex-shrink:0; padding:12px 18px 18px;
+      border-top:0.5px solid rgba(255,255,255,0.08);
+      background:rgba(28,28,30,0.85); backdrop-filter:blur(20px);
+      display:flex; align-items:center; gap:12px;
+    }
+    .phone-footer .wave-mini{ display:flex; align-items:center; gap:2px; flex:1; height:24px; }
+    .phone-footer .wave-mini span{
+      width:2.5px; border-radius:2px; background:linear-gradient(180deg, #7dd3e7, rgba(125,211,231,0.4));
+      animation: wave 1s ease-in-out infinite;
+    }
+    .phone-footer .label{ font-size:9px; letter-spacing:0.14em; color:rgba(255,255,255,0.4); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    .phone-footer .hangup{
+      width:38px; height:38px; border-radius:50%;
+      background:#ff453a; display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 4px 10px rgba(255,69,58,0.4);
+    }
+    /* iOS home indicator */
+    .phone-screen::after{
+      content:''; position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+      width:130px; height:4px; border-radius:3px; background:rgba(255,255,255,0.4); z-index:6;
+    }
+
+    /* clean section background — no video, just radial accent */
+    .slide.clean{ background:#000; }
+    .slide.clean::before{ content:''; position:absolute; inset:0; background:transparent; z-index:0; pointer-events:none; }
+
+    /* framework cards (3-up) — premium hero block */
+    .fw-card{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:24px; padding:32px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      overflow:hidden; transition: border-color .3s, transform .3s;
+    }
+    .fw-card:hover{ border-color: rgba(125,211,231,0.4); transform: translateY(-3px); }
+    .fw-card::before{
+      content:''; position:absolute; top:-40%; left:-20%; right:-20%; height:60%;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(125,211,231,0.18), transparent 70%);
+      filter: blur(40px); pointer-events:none; opacity:0.7;
+    }
+    .fw-card .fw-eyebrow{ font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:16px; position:relative; z-index:1; }
+    .fw-card h3{ font-size:26px; font-weight:500; color:#fff; line-height:1.15; margin-bottom:14px; letter-spacing:-0.015em; position:relative; z-index:1; }
+    .fw-card p{ font-size:14px; color:rgba(255,255,255,0.65); line-height:1.6; margin-bottom:22px; position:relative; z-index:1; }
+    .fw-feats{ display:flex; flex-direction:column; gap:9px; position:relative; z-index:1; }
+    .fw-feat{ display:flex; align-items:center; gap:10px; font-size:12px; color:rgba(255,255,255,0.78); }
+    .fw-feat .check{
+      width:16px; height:16px; border-radius:50%; flex-shrink:0;
+      background:rgba(125,211,231,0.15); border:1px solid rgba(125,211,231,0.4);
+      display:flex; align-items:center; justify-content:center; color:#7dd3e7;
+    }
   </style>
 </head>
 <body class="bg-black text-white">
 
-<!-- ════════════════ SLIDE 1 — HERO (cosmic vortex) ════════════════ -->
-<section class="slide s-light flex flex-col">
+<!-- ════════════════ SLIDE 1 — HERO (cosmic vortex video) ════════════════ -->
+<section class="slide s-light is-hero section-flow flex flex-col">
   <video class="bg" autoplay loop muted playsinline preload="auto"
     src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
   <div class="scrim"></div>
+
+  <!-- flower-bloom kept (subtle), comment to remove -->
+  <div class="bloom-wrap" style="display:none">
+    <div class="bloom-glow"></div>
+    <div class="bloom">
+      <svg viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="petalGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(125,211,231,0.55)"/>
+            <stop offset="100%" stop-color="rgba(125,211,231,0)"/>
+          </radialGradient>
+          <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+            <stop offset="50%" stop-color="rgba(125,211,231,0.5)"/>
+            <stop offset="100%" stop-color="rgba(125,211,231,0)"/>
+          </radialGradient>
+        </defs>
+
+        <!-- outer ring : 16 elongated petals -->
+        <g class="ring-outer" stroke="rgba(125,211,231,0.30)" stroke-width="1" fill="none">
+          <g><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(22.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(45)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(67.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(90)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(112.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(135)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(157.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(180)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(202.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(225)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(247.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(270)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(292.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(315)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+          <g transform="rotate(337.5)"><ellipse cx="0" cy="-150" rx="14" ry="60"/></g>
+        </g>
+
+        <!-- outer ring soft petal fills -->
+        <g class="ring-outer" fill="url(#petalGrad)" opacity="0.5">
+          <g><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(45)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(90)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(135)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(180)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(225)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(270)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+          <g transform="rotate(315)"><ellipse cx="0" cy="-150" rx="11" ry="55"/></g>
+        </g>
+
+        <!-- middle ring : 12 petals, counter-rotating -->
+        <g class="ring-mid" stroke="rgba(125,211,231,0.45)" stroke-width="1" fill="url(#petalGrad)" fill-opacity="0.35">
+          <g><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(30)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(60)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(90)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(120)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(150)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(180)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(210)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(240)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(270)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(300)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+          <g transform="rotate(330)"><ellipse cx="0" cy="-95" rx="10" ry="40"/></g>
+        </g>
+
+        <!-- inner ring : 8 petals -->
+        <g class="ring-inner" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="url(#petalGrad)" fill-opacity="0.6">
+          <g><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(45)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(90)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(135)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(180)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(225)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(270)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+          <g transform="rotate(315)"><ellipse cx="0" cy="-50" rx="8" ry="24"/></g>
+        </g>
+
+        <!-- thin connecting rings -->
+        <circle cx="0" cy="0" r="155" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+        <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+        <circle cx="0" cy="0" r="55" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="0.5"/>
+
+        <!-- core -->
+        <g class="core-pulse">
+          <circle cx="0" cy="0" r="28" fill="url(#coreGrad)"/>
+          <circle cx="0" cy="0" r="14" fill="rgba(255,255,255,0.85)"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav class="relative z-10 flex items-center justify-between" style="padding: 20px 60px;">
@@ -397,50 +1108,186 @@
       <span class="text-white font-medium tracking-wider" style="font-size:18px;letter-spacing:0.04em">NEXFLOW<span class="opacity-70 font-normal">AI</span></span>
     </a>
     <div class="hidden md:flex items-center" style="gap:30px">
-      <a href="#dashboard" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Dashboard <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
-      <a href="#how" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Process <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
-      <a href="#modules" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Modules <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a href="#frameworks" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Frameworks</a>
+      <a href="#dashboard" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Dashboard</a>
+      <a href="#workflows" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Workflows</a>
       <a href="#integrations" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Integrations</a>
-      <a href="#founder" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Founder</a>
+      <a href="#faq" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">FAQ</a>
     </div>
-    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-dark">Apply for Audit</a>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-dark">Book Free Audit</a>
   </nav>
 
-  <div class="relative z-10 flex flex-col items-center text-center" style="padding: 220px 24px 102px; gap:36px">
-    <div class="rounded-[20px] flex items-center" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+  <div class="relative z-10 flex flex-col items-center text-center" style="padding: 180px 24px 56px; gap:30px">
+    <a href="#demo" class="hero-pill-btn rounded-[20px] inline-flex items-center" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding: 8px 16px; gap:10px; backdrop-filter: blur(12px); cursor:pointer; transition: background .2s, border-color .2s">
       <span class="dot"></span>
-      <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
-      <span class="text-[13px] font-medium text-white">Now Accepting Free Audits</span>
-    </div>
-    <h1 class="grad-head font-medium text-center" style="max-width:813px; font-size:64px; line-height:1.1; letter-spacing:-0.02em">
-      AI Operations at the Speed of Your Business.
+      <span class="text-[13px] font-medium text-white">Intelligent Agents × Dashboard</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.7); margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg>
+    </a>
+    <h1 class="grad-head font-medium text-center" style="max-width:920px; font-size:74px; line-height:1.02; letter-spacing:-0.03em">
+      Designed to perform.<br><span style="color:rgba(255,255,255,0.4)">Built to automate.</span>
     </h1>
-    <p class="text-[15px] font-normal text-center" style="color:rgba(255,255,255,0.7); max-width:680px; line-height:1.55">
-      Powering seamless customer journeys and real-time response, NexFlow is the operations layer for service businesses that move with purpose — answering every call, capturing every lead, and following up automatically. 24/7.
+    <p class="text-[16px] font-normal text-center" style="color:rgba(255,255,255,0.65); max-width:620px; line-height:1.55">
+      AI operations for any part of your business — voice receptionists, custom workflow agents, and Sentry cyber risk monitoring, all running inside one command center.
     </p>
     <div class="flex flex-wrap items-center justify-center gap-3">
-      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Apply for Free Audit</a>
-      <a href="#dashboard" class="pill-dark">See It Live</a>
+      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
+      <a href="#dashboard" class="pill-dark">See the Command Center</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE — FRAMEWORKS (3-card) ════════════════ -->
+<section id="frameworks" class="slide clean flex flex-col items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Frameworks</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        The blueprint.<br><span class="muted">Behind every system.</span>
+      </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:560px">Three frameworks. One operating layer. Each one is its own system — together they compound.</p>
+    </div>
+    <div class="stagger grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="fw-eyebrow">01 · Voice</div>
+        <h3>AI Voice<br>Receptionist</h3>
+        <p>Picks up. Qualifies. Books. Logs. Every inbound call, handled — human-sounding, 24/7.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Inbound &amp; after-hours coverage</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Books directly to your calendar</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Live transfer when it matters</div>
+        </div>
+      </div>
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><rect x="9" y="9" width="6" height="6" rx="1"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="15" x2="22" y2="15"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="15" x2="4" y2="15"/></svg></div>
+        <div class="fw-eyebrow">02 · Custom Agents</div>
+        <h3>Bespoke AI<br>Workflows</h3>
+        <p>Whatever the process — we put an agent inside it. Triage, follow-up, recovery, renewals.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Triage, routing, follow-up</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>No-show recovery &amp; renewals</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Anything off-script</div>
+        </div>
+      </div>
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="fw-eyebrow">03 · Sentry</div>
+        <h3>Cyber Risk<br>Intelligence</h3>
+        <p>Watches the perimeter so you don't have to. Scans, alerts, patches — running in the background.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Perimeter &amp; credential scans</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Compliance-ready reports</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Threat alerts in real time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE — LIVE DEMO (voice + chat) ════════════════ -->
+<section id="demo" class="slide clean flex flex-col items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Proof in motion</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        Agents that pick up.<br><span class="muted">Calls that close themselves.</span>
+      </h2>
+    </div>
+    <!-- SCENE 1 — Voice Agent (phone left · copy right) -->
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-12 md:gap-20 max-w-5xl mx-auto items-center mb-32">
+      <div class="blur-in order-2 md:order-1">
+        <div class="concept-eyebrow" style="margin-bottom:12px">AI Receptionist</div>
+        <h3 class="scene-h3 font-medium text-white mb-4" style="font-size:38px; line-height:1.1; letter-spacing:-0.025em">Picks up every call.<br><span style="color:rgba(255,255,255,0.4)">Books it to your calendar.</span></h3>
+        <p class="text-[15px] mb-6" style="color:rgba(255,255,255,0.65); line-height:1.65; max-width:430px">Trained on your business. Qualifies the caller. Books the right ones. 24/7, sounds human, no hold music.</p>
+        <ul class="space-y-2.5" style="color:rgba(255,255,255,0.8)">
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Inbound &amp; after-hours coverage</li>
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Books directly to Google / Outlook / Cal.com</li>
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Live transfer when it matters</li>
+        </ul>
+      </div>
+      <!-- VOICE agent phone -->
+      <div class="phone blur-in order-1 md:order-2" data-demo="voice">
+        <div class="phone-island"></div>
+        <div class="phone-screen">
+          <div class="phone-statusbar">
+            <span class="clock" id="voice-clock">9:41</span>
+            <div class="icons">
+              <!-- signal -->
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.7"/><rect x="4.5" y="5" width="3" height="6" rx="0.7"/><rect x="9" y="3" width="3" height="8" rx="0.7"/><rect x="13.5" y="0" width="3" height="11" rx="0.7"/></svg>
+              <!-- wifi -->
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 11.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM8 7c1.42 0 2.7.55 3.66 1.45.31.29.8.28 1.09-.02.29-.31.27-.79-.03-1.07A6.97 6.97 0 008 5.5c-1.84 0-3.5.71-4.72 1.86-.3.28-.32.76-.03 1.07.29.3.78.31 1.09.02A5.48 5.48 0 018 7zM8 3c2.42 0 4.64.86 6.37 2.3.31.26.78.22 1.05-.09a.74.74 0 00-.1-1.04A9.46 9.46 0 008 1.5C5.6 1.5 3.4 2.4 1.68 3.87c-.31.26-.36.73-.1 1.04.27.31.74.35 1.05.09A8.46 8.46 0 018 3z"/></svg>
+              <!-- battery -->
+              <svg width="27" height="12" viewBox="0 0 27 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="currentColor" stroke-opacity="0.4" stroke-width="1"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><rect x="23" y="3.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.4"/></svg>
+            </div>
+          </div>
+          <div class="phone-header">
+            <div class="phone-avatar">NF</div>
+            <div class="phone-info">
+              <div class="nm">NexFlow Voice Agent</div>
+              <div class="st">Inbound · <span id="voice-timer">00:00</span></div>
+            </div>
+            <div class="phone-timer">LIVE</div>
+          </div>
+          <div class="phone-feed" id="voice-feed"></div>
+          <div class="phone-footer">
+            <div class="wave-mini">
+              <span style="animation-delay:0s"></span><span style="animation-delay:.08s"></span><span style="animation-delay:.16s"></span><span style="animation-delay:.24s"></span><span style="animation-delay:.32s"></span><span style="animation-delay:.4s"></span><span style="animation-delay:.48s"></span><span style="animation-delay:.56s"></span><span style="animation-delay:.64s"></span><span style="animation-delay:.72s"></span><span style="animation-delay:.8s"></span><span style="animation-delay:.88s"></span><span style="animation-delay:.96s"></span><span style="animation-delay:1.04s"></span><span style="animation-delay:1.12s"></span><span style="animation-delay:1.2s"></span><span style="animation-delay:1.28s"></span><span style="animation-delay:1.36s"></span><span style="animation-delay:1.44s"></span><span style="animation-delay:1.52s"></span><span style="animation-delay:1.6s"></span><span style="animation-delay:1.68s"></span><span style="animation-delay:1.76s"></span><span style="animation-delay:1.84s"></span><span style="animation-delay:1.92s"></span><span style="animation-delay:2s"></span>
+            </div>
+            <div class="hangup">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 2 — Call Breakdown (phone right · copy left) -->
+    <div class="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-12 md:gap-20 max-w-5xl mx-auto items-center">
+      <!-- NOTIFICATIONS phone (call breakdown as iOS notifications) -->
+      <div class="phone blur-in" data-demo="notifs">
+        <div class="phone-island"></div>
+        <div class="phone-screen">
+          <div class="phone-lock-status">
+            <span>9:42</span>
+            <div class="icons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.7"/><rect x="4.5" y="5" width="3" height="6" rx="0.7"/><rect x="9" y="3" width="3" height="8" rx="0.7"/><rect x="13.5" y="0" width="3" height="11" rx="0.7"/></svg>
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 11.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM8 7c1.42 0 2.7.55 3.66 1.45.31.29.8.28 1.09-.02.29-.31.27-.79-.03-1.07A6.97 6.97 0 008 5.5c-1.84 0-3.5.71-4.72 1.86-.3.28-.32.76-.03 1.07.29.3.78.31 1.09.02A5.48 5.48 0 018 7zM8 3c2.42 0 4.64.86 6.37 2.3.31.26.78.22 1.05-.09a.74.74 0 00-.1-1.04A9.46 9.46 0 008 1.5C5.6 1.5 3.4 2.4 1.68 3.87c-.31.26-.36.73-.1 1.04.27.31.74.35 1.05.09A8.46 8.46 0 018 3z"/></svg>
+              <svg width="27" height="12" viewBox="0 0 27 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="currentColor" stroke-opacity="0.4" stroke-width="1"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><rect x="23" y="3.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.4"/></svg>
+            </div>
+          </div>
+          <div class="phone-lock-bg">
+            <div class="lock-time">9:42</div>
+            <div class="lock-date">Wednesday, October 15</div>
+            <div class="ios-stack" id="notif-stack"></div>
+          </div>
+        </div>
+      </div>
+      <div class="blur-in">
+        <div class="concept-eyebrow" style="margin-bottom:12px">Full Call Breakdown</div>
+        <h3 class="scene-h3 font-medium text-white mb-4" style="font-size:38px; line-height:1.1; letter-spacing:-0.025em">From answered.<br><span style="color:rgba(255,255,255,0.4)">To auto-scheduled.</span></h3>
+        <p class="text-[15px] mb-6" style="color:rgba(255,255,255,0.65); line-height:1.65; max-width:430px">Every inbound call triggers the full chain. Pickup. Book. Confirm. Sync. Alert. Watch it land on the lock screen.</p>
+        <ul class="space-y-2.5" style="color:rgba(255,255,255,0.8)">
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Auto-scheduled to Google Calendar</li>
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>SMS + email confirmation to caller</li>
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Contact logged to your CRM with tags</li>
+          <li class="flex items-center gap-3 text-[13px]"><span class="dot flex-shrink-0"></span>Slack alert to your sales channel</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ════════════════ SLIDE 2 — LIVE DASHBOARD (galaxy) ════════════════ -->
-<section id="dashboard" class="slide s-heavy flex flex-col items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
+<section id="dashboard" class="slide clean flex flex-col items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
-    <div class="text-center mb-12">
-      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-        <span class="dot"></span>
-        <span class="text-[13px] font-medium text-white">Command Center · Live</span>
-      </div>
-      <h2 class="grad-head font-medium blur-in mx-auto mb-5" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">See it running. Right now.</h2>
-      <p class="text-[15px] font-normal blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.6; max-width:600px">This is your personal Command Center. Every lead, call, appointment, conversion, and review in one live console — branded for your business and built around how you actually work.</p>
+    <div class="text-center mb-12 concept-pair">
+      <div class="concept-eyebrow blur-in">Unified Intelligence</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        The command center.<br><span class="muted">Every agent, one view.</span>
+      </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:580px">Voice. Custom agents. Security. One screen. Owned by you.</p>
     </div>
-    <div class="dash-shell mx-auto blur-in">
+    <div class="dash-shell pop mx-auto">
       <div class="dash-shell-bar">
         <div class="dash-dot" style="background:#ff5f57"></div>
         <div class="dash-dot" style="background:#febc2e"></div>
@@ -464,20 +1311,19 @@
         <div class="dash-tabs" role="tablist">
           <button class="dash-tab active" data-tab="overview">Overview</button>
           <button class="dash-tab" data-tab="voice">01 · Voice</button>
-          <button class="dash-tab" data-tab="capture">02 · Capture</button>
-          <button class="dash-tab" data-tab="sync">03 · Sync</button>
-          <button class="dash-tab" data-tab="sentry">04 · Sentry</button>
-          <button class="dash-tab" data-tab="reviews">05 · Reviews</button>
-          <button class="dash-tab" data-tab="custom">06 · Custom</button>
+          <button class="dash-tab" data-tab="custom">02 · Custom Agents</button>
+          <button class="dash-tab" data-tab="sentry">03 · Sentry</button>
+          <button class="dash-tab" data-tab="sync">04 · Pipeline</button>
+          <button class="dash-tab" data-tab="capture">05 · Capture</button>
         </div>
 
         <!-- ─── OVERVIEW ─── -->
         <div class="dash-panel active" data-panel="overview">
           <div class="dash-mock-stats">
-            <div class="dash-stat"><div class="k">Leads · 24h</div><div class="v">247</div><div class="t">▲ +18%</div></div>
-            <div class="dash-stat"><div class="k">Booked</div><div class="v">89</div><div class="t">▲ +24%</div></div>
-            <div class="dash-stat"><div class="k">Calls</div><div class="v">412</div><div class="t">▲ +11%</div></div>
-            <div class="dash-stat"><div class="k">Reviews</div><div class="v">4.9<span style="font-size:18px; color:rgba(255,255,255,0.4)">★</span></div><div class="t">▲ +0.2</div></div>
+            <div class="dash-stat"><div class="k">Agents Live</div><div class="v">8</div><div class="t">▲ +2 this month</div></div>
+            <div class="dash-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="dash-stat"><div class="k">Calls Answered</div><div class="v">412</div><div class="t">100% pickup</div></div>
+            <div class="dash-stat"><div class="k">Security Score</div><div class="v">98<span style="font-size:18px; color:rgba(255,255,255,0.4)">/100</span></div><div class="t">▲ All clear</div></div>
           </div>
           <div class="dash-mock-row">
             <div class="dash-spark">
@@ -495,11 +1341,11 @@
             </div>
             <div class="dash-feed">
               <div class="h">Live Activity</div>
-              <div class="feed-row"><span class="ts">11:47</span><span class="ev"><b>Lead booked</b> · ProSpa — Sarah C.</span></div>
-              <div class="feed-row"><span class="ts">11:42</span><span class="ev"><b>Call answered</b> · Voice Agent · Booked</span></div>
-              <div class="feed-row"><span class="ts">11:36</span><span class="ev"><b>Review request</b> · 5 ★ on Google</span></div>
-              <div class="feed-row"><span class="ts">11:31</span><span class="ev"><b>Follow-up</b> · 24h post-appt drip</span></div>
-              <div class="feed-row"><span class="ts">11:28</span><span class="ev"><b>Sentry scan</b> · Perimeter clean</span></div>
+              <div class="feed-row"><span class="ts">11:47</span><span class="ev"><b>Voice agent</b> · Inbound call · Booked</span></div>
+              <div class="feed-row"><span class="ts">11:42</span><span class="ev"><b>Custom agent</b> · Invoice nudge · Sent</span></div>
+              <div class="feed-row"><span class="ts">11:36</span><span class="ev"><b>Sentry scan</b> · Perimeter clean</span></div>
+              <div class="feed-row"><span class="ts">11:31</span><span class="ev"><b>Triage agent</b> · 14 leads routed</span></div>
+              <div class="feed-row"><span class="ts">11:28</span><span class="ev"><b>No-show recovery</b> · 3 rebooked</span></div>
             </div>
           </div>
         </div>
@@ -595,25 +1441,7 @@
           </div>
         </div>
 
-        <!-- ─── 05 · REVIEWS ─── -->
-        <div class="dash-panel" data-panel="reviews">
-          <div class="dash-mock-stats">
-            <div class="dash-stat"><div class="k">Avg Rating</div><div class="v">4.9<span style="font-size:18px; color:rgba(255,255,255,0.4)">★</span></div><div class="t">▲ +0.2</div></div>
-            <div class="dash-stat"><div class="k">Total Reviews</div><div class="v">847</div><div class="t">▲ +24 this week</div></div>
-            <div class="dash-stat"><div class="k">Response Rate</div><div class="v">100<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">All replied</div></div>
-            <div class="dash-stat"><div class="k">5-Star Share</div><div class="v">87<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">▲ +3%</div></div>
-          </div>
-          <div class="dash-spark">
-            <div class="h"><span class="k">Rating Distribution · 847 reviews</span><span class="v">4.9 ★</span></div>
-            <div class="rating-row"><span class="rating-stars">5 ★</span><div class="rating-track"><div class="rating-fill" style="width:87%"></div></div><span class="rating-count">737</span></div>
-            <div class="rating-row"><span class="rating-stars">4 ★</span><div class="rating-track"><div class="rating-fill" style="width:9%"></div></div><span class="rating-count">76</span></div>
-            <div class="rating-row"><span class="rating-stars">3 ★</span><div class="rating-track"><div class="rating-fill" style="width:3%"></div></div><span class="rating-count">25</span></div>
-            <div class="rating-row"><span class="rating-stars">2 ★</span><div class="rating-track"><div class="rating-fill" style="width:0.7%"></div></div><span class="rating-count">6</span></div>
-            <div class="rating-row"><span class="rating-stars">1 ★</span><div class="rating-track"><div class="rating-fill" style="width:0.3%"></div></div><span class="rating-count">3</span></div>
-          </div>
-        </div>
-
-        <!-- ─── 06 · CUSTOM ─── -->
+        <!-- ─── 02 · CUSTOM AGENTS ─── -->
         <div class="dash-panel" data-panel="custom">
           <div class="dash-mock-stats">
             <div class="dash-stat"><div class="k">Active Agents</div><div class="v">8</div><div class="t">▲ 2 added this month</div></div>
@@ -636,127 +1464,87 @@
   </div>
 </section>
 
-<!-- ════════════════ SLIDE 3 — HOW IT WORKS (numbered steps · liquid metal) ════════════════ -->
-<section id="how" class="slide flex flex-col items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
-  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-5xl mx-auto w-full">
-    <div class="text-center mb-14">
-      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-        <span class="dot"></span>
-        <span class="text-[13px] font-medium text-white">How It Works</span>
-      </div>
-      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:680px">From audit to live system. In days.</h2>
+<!-- ════════════════ SLIDE — PROCESS (Analyze · Design · Optimize) ════════════════ -->
+<section id="how" class="slide clean flex flex-col items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-16 concept-pair">
+      <div class="concept-eyebrow blur-in">The Blueprint</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:680px">
+        Analyze. Design.<br><span class="muted">Optimize.</span>
+      </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:520px">Three stages behind every build. One blueprint that compounds.</p>
     </div>
-    <div class="space-y-7 max-w-3xl mx-auto">
-      <div class="relative flex items-start gap-5 blur-in">
-        <div class="relative">
-          <div class="step-num">01</div>
-          <div class="step-line"></div>
-        </div>
-        <div class="flex-1 glass rounded-2xl p-6">
-          <h4 class="text-[20px] font-medium text-white mb-1">Apply for your free audit</h4>
-          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Tell us about your business in 60 seconds. We review every form personally — no AI auto-generated reports.</p>
-        </div>
+    <div class="stagger grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="glass rounded-2xl p-8 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.22em] mb-3" style="color:rgba(255,255,255,0.45)">01 · ANALYZE</p>
+        <h4 class="text-[22px] font-medium text-white mb-3" style="letter-spacing:-0.015em; line-height:1.2">Find the leverage.</h4>
+        <p class="text-[14px]" style="color:rgba(255,255,255,0.65); line-height:1.6">We map your operation and surface the highest-ROI places to put an agent.</p>
       </div>
-      <div class="relative flex items-start gap-5 blur-in">
-        <div class="relative">
-          <div class="step-num">02</div>
-          <div class="step-line"></div>
-        </div>
-        <div class="flex-1 glass rounded-2xl p-6">
-          <h4 class="text-[20px] font-medium text-white mb-1">Custom audit report sent</h4>
-          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Within 24 hours: a detailed breakdown of where you're losing leads, calls, and follow-ups — and exactly what NexFlow would automate first.</p>
-        </div>
+      <div class="glass rounded-2xl p-8 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11h-1.5a1.5 1.5 0 1 1 0-3H19a2 2 0 0 0-2-2h-3.5a1.5 1.5 0 0 1-3 0H7a2 2 0 0 0-2 2v3.5a1.5 1.5 0 1 1 0 3V19a2 2 0 0 0 2 2h3.5a1.5 1.5 0 0 1 3 0H17a2 2 0 0 0 2-2v-3.5a1.5 1.5 0 1 1 0-3z"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.22em] mb-3" style="color:rgba(255,255,255,0.45)">02 · DESIGN</p>
+        <h4 class="text-[22px] font-medium text-white mb-3" style="letter-spacing:-0.015em; line-height:1.2">Engineer the systems.</h4>
+        <p class="text-[14px]" style="color:rgba(255,255,255,0.65); line-height:1.6">Custom agents, built around how your business actually runs. No generic templates.</p>
       </div>
-      <div class="relative flex items-start gap-5 blur-in">
-        <div class="relative">
-          <div class="step-num">03</div>
-          <div class="step-line"></div>
-        </div>
-        <div class="flex-1 glass rounded-2xl p-6">
-          <h4 class="text-[20px] font-medium text-white mb-1">We build &amp; deploy</h4>
-          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">We connect your phone, calendar, and CRM. Configure your AI agents. Test every workflow before going live. You don't lift a finger.</p>
-        </div>
-      </div>
-      <div class="relative flex items-start gap-5 blur-in">
-        <div class="relative">
-          <div class="step-num">04</div>
-        </div>
-        <div class="flex-1 glass rounded-2xl p-6">
-          <h4 class="text-[20px] font-medium text-white mb-1">Live in days. Running forever.</h4>
-          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Your branded Command Center goes live. Every signal tracked. We handle ongoing monitoring and optimization. You watch the leads come in.</p>
-        </div>
+      <div class="glass rounded-2xl p-8 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.22em] mb-3" style="color:rgba(255,255,255,0.45)">03 · OPTIMIZE</p>
+        <h4 class="text-[22px] font-medium text-white mb-3" style="letter-spacing:-0.015em; line-height:1.2">Tune for growth.</h4>
+        <p class="text-[14px]" style="color:rgba(255,255,255,0.65); line-height:1.6">We monitor, refine, and keep tuning the system. Performance compounds in the background.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ SLIDE 4 — MODULES (glass sculpture) ════════════════ -->
-<section id="modules" class="slide flex flex-col items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    data-hls="https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
-  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
-    <div class="text-center mb-12">
-      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-        <span class="dot"></span>
-        <span class="text-[13px] font-medium text-white">Modules</span>
-      </div>
-      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Six systems. One backbone.</h2>
+<!-- ════════════════ SLIDE — WORKFLOW AUTOMATIONS (4-card) ════════════════ -->
+<section id="workflows" class="slide clean flex flex-col items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Workflow Automations</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        Built to automate.<br><span class="muted">Engineered to scale.</span>
+      </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:540px">Four stages. One automation logic. Every build runs the same way — today and three years from now.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">01 · VOICE</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">AI Voice Agents</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Answer every call. 24/7. Books to your calendar.</p>
+    <div class="stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass rounded-2xl p-6 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.2em] mb-2" style="color:rgba(255,255,255,0.45)">01 · CONNECT</p>
+        <h4 class="text-[18px] font-medium text-white mb-2">Seamless Integration</h4>
+        <p class="text-[13px]" style="color:rgba(255,255,255,0.6); line-height:1.55">Plugs into your CRM, calendar, phone, payments. No migration.</p>
       </div>
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">02 · CAPTURE</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">Lead Capture &amp; Routing</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Forms, ads, DMs — funneled and qualified instantly.</p>
+      <div class="glass rounded-2xl p-6 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.2em] mb-2" style="color:rgba(255,255,255,0.45)">02 · TRIGGER</p>
+        <h4 class="text-[18px] font-medium text-white mb-2">Custom Triggers</h4>
+        <p class="text-[13px]" style="color:rgba(255,255,255,0.6); line-height:1.55">Fires the right agent the second a call lands or a form posts.</p>
       </div>
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">03 · SYNC</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">CRM &amp; Pipeline Sync</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Every lead, call, and conversion in one live pipeline.</p>
+      <div class="glass rounded-2xl p-6 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.2em] mb-2" style="color:rgba(255,255,255,0.45)">03 · EXECUTE</p>
+        <h4 class="text-[18px] font-medium text-white mb-2">Autonomous Action</h4>
+        <p class="text-[13px]" style="color:rgba(255,255,255,0.6); line-height:1.55">Replaces hours of manual work with end-to-end agent logic.</p>
       </div>
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">04 · SENTRY</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">Risk Intelligence</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Sentry scans your perimeter on a schedule.</p>
-      </div>
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">05 · REVIEWS</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">Review Follow-Ups</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Auto-request reviews from happy customers. Respond to every rating.</p>
-      </div>
-      <div class="glass rounded-2xl p-7 blur-in">
-        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">06 · CUSTOM</p>
-        <h4 class="text-[22px] font-medium text-white mb-2">Custom Agents &amp; Tasks</h4>
-        <p class="text-[14px] font-normal" style="color:rgba(255,255,255,0.65)">Bespoke AI agents for your unique workflows. One-off automations, scheduled tasks, anything off-script.</p>
+      <div class="glass rounded-2xl p-6 blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <p class="text-[10px] font-medium tracking-[0.2em] mb-2" style="color:rgba(255,255,255,0.45)">04 · OPTIMIZE</p>
+        <h4 class="text-[18px] font-medium text-white mb-2">Performance Tuning</h4>
+        <p class="text-[13px]" style="color:rgba(255,255,255,0.6); line-height:1.55">Monitors success rates and ROI — tunes the agents to match.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ════════════════ SLIDE 5 — INTEGRATIONS (different bg per request) ════════════════ -->
-<section id="integrations" class="slide flex flex-col items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
+<section id="integrations" class="slide clean flex flex-col items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-      <div>
-        <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-          <span class="dot"></span>
-          <span class="text-[13px] font-medium text-white">Integrations</span>
-        </div>
-        <h2 class="grad-head font-medium mb-6 blur-in" style="font-size:52px; line-height:1.1; letter-spacing:-0.02em; max-width:520px">No rip and replace.</h2>
+      <div class="concept-pair">
+        <div class="concept-eyebrow blur-in">Integrations</div>
+        <h2 class="grad-head blur-in mb-6" style="max-width:520px">
+          Connected systems.<br><span class="muted">No rip and replace.</span>
+        </h2>
         <p class="text-[16px] font-normal blur-in mb-7" style="color:rgba(255,255,255,0.7); line-height:1.6; max-width:520px">Keep the CRM, calendar, email platform, and booking tools you already use. NexFlow plugs in alongside them — no migration, no retraining, no starting over.</p>
         <ul class="space-y-3 blur-in" style="color:rgba(255,255,255,0.8)">
           <li class="flex items-start gap-3 text-[14px]"><span class="dot mt-2 flex-shrink-0"></span>Your CRM, email, and calendar stay exactly where they are</li>
@@ -775,35 +1563,30 @@
 </section>
 
 <!-- ════════════════ SLIDE 6 — STATS (galaxy) ════════════════ -->
-<section class="slide flex items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
+<section class="slide clean flex items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
-    <div class="text-center mb-14">
-      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-        <span class="dot"></span>
-        <span class="text-[13px] font-medium text-white">The Outcome</span>
-      </div>
-      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Built for results you can measure.</h2>
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Designed for performance</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        Results you can measure.<br><span class="muted">In every framework.</span>
+      </h2>
     </div>
     <div class="glass-strong rounded-3xl p-10 md:p-14 blur-in">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 text-center md:text-left">
         <div>
-          <div class="stat-num grad-head font-medium leading-none mb-3">6</div>
-          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Systems live</div>
-          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Voice · Capture · Sync · Sentry · Reviews · Custom</div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">4</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Operational zones</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Customer · Internal · Risk · Revenue</div>
+        </div>
+        <div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">Any</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Workflow agentized</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">If you can describe it, we can build it</div>
         </div>
         <div>
           <div class="stat-num grad-head font-medium leading-none mb-3">24/7</div>
-          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Always on</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Always running</div>
           <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">No missed windows</div>
-        </div>
-        <div>
-          <div class="stat-num grad-head font-medium leading-none mb-3">0</div>
-          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Missed leads</div>
-          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Routed instantly</div>
         </div>
         <div>
           <div class="stat-num grad-head font-medium leading-none mb-3">Days</div>
@@ -815,61 +1598,120 @@
   </div>
 </section>
 
-<!-- ════════════════ SLIDE 7 — FOUNDER (cosmic vortex) ════════════════ -->
-<section id="founder" class="slide flex items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
-  <div class="scrim"></div>
-  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
-    <div class="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-14 items-center">
-      <div class="glass-strong rounded-2xl p-10 blur-in flex flex-col items-center gap-7">
-        <div class="relative">
-          <div class="absolute -inset-3 rounded-full" style="background: radial-gradient(circle, rgba(125,211,231,0.3), transparent 70%); filter: blur(12px)"></div>
-          <img src="founder.jpg" alt="Antonyo Fridal" class="relative w-44 h-44 rounded-full object-cover" style="border:2px solid rgba(255,255,255,0.4)">
-        </div>
-        <div class="w-full border-t border-white/10 pt-5 flex flex-col gap-3 text-sm">
-          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Founder</span><span class="text-white font-medium">Antonyo Fridal</span></div>
-          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Background</span><span class="text-white font-medium">Cybersecurity · 5 yrs</span></div>
-          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Building</span><span class="text-white font-medium">NexFlow AI</span></div>
-        </div>
+<!-- ════════════════ SLIDE — EVERY BENEFIT (6-grid) ════════════════ -->
+<section id="benefits" class="slide clean flex items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Every benefit</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        Backed by design.<br><span class="muted">Engineered to compound.</span>
+      </h2>
+    </div>
+    <div class="stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h4>Time Optimization</h4>
+        <p>Reclaim the hours wasted on work that should run on its own.</p>
       </div>
-      <div>
-        <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
-          <span class="dot"></span>
-          <span class="text-[13px] font-medium text-white">The Founder</span>
-        </div>
-        <h2 class="grad-head font-medium mb-6 blur-in" style="font-size:52px; line-height:1.1; letter-spacing:-0.02em; max-width:620px">Built by an operator. Not a marketer.</h2>
-        <p class="text-[16px] font-normal mb-5 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">I'm Antonyo Fridal — five years in tech and cybersecurity, working inside the systems that businesses run on. I've watched the same pattern over and over: leads slip through, calls go unanswered, follow-ups never get sent, and good companies lose revenue to manual work that should never have been manual in the first place.</p>
-        <p class="text-[16px] font-normal mb-7 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">NexFlow is the system I wish those companies had. Built from the security mindset — every workflow tracked, every signal captured, nothing falling through. If a process can be automated correctly, it should be.</p>
-        <div class="flex flex-wrap gap-2 blur-in">
-          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">5 yrs · Tech</span>
-          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Cybersecurity</span>
-          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Systems Thinker</span>
-          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Operator-First</span>
-        </div>
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <h4>Consistent Communication</h4>
+        <p>Every call, message, and follow-up — handled the same way, every time.</p>
+      </div>
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
+        <h4>Scalable Growth</h4>
+        <p>Handle 10× without a single new hire. The agents scale — the headcount doesn't.</p>
+      </div>
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h4>Cost Reduction</h4>
+        <p>Stop paying people to do what an agent does faster.</p>
+      </div>
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h4>Increased Efficiency</h4>
+        <p>Replace tab-juggling with workflows that fire on the signal.</p>
+      </div>
+      <div class="benefit-card blur-in">
+        <div class="ic-tile-sm"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h4>Smarter Decisions</h4>
+        <p>Real performance data. Every decision backed by signal, not gut.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ════════════════ SLIDE — FAQ ════════════════ -->
+<section id="faq" class="slide clean flex items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-4xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Everything clear</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:680px">
+        Before the first call.<br><span class="muted">Worth knowing upfront.</span>
+      </h2>
+    </div>
+    <div class="flex flex-col gap-3">
+      <details class="faq-item blur-in">
+        <summary>
+          <span>Do I need any technical experience to use NexFlow?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">None. We design the agents, wire them into your existing tools, test every flow, and hand you a branded dashboard. You only see the parts you want to see.</div>
+      </details>
+      <details class="faq-item blur-in">
+        <summary>
+          <span>How long does implementation take?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">Most builds go live within days, not months. Timeline depends on system complexity and how many integrations are involved. You'll get an exact number in your audit report.</div>
+      </details>
+      <details class="faq-item blur-in">
+        <summary>
+          <span>What businesses benefit most from NexFlow?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">Service businesses where the operation is the product — clinics, agencies, professional services, home services, and any team losing time, leads, or risk to manual work.</div>
+      </details>
+      <details class="faq-item blur-in">
+        <summary>
+          <span>What makes NexFlow different from other automation tools?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">We don't sell a generic toolkit. We design custom AI agents around your specific business and operate them as a partner — built with a cybersecurity mindset, every signal logged, nothing falling through.</div>
+      </details>
+      <details class="faq-item blur-in">
+        <summary>
+          <span>What kind of results can I expect?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">Most clients see reduced manual workload, faster response times, and measurable ROI inside the first month of deployment — with specific numbers projected in your audit report based on your current operation.</div>
+      </details>
+      <details class="faq-item blur-in">
+        <summary>
+          <span>How is pricing structured?</span>
+          <span class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <div class="faq-body">Every build is scoped to your operation, so pricing depends on which agents you need and the integrations involved. Your audit report comes back with exact numbers.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════════ SLIDE 8 — CTA + FOOTER (liquid metal) ════════════════ -->
-<section id="contact" class="slide flex flex-col items-center justify-center">
-  <video class="bg" autoplay loop muted playsinline preload="auto"
-    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
-  <div class="scrim"></div>
-  <div class="cosmic-accent"></div>
+<section id="contact" class="slide clean flex flex-col items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
     <div class="text-center">
       <div class="rounded-[20px] inline-flex items-center mb-7 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
         <span class="dot"></span>
         <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
-        <span class="text-[13px] font-medium text-white">Now Accepting Free Audits</span>
+        <span class="text-[13px] font-medium text-white">Now Booking Operations Audits</span>
       </div>
-      <h2 class="grad-head font-medium mb-6 blur-in mx-auto" style="font-size:60px; line-height:1.05; letter-spacing:-0.02em; max-width:780px">Apply for your free audit.</h2>
-      <p class="text-[16px] font-normal mb-9 blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">Tell us about your business in 60 seconds. We'll send back a custom audit showing exactly where you're losing leads, calls, and follow-ups — and what NexFlow would automate first.</p>
+      <h2 class="grad-head font-medium mb-6 blur-in mx-auto" style="font-size:64px; line-height:1.02; letter-spacing:-0.03em; max-width:820px">Designed for results.<br><span style="color:rgba(255,255,255,0.4)">Built for what's next.</span></h2>
+      <p class="text-[16px] font-normal mb-9 blur-in mx-auto" style="color:rgba(255,255,255,0.65); line-height:1.65; max-width:600px">Sixty seconds to describe your business. Twenty-four hours to get back a written audit — which agents we'd build, what they replace, what it costs, what it returns.</p>
       <div class="flex flex-wrap items-center justify-center gap-4 blur-in mb-5">
-        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Apply for Free Audit</a>
-        <a href="#dashboard" class="pill-dark">See It Live</a>
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
+        <a href="#dashboard" class="pill-dark">See the Command Center</a>
       </div>
     </div>
     <div class="mt-24 pt-10 border-t border-white/10">
@@ -877,22 +1719,22 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
         <div>
           <div class="text-white text-[14px] font-medium mb-4">NexFlow AI</div>
-          <div class="text-[12px] leading-relaxed" style="color:rgba(255,255,255,0.45)">The operations layer for service businesses. Built and managed by us, owned by you.</div>
+          <div class="text-[12px] leading-relaxed" style="color:rgba(255,255,255,0.45)">AI Operations for any part of your business. Built and managed by us, owned by you.</div>
         </div>
         <div>
           <div class="text-[11px] uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.4)">Product</div>
           <ul class="flex flex-col gap-2.5 text-[13px]" style="color:rgba(255,255,255,0.7)">
+            <li><a href="#frameworks" class="hover:text-white">Frameworks</a></li>
             <li><a href="#dashboard" class="hover:text-white">Dashboard</a></li>
-            <li><a href="#how" class="hover:text-white">Process</a></li>
-            <li><a href="#modules" class="hover:text-white">Modules</a></li>
+            <li><a href="#workflows" class="hover:text-white">Workflows</a></li>
             <li><a href="#integrations" class="hover:text-white">Integrations</a></li>
           </ul>
         </div>
         <div>
           <div class="text-[11px] uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.4)">Company</div>
           <ul class="flex flex-col gap-2.5 text-[13px]" style="color:rgba(255,255,255,0.7)">
-            <li><a href="#founder" class="hover:text-white">Founder</a></li>
-            <li><a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="hover:text-white">Free Audit</a></li>
+            <li><a href="#faq" class="hover:text-white">FAQ</a></li>
+            <li><a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="hover:text-white">Operations Audit</a></li>
           </ul>
         </div>
         <div>
@@ -939,16 +1781,23 @@
 </button>
 <div id="chat-panel">
   <div class="chat-head">
-    <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.1)">
-      <span class="text-[11px] font-medium" style="color:#7dd3e7">NF</span>
+    <div class="av">NF</div>
+    <div class="info">
+      <div class="nm">NexFlow Assistant</div>
+      <div class="st">Online · usually replies instantly</div>
     </div>
-    <div class="text-[13px] font-medium">NexFlow Assistant</div>
-    <div class="ml-auto text-[11px] flex items-center gap-1.5" style="color:#34d399">
-      <span class="w-1.5 h-1.5 rounded-full" style="background:#34d399"></span>Online
-    </div>
+    <button class="close" id="chat-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
   <div class="chat-msgs" id="chat-msgs"></div>
   <div class="chat-opts" id="chat-opts"></div>
+  <div class="chat-input">
+    <input id="chat-input-field" type="text" placeholder="Ask me anything about NexFlow..." autocomplete="off"/>
+    <button id="chat-send" aria-label="Send">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -964,11 +1813,23 @@
   }
   document.querySelectorAll('video[data-hls]').forEach(attachHls);
 
-  // Reveal observer
+  // Reveal observer (inner elements)
   const io = new IntersectionObserver(es => {
     es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.12 });
   document.querySelectorAll('.blur-in').forEach(el => io.observe(el));
+
+  // Section flow observer — fades & lifts whole sections into view
+  const sectionIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in-view'); sectionIO.unobserve(e.target); }});
+  }, { threshold: 0.08, rootMargin: '0px 0px -80px 0px' });
+  document.querySelectorAll('.section-flow').forEach(el => sectionIO.observe(el));
+
+  // Dashboard pop-in observer
+  const popIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in-view'); popIO.unobserve(e.target); }});
+  }, { threshold: 0.18 });
+  document.querySelectorAll('.dash-shell.pop').forEach(el => popIO.observe(el));
 
   // ── CHAT FAB ──
   const chatFab = document.getElementById('chat-fab');
@@ -1016,7 +1877,7 @@
         const chip = document.createElement('div');
         chip.className = 'marquee-chip';
         const img = document.createElement('img');
-        img.src = '/icons/' + icon.split('/')[0] + '.svg';
+        img.src = 'icons/' + icon.split('/')[0] + '.svg';
         img.alt = name;
         img.width = 22; img.height = 22;
         img.decoding = 'async';
@@ -1050,57 +1911,414 @@
     });
   })();
 
-  // ── CHAT ──
+  // ── PROOF IN MOTION (looping phone demos) ──
+  (function setupPhoneDemos(){
+    const VOICE_SCRIPT = [
+      { who:'bot',  text:"Hey, this is NexFlow — thanks for calling. How can I help today?", delay:900 },
+      { who:'typing', delay:1100 },
+      { who:'user', text:"Hi, trying to book a consult for next week.", delay:900 },
+      { who:'typing', delay:1000 },
+      { who:'bot',  text:"Of course. Tuesday at 2pm or Wednesday at 10am — which fits better?", delay:1100 },
+      { who:'typing', delay:900 },
+      { who:'user', text:"Wednesday at 10am.", delay:800 },
+      { who:'typing', delay:1000 },
+      { who:'bot',  text:"You're booked. Confirmation heading to your phone now.", delay:1200 },
+      { who:'event', text:"Appointment booked · Synced to calendar", delay:1500 }
+    ];
+    const CHAT_SCRIPT = [
+      { who:'bot',  text:"Hey — I'm the NexFlow assistant. What's the part of your business you wish wasn't manual anymore?", delay:1200 },
+      { who:'typing', delay:1300 },
+      { who:'user', text:"We miss too many calls during peak hours.", delay:900 },
+      { who:'typing', delay:1100 },
+      { who:'bot',  text:"That's the most common one we solve. Want a 24-hour written audit on your exact setup?", delay:1300 },
+      { who:'typing', delay:900 },
+      { who:'user', text:"Yes please.", delay:700 },
+      { who:'event', text:"Lead captured · Audit queued", delay:1500 }
+    ];
+
+    function timerString(s){ const m=String(Math.floor(s/60)).padStart(2,'0'); const sec=String(s%60).padStart(2,'0'); return m+':'+sec; }
+
+    function playLoop(feedId, script, timerId){
+      const feed = document.getElementById(feedId);
+      if (!feed) return;
+      let timer = 0, timerEl = timerId ? document.getElementById(timerId) : null;
+      let tickInt;
+
+      function startTicker(){
+        if (!timerEl) return;
+        timer = 0; timerEl.textContent = timerString(timer);
+        clearInterval(tickInt);
+        tickInt = setInterval(()=>{ timer++; timerEl.textContent = timerString(timer); }, 1000);
+      }
+      function stopTicker(){ clearInterval(tickInt); }
+
+      async function step(){
+        feed.innerHTML='';
+        startTicker();
+        let typingEl = null;
+        for (const e of script){
+          await new Promise(r => setTimeout(r, e.delay));
+          if (typingEl){ typingEl.remove(); typingEl = null; }
+          if (e.who === 'typing'){
+            typingEl = document.createElement('div');
+            typingEl.className = 'typing';
+            typingEl.innerHTML = '<span></span><span></span><span></span>';
+            feed.appendChild(typingEl);
+            requestAnimationFrame(()=> typingEl.classList.add('show'));
+            continue;
+          }
+          const el = document.createElement('div');
+          if (e.who === 'event'){ el.className = 'event'; el.textContent = e.text; }
+          else { el.className = 'b ' + e.who; el.textContent = e.text; }
+          feed.appendChild(el);
+          requestAnimationFrame(()=> el.classList.add('show'));
+          // auto-scroll within phone
+          feed.scrollTop = feed.scrollHeight;
+        }
+        await new Promise(r => setTimeout(r, 3000));
+        stopTicker();
+        step();
+      }
+      // start when section comes into view
+      const phoneSec = document.getElementById('demo');
+      if (phoneSec){
+        const obs = new IntersectionObserver((es) => {
+          es.forEach(e => { if (e.isIntersecting){ step(); obs.disconnect(); } });
+        }, { threshold:0.25 });
+        obs.observe(phoneSec);
+      } else {
+        step();
+      }
+    }
+
+    // single voice-agent phone; chat agent lives in the floating widget bottom-right
+    playLoop('voice-feed', VOICE_SCRIPT, 'voice-timer');
+
+    // ── NOTIFICATIONS PHONE — call breakdown as live iOS notifications ──
+    const NOTIFS = [
+      { app:'PHONE', cls:'ai-phone', when:'now',
+        icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20.487 17.14l-4.063-3.696a1 1 0 00-1.418.062l-1.179 1.28a23.07 23.07 0 01-4.611-4.61l1.279-1.18a1 1 0 00.062-1.417L6.86 3.513a1 1 0 00-1.494-.066L3.45 5.366a3 3 0 00-.643 3.376C5.34 14.78 9.22 18.66 15.26 21.19a3 3 0 003.375-.643l1.92-1.92a1 1 0 00-.067-1.487z"/></svg>',
+        title:'NexFlow answered the call', desc:'Inbound · 0.3s pickup · caller intent: consultation' },
+      { app:'CALENDAR', cls:'ai-cal', when:'24s',
+        icon:'<span class="cal-mo">OCT</span><span class="cal-d">15</span>',
+        title:'NexFlow booked a new event', desc:'Wed Oct 15 · 10:00 AM · 30 min Consultation' },
+      { app:'MESSAGES', cls:'ai-msg', when:'38s',
+        icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.486 2 2 5.928 2 10.5c0 2.42 1.272 4.59 3.272 6.082V21l3.808-2.06C10.005 19.27 10.99 19.4 12 19.4c5.514 0 10-3.928 10-8.9C22 5.928 17.514 2 12 2z"/></svg>',
+        title:'NexFlow sent SMS confirmation', desc:'"You\'re booked for Wed 10am — see you then."' },
+      { app:'GMAIL', cls:'ai-mail', when:'40s',
+        icon:'<img src="icons/gmail.svg" width="20" height="20" alt="Gmail"/>',
+        title:'NexFlow emailed confirmation', desc:'Calendar invite + prep doc attached to caller' },
+      { app:'HUBSPOT', cls:'ai-crm', when:'52s',
+        icon:'<img src="icons/hubspot.svg" width="20" height="20" alt="HubSpot"/>',
+        title:'NexFlow created contact · Hot Lead', desc:'Source: NexFlow Voice · Owner assigned' },
+      { app:'SLACK', cls:'ai-slack', when:'1m',
+        icon:'<svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 15a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill="#E01E5A"/><path d="M7 15a2 2 0 0 1 2-2h2v2a2 2 0 1 1-4 0z" fill="#E01E5A"/><path d="M9 6a2 2 0 1 1 4 0v2H9V6z" fill="#36C5F0"/><path d="M9 7a2 2 0 0 1 2-2 2 2 0 0 1 2 2v2H9V7z" fill="#36C5F0" opacity="0"/><path d="M18 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" fill="#2EB67D"/><path d="M17 9a2 2 0 0 1-2 2h-2V9a2 2 0 1 1 4 0z" fill="#2EB67D"/><path d="M15 18a2 2 0 1 1-4 0v-2h4v2z" fill="#ECB22E"/><path d="M15 17a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-2h4v2z" fill="#ECB22E"/></svg>',
+        title:'NexFlow alerted #sales channel', desc:'Voice agent closed an inbound · view in CRM' }
+    ];
+
+    function buildNotif(n){
+      const el = document.createElement('div');
+      el.className = 'ios-notif';
+      el.innerHTML =
+        '<div class="app-icon ' + n.cls + '">' + n.icon + '</div>' +
+        '<div class="body">' +
+          '<div class="meta"><span class="app">' + n.app + '</span><span>' + n.when + '</span></div>' +
+          '<div class="title">' + n.title + '</div>' +
+          '<div class="desc">' + n.desc + '</div>' +
+        '</div>';
+      return el;
+    }
+
+    function playNotifs(){
+      const stack = document.getElementById('notif-stack');
+      if (!stack) return;
+      async function loop(){
+        stack.innerHTML = '';
+        for (let i = 0; i < NOTIFS.length; i++){
+          await new Promise(r => setTimeout(r, i === 0 ? 600 : 1500));
+          const el = buildNotif(NOTIFS[i]);
+          stack.appendChild(el);
+          requestAnimationFrame(() => el.classList.add('show'));
+        }
+        await new Promise(r => setTimeout(r, 4500));
+        // fade out and restart
+        Array.from(stack.children).forEach((el, i) => {
+          setTimeout(() => el.classList.remove('show'), i * 80);
+        });
+        await new Promise(r => setTimeout(r, 1200));
+        loop();
+      }
+      const sec = document.getElementById('demo');
+      if (sec){
+        const obs = new IntersectionObserver(es => {
+          es.forEach(e => { if (e.isIntersecting){ loop(); obs.disconnect(); } });
+        }, { threshold:0.2 });
+        obs.observe(sec);
+      } else loop();
+    }
+    playNotifs();
+  })();
+
+  // ────────────────────────────────────────────────────────────
+  // NexFlow Assistant — comprehensive site knowledge base
+  // ────────────────────────────────────────────────────────────
   const TYPEFORM = 'https://form.typeform.com/to/Klck50zm';
+
   const RESPONSES = {
-    greeting:{text:"Hey! 👋 I'm the NexFlow assistant. What would you like to know?",options:['What does NexFlow do?','How does it work?','Who is it for?','Apply for free audit']},
-    what:{text:"NexFlow AI is the operations layer for your service business — answering every call, capturing every lead, and following up automatically. 24/7. Six modules covering voice, capture, sync, security, reviews, and custom agents.",options:['How does it work?','Who is it for?','Apply for free audit']},
-    howworks:{text:"Apply for a free audit (60 seconds). We send you a custom report within 24 hours. If we're a fit, we connect your phone, calendar, and CRM, configure your AI agents, and deploy. Live in days.",options:['Who is it for?','Apply for free audit']},
-    whofor:{text:"Local service businesses — med spas, salons, auto shops, real estate, HVAC, home services. Anyone losing leads because they can't always answer the phone.",options:['What does NexFlow do?','Apply for free audit']},
-    pricing:{text:"Every build is custom, so pricing depends on your business and which modules you need. Apply for a free audit and we'll send you an exact number.",options:['Apply for free audit']},
-    audit:{text:"The audit is free and takes about 60 seconds. We'll review your business and send a custom report showing where you're losing leads. Click below 👇",options:['Open Audit Form →'],action:TYPEFORM},
-    contact:{text:"The fastest way to reach us is through the free audit form — we respond within a few hours.",options:['Apply for free audit']},
-    fallback:{text:"For specifics I'd recommend applying for a free audit — we'll review your business and walk through everything.",options:['Apply for free audit','What does NexFlow do?']}
+    greeting:{
+      text:"Hey — I'm the NexFlow Assistant. Ask me anything about voice agents, custom workflows, Sentry, our process, pricing, integrations, or how to get started. Or pick an option below.",
+      options:['What does NexFlow do?','Tell me about the voice agent','What is Sentry?','How do you build custom agents?','Book a free audit']
+    },
+    // Top-level
+    what:{
+      text:"NexFlow designs, builds, and operates AI agents inside your business. We work across three core frameworks: a <b>Voice Receptionist</b> that answers every call, <b>Custom AI Agents</b> built into your specific workflows, and <b>Sentry</b> — continuous cyber risk monitoring. Everything runs from one branded Command Center.",
+      options:['Tell me about the voice agent','Tell me about custom agents','What is Sentry?','How does it work?']
+    },
+    // Voice agent
+    voice:{
+      text:"The <b>NexFlow Voice Receptionist</b> answers every inbound call 24/7. It qualifies the caller's intent, books appointments directly into your calendar, transfers live to a human when it matters, and logs every call to your CRM. It sounds human, runs on your business knowledge, and never misses a call.",
+      options:['Can I see it in action?','How is it trained?','What if I need a human?','Book a free audit']
+    },
+    voicetrained:{
+      text:"We train the voice agent on your business — services, hours, policies, FAQs, pricing rules, and who to route to. During the build we run through real-world call scripts and pressure-test edge cases before it goes live.",
+      options:['Tell me about the voice agent','How does it work?','Book a free audit']
+    },
+    voicehuman:{
+      text:"The agent transfers live to a human the moment a call meets your transfer rules — urgent issues, VIP customers, anything off-script. It also schedules a human callback if no one's available.",
+      options:['Tell me about the voice agent','Book a free audit']
+    },
+    voicedemo:{
+      text:"Scroll up to the Voice Agent section — the iPhone on the left shows a live conversation playing out, and the lock screen on the right shows every downstream automation (calendar, SMS, email, CRM, Slack) firing in real time.",
+      options:['Book a free audit','Tell me about custom agents']
+    },
+    // Custom agents
+    custom:{
+      text:"<b>Custom AI Agents</b> are built into the specific workflows that slow your team down. Common builds: lead triage, no-show recovery, contract renewal reminders, invoice nudges, client onboarding flows. If you can describe the process, we can put an agent inside it.",
+      options:['Show me examples','Tell me about the voice agent','What is Sentry?','Book a free audit']
+    },
+    customexamples:{
+      text:"A few we've built or planned: a No-Show Recovery bot that auto-rebooks missed appointments, an Inquiry Triage agent that routes leads to the right rep, a Lead Follow-Up sequence that runs 24h/3d/7d touches, a Contract Renewal alerter that fires 30 days before expiry, and an Overdue Invoice Nudge agent.",
+      options:['Book a free audit','Tell me about the voice agent']
+    },
+    // Sentry
+    sentry:{
+      text:"<b>Sentry</b> is the cyber risk intelligence layer — continuous monitoring of your perimeter, credentials, and exposed surface. It runs scheduled scans, blocks brute-force attempts, alerts on compliance issues, and keeps a security score in your dashboard. Built from a cybersecurity background.",
+      options:['How does it stay current?','Is this needed for small businesses?','Book a free audit']
+    },
+    sentrysmb:{
+      text:"Especially for small businesses. Most SMBs treat cybersecurity as a checkbox — until something breaks. Sentry runs the monitoring layer in the background so you find issues before attackers do.",
+      options:['Tell me more about Sentry','Book a free audit']
+    },
+    sentrycurrent:{
+      text:"Sentry runs continuous scheduled scans, checks for credential exposure, applies known patches automatically where it can, and keeps a security score updated in your Command Center. You get real-time alerts on critical issues.",
+      options:['Tell me more about Sentry','Book a free audit']
+    },
+    // Dashboard
+    dashboard:{
+      text:"The <b>Command Center</b> is your branded dashboard. Every agent — voice, custom workflows, Sentry — reports into one view. Live activity feed, agent status, performance metrics, security score, and pipeline health. Owned by you, branded for your business.",
+      options:['What metrics does it show?','Book a free audit','Tell me about integrations']
+    },
+    dashmetrics:{
+      text:"Calls answered, booked rate, after-hours coverage, agent task counts + success rates, hours saved, lead source breakdown, pipeline funnel, security score, threats blocked, compliance status. Each tab drills into one framework.",
+      options:['Tell me about the dashboard','Book a free audit']
+    },
+    // Process
+    howworks:{
+      text:"The blueprint is three stages: <b>01 Analyze Operations</b> — we identify the leverage points. <b>02 Design Frameworks</b> — we engineer the agent systems around how you actually run. <b>03 Optimize Performance</b> — we monitor and tune the system so it keeps driving real results over time.",
+      options:['How long does it take?','How are agents built?','Book a free audit']
+    },
+    timeline:{
+      text:"Most builds go live within days, not months. Exact timeline depends on system complexity and how many integrations are involved — your audit report comes back with a specific timeline for your operation.",
+      options:['How does it work?','Book a free audit']
+    },
+    // Workflow logic
+    workflow:{
+      text:"Every NexFlow build follows the same four-stage logic: <b>Connect</b> (plug into your existing tools), <b>Trigger</b> (fire on the right event), <b>Execute</b> (run the workflow autonomously), <b>Optimize</b> (monitor and tune). So agents we ship today work the same way as agents we ship in year three.",
+      options:['How does it work?','Tell me about integrations','Book a free audit']
+    },
+    // Integrations
+    integrations:{
+      text:"NexFlow plugs in alongside your existing stack — CRM, calendar, phone, email, payments, booking tools. No rip and replace. 55+ integrations supported out of the box: Google Calendar, Stripe, Square, Calendly, QuickBooks, HubSpot, Gmail, Slack, Zoom, and more.",
+      options:['Will I need to migrate data?','Book a free audit']
+    },
+    migration:{
+      text:"No migration. Your existing CRM, calendar, email, and tools stay exactly where they are. NexFlow syncs into them so your data and workflows don't move.",
+      options:['Tell me about integrations','Book a free audit']
+    },
+    // Who for
+    whofor:{
+      text:"Service businesses where the operation is the product — clinics, agencies, home services, professional services, anyone losing time, leads, or risk to manual work that should be running on its own. If you've got a phone ringing and a workflow held together by tribal knowledge, you're our target.",
+      options:['What does NexFlow do?','Book a free audit']
+    },
+    // Benefits
+    benefits:{
+      text:"Six measurable benefits — <b>Time Optimization</b>, <b>Consistent Communication</b>, <b>Scalable Growth</b>, <b>Cost Reduction</b>, <b>Increased Efficiency</b>, and <b>Smarter Decisions</b>. Every benefit is backed by data in your dashboard.",
+      options:['Show me the dashboard','Book a free audit']
+    },
+    // Pricing
+    pricing:{
+      text:"Every build is scoped to your operation — pricing depends on which agents you need and how many integrations are involved. The audit report comes back with exact numbers, no sales call required.",
+      options:['Book a free audit','How does it work?']
+    },
+    // Audit
+    audit:{
+      text:"The audit is free and takes 60 seconds to apply. Within 24 hours you get a written report: which agents we'd build, what they replace, the integrations involved, what it costs, and the projected ROI.",
+      options:['Open Audit Form →'],
+      action:TYPEFORM
+    },
+    // Technical
+    technical:{
+      text:"Zero technical experience needed. We design the agents, wire them into your existing stack, test every workflow, and hand you a branded dashboard. You only see the parts you want to see.",
+      options:['How does it work?','Book a free audit']
+    },
+    // Contact
+    contact:{
+      text:"Fastest way to reach us is the audit form — we respond within a few hours. For anything else, the audit conversation kicks off the relationship.",
+      options:['Book a free audit']
+    },
+    // Difference
+    different:{
+      text:"We don't sell a generic toolkit. We design custom AI agents around your specific business and operate them as a partner — built with a cybersecurity mindset, every signal logged, nothing falling through. The agents come with a Command Center we monitor in the background.",
+      options:['How does it work?','Book a free audit']
+    },
+    // Results
+    results:{
+      text:"Most clients see reduced manual workload, faster response times, and measurable ROI inside the first month — with specific numbers projected in your audit report based on your current operation.",
+      options:['Book a free audit','How does it work?']
+    },
+    fallback:{
+      text:"Good question — for specifics on your operation I'd recommend booking the free audit. In 24 hours we'll send back a written report with exactly which agents we'd build, what they replace, and what it costs.",
+      options:['Book a free audit','What does NexFlow do?','How does it work?']
+    }
   };
+
   function detectIntent(t){
-    t=t.toLowerCase();
-    if(/what.*do|what is|who are|about|explain|service/.test(t))return'what';
-    if(/how.*work|process/.test(t))return'howworks';
-    if(/who|industry|type|fit/.test(t))return'whofor';
-    if(/price|cost|how much|pay/.test(t))return'pricing';
-    if(/audit|demo|book|schedule|call|meeting|apply|form/.test(t))return'audit';
-    if(/contact|email|reach|phone/.test(t))return'contact';
-    return'fallback';
+    t = t.toLowerCase();
+    // book/audit
+    if(/audit|demo|book|schedule|call.*me|meeting|apply|form|sign[- ]?up|start|begin|get.?started/.test(t)) return 'audit';
+    // voice agent
+    if(/voice|receptionist|phone.?agent|answer.*call|call.?answer|inbound.?call|ai.?phone/.test(t)){
+      if(/train|learn|knowledge|knows/.test(t)) return 'voicetrained';
+      if(/human|transfer|escalat|live person/.test(t)) return 'voicehuman';
+      if(/see|action|demo|example|show/.test(t)) return 'voicedemo';
+      return 'voice';
+    }
+    // custom agents
+    if(/custom|workflow.?agent|bespoke|build.*agent|specific|tailor/.test(t)){
+      if(/example|use case|like what|kind|type/.test(t)) return 'customexamples';
+      return 'custom';
+    }
+    // sentry / security
+    if(/sentry|security|cyber|risk|threat|breach|hack|vulnerab|compliance|protect/.test(t)){
+      if(/small.?business|smb|need.*this|relevant/.test(t)) return 'sentrysmb';
+      if(/scan|update|current|keep.*current/.test(t)) return 'sentrycurrent';
+      return 'sentry';
+    }
+    // dashboard / command center
+    if(/dashboard|command.?center|metric|view|see.*data|insight|monitor/.test(t)){
+      if(/what.*show|metric|number|kpi/.test(t)) return 'dashmetrics';
+      return 'dashboard';
+    }
+    // process / how it works
+    if(/process|how.*work|step|stage|blueprint|approach|method/.test(t)){
+      if(/long|time|fast|quick|when.*live|how soon/.test(t)) return 'timeline';
+      return 'howworks';
+    }
+    // workflow logic
+    if(/workflow|automate|automation|trigger|connect|execute|optimize/.test(t)) return 'workflow';
+    // integrations
+    if(/integrat|connect.*tool|stack|tool.*support|crm|calendar|stripe|hubspot|google|gmail|slack/.test(t)){
+      if(/migrate|move.*data|switch|replace|rip/.test(t)) return 'migration';
+      return 'integrations';
+    }
+    // who for
+    if(/who.*for|industry|type.*business|fit|right for me|use case/.test(t)) return 'whofor';
+    // benefits
+    if(/benefit|advantage|result|outcome|roi|why|value/.test(t)){
+      if(/result|outcome|measure|expect/.test(t)) return 'results';
+      return 'benefits';
+    }
+    // pricing
+    if(/price|cost|how much|pay|fee|expensive|budget|charge/.test(t)) return 'pricing';
+    // technical
+    if(/technical|experience|knowledge|hard|complicated|setup|difficult/.test(t)) return 'technical';
+    // contact
+    if(/contact|email|reach|phone.*you|talk/.test(t)) return 'contact';
+    // different
+    if(/different|unique|why.*you|competitor|vs|compare/.test(t)) return 'different';
+    // catch-all
+    if(/what.*do|what is|who are|about|explain|service|tell.?me/.test(t)) return 'what';
+    return 'fallback';
   }
-  let chatOpen=false;
+
+  let chatOpen = false;
   function toggleChat(){
-    chatOpen=!chatOpen;
-    document.getElementById('chat-panel').classList.toggle('open',chatOpen);
-    if(chatOpen && document.getElementById('chat-msgs').children.length===0) showResponse('greeting');
+    chatOpen = !chatOpen;
+    document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+    if(chatOpen && document.getElementById('chat-msgs').children.length === 0) showResponse('greeting');
   }
-  function addMsg(text,type){
-    const el=document.createElement('div'); el.className='chat-msg '+type; el.textContent=text;
-    const m=document.getElementById('chat-msgs'); m.appendChild(el); m.scrollTop=99999;
+  function closeChat(){
+    chatOpen = false;
+    document.getElementById('chat-panel').classList.remove('open');
+  }
+
+  function addMsg(html, type){
+    const el = document.createElement('div');
+    el.className = 'chat-msg ' + type;
+    el.innerHTML = html;
+    const m = document.getElementById('chat-msgs');
+    m.appendChild(el);
+    m.scrollTop = 99999;
+  }
+  function showTyping(){
+    const el = document.createElement('div');
+    el.className = 'chat-typing';
+    el.id = '_typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    document.getElementById('chat-msgs').appendChild(el);
+    document.getElementById('chat-msgs').scrollTop = 99999;
+  }
+  function hideTyping(){
+    const t = document.getElementById('_typing');
+    if(t) t.remove();
   }
   function showResponse(key){
-    const r=RESPONSES[key]||RESPONSES.fallback;
-    const opts=document.getElementById('chat-opts'); opts.innerHTML='';
+    const r = RESPONSES[key] || RESPONSES.fallback;
+    const opts = document.getElementById('chat-opts');
+    opts.innerHTML = '';
+    showTyping();
     setTimeout(()=>{
-      addMsg(r.text,'bot');
-      r.options.forEach(o=>{
-        const b=document.createElement('button');
-        b.className='chat-opt'; b.textContent=o;
-        b.onclick=()=>handleOption(o,r.action);
+      hideTyping();
+      addMsg(r.text, 'bot');
+      (r.options || []).forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'chat-opt';
+        b.textContent = o;
+        b.onclick = () => handleOption(o, r.action);
         opts.appendChild(b);
       });
-    },500);
+    }, 600);
   }
-  function handleOption(opt,action){
-    document.getElementById('chat-opts').innerHTML='';
-    addMsg(opt,'user');
-    if(opt.includes('Audit Form')||opt.includes('audit form')){ window.open(TYPEFORM,'_blank'); return; }
+  function handleOption(opt, action){
+    document.getElementById('chat-opts').innerHTML = '';
+    addMsg(opt, 'user');
+    if(opt.includes('Audit Form') || opt.toLowerCase().includes('open audit')){ window.open(TYPEFORM, '_blank'); return; }
     showResponse(detectIntent(opt));
   }
+  function handleInput(){
+    const inp = document.getElementById('chat-input-field');
+    const txt = (inp.value || '').trim();
+    if(!txt) return;
+    addMsg(txt, 'user');
+    inp.value = '';
+    document.getElementById('chat-opts').innerHTML = '';
+    showResponse(detectIntent(txt));
+  }
+
+  // Wire up
+  document.getElementById('chat-close')?.addEventListener('click', closeChat);
+  document.getElementById('chat-send')?.addEventListener('click', handleInput);
+  document.getElementById('chat-input-field')?.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ e.preventDefault(); handleInput(); } });
 </script>
 
 </body>

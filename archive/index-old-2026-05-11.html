@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NexFlow AI — AI Operations for any part of your business</title>
+  <meta name="description" content="NexFlow designs, builds, and runs AI agents inside your operation. Voice. Security. Custom. We work on whatever part of your business shouldn't be manual anymore.">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#080809">
+  <meta name="apple-mobile-web-app-title" content="NexFlow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ["'General Sans'", "ui-sans-serif", "system-ui"] } } } }
+  </script>
+  <style>
+    html, body { background:#000; color:#fff; }
+    body { font-family:'General Sans', ui-sans-serif, system-ui; -webkit-font-smoothing:antialiased; }
+
+    /* ── STAT NUMBERS — responsive so they don't clip on mobile ── */
+    .stat-num{ font-size:64px; }
+    @media (max-width:640px){ .stat-num{ font-size:42px; } }
+
+    /* ── GRADIENT HEADING ── */
+    .grad-head{
+      background: linear-gradient(144.5deg, #ffffff 28%, rgba(0,0,0,0) 115%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* ── PILL BUTTONS ── */
+    .pill-dark, .pill-light{
+      position:relative; display:inline-flex; align-items:center; justify-content:center;
+      border:0.6px solid #fff; border-radius:9999px; padding: 11px 29px;
+      font-size:14px; font-weight:500; overflow:hidden; isolation:isolate;
+    }
+    .pill-dark{ background:#000; color:#fff; }
+    .pill-light{ background:#fff; color:#000; }
+    .pill-dark::before, .pill-light::before{
+      content:''; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+      width:60%; height:14px; border-radius:9999px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0));
+      filter: blur(8px); pointer-events:none; z-index:-1;
+    }
+    .pill-light::before{ background: radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(255,255,255,0)); filter: blur(6px); }
+
+    /* ── SLIDE ── */
+    .slide{ position:relative; min-height:100vh; overflow:hidden; background:#000; }
+    .slide.short{ min-height:auto; }
+    .slide > video.bg{
+      position:absolute; left:50%; top:50%; min-width:100%; min-height:100%;
+      width:auto; height:auto; transform:translate(-50%,-50%);
+      object-fit:cover; z-index:0;
+    }
+    .slide > .scrim{
+      position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,0,0,0.45), rgba(0,0,0,0.85)),
+        rgba(0,0,0,0.55);
+    }
+    .slide.s-light > .scrim{
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(0,0,0,0.7), transparent 75%),
+        rgba(0,0,0,0.30);
+    }
+    .slide.s-heavy > .scrim{
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0.92)),
+        rgba(0,0,0,0.65);
+    }
+    /* cyan vortex echo */
+    .cosmic-accent{ position:absolute; inset:0; pointer-events:none; z-index:2; }
+    .cosmic-accent::before{
+      content:''; position:absolute; top:-10%; left:50%; transform:translateX(-50%);
+      width:520px; height:520px; border-radius:50%;
+      background: radial-gradient(circle, rgba(125,211,231,0.18) 0%, rgba(125,211,231,0.08) 30%, transparent 65%);
+      filter: blur(40px); opacity:0.7;
+    }
+
+    /* ── GLASS CARDS ── */
+    .glass{
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .glass-strong{
+      background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* dot accent */
+    .dot{ width:5px; height:5px; border-radius:50%; background:#7dd3e7; display:inline-block; box-shadow: 0 0 8px rgba(125,211,231,0.7); }
+
+    /* fade-in on scroll */
+    .blur-in{ filter: blur(10px); opacity: 0; transform: translateY(20px); transition: filter .8s ease, opacity .8s ease, transform .8s ease; }
+    .blur-in.in{ filter: blur(0); opacity:1; transform: translateY(0); }
+
+    /* numbered step */
+    .step-num{
+      width:48px; height:48px; border-radius:50%;
+      background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18);
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size: 22px; font-family:'General Sans', sans-serif; color:#fff;
+      backdrop-filter: blur(12px);
+    }
+    .step-line{
+      position:absolute; left:23px; top:48px; bottom:-32px; width:1px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    }
+
+    /* integrations marquee — two rows scrolling opposite directions */
+    .marquee-wrap{
+      position:relative; width:100%; max-width:640px; margin:0 auto;
+      overflow:hidden; padding: 24px 0;
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .marquee-row{
+      display:flex; gap:14px; width:max-content;
+      padding: 8px 0;
+    }
+    .marquee-row.left{ animation: scroll-left 50s linear infinite; }
+    .marquee-row.right{ animation: scroll-right 65s linear infinite; }
+    @keyframes scroll-left{ from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @keyframes scroll-right{ from { transform:translateX(-50%); } to { transform:translateX(0); } }
+    .marquee-chip{
+      display:flex; align-items:center; gap:10px; flex-shrink:0;
+      padding:12px 18px; border-radius:14px;
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05);
+      transition: border-color .25s, background .25s;
+    }
+    .marquee-chip:hover{
+      border-color: rgba(125,211,231,0.4);
+      background: rgba(255,255,255,0.08);
+    }
+    .marquee-chip img{ width:22px; height:22px; flex-shrink:0; }
+    .marquee-chip .name{ font-size:13px; color:rgba(255,255,255,0.85); font-weight:500; white-space:nowrap; }
+    .marquee-row:hover{ animation-play-state: paused; }
+    .orbit-ring{
+      position:absolute; inset:0; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    .orbit-ring.r2{ inset:18%; border-color: rgba(255,255,255,0.13); }
+    .orbit-ring.r3{ inset:36%; border-color: rgba(255,255,255,0.16); }
+    .orbit-core{
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      width:140px; height:140px; border-radius:50%;
+      background:radial-gradient(circle, rgba(125,211,231,0.22), rgba(125,211,231,0.06) 60%, transparent 80%);
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,0.30);
+      backdrop-filter: blur(12px);
+      z-index:5;
+    }
+    .orbit-core span{
+      font-family:'General Sans', sans-serif; font-weight:500; font-size:18px;
+      color:#fff; letter-spacing:0.04em;
+    }
+    /* spinning rings */
+    .orbit-spin{ position:absolute; inset:0; }
+    .orbit-spin.outer{ animation: spinCW 80s linear infinite; }
+    .orbit-spin.mid{ inset:18%; animation: spinCCW 50s linear infinite; }
+    @keyframes spinCW{ to { transform: rotate(360deg); } }
+    @keyframes spinCCW{ to { transform: rotate(-360deg); } }
+
+    /* chip — positioned at angle on a ring of given radius */
+    .orbit-chip{
+      position:absolute; left:50%; top:50%;
+      width:54px; height:54px; margin:-27px 0 0 -27px;
+      transform: rotate(var(--a)) translateY(var(--r, -260px));
+    }
+    .orbit-chip.mid-chip{ width:42px; height:42px; margin:-21px 0 0 -21px; }
+    /* chip inner counter-rotates so logo stays upright */
+    .orbit-chip-inner{
+      width:100%; height:100%; border-radius:50%;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      display:flex; align-items:center; justify-content:center;
+      animation: spinCCW 80s linear infinite;
+      transition: border-color .3s, box-shadow .3s, transform .25s;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.05);
+    }
+    .orbit-chip.mid-chip .orbit-chip-inner{ animation: spinCW 50s linear infinite; }
+    .orbit-chip-inner:hover{
+      border-color: rgba(125,211,231,0.6);
+      box-shadow: 0 0 24px rgba(125,211,231,0.35), inset 0 1px 1px rgba(255,255,255,0.1);
+      transform: scale(1.08);
+    }
+    .orbit-chip-inner img{ width:26px; height:26px; display:block; }
+    .orbit-chip.mid-chip .orbit-chip-inner img{ width:18px; height:18px; }
+
+    /* chat widget */
+    #chat-fab{
+      position:fixed; bottom:20px; right:20px; z-index:60;
+      width:56px; height:56px; border-radius:50%;
+      background:#fff; color:#000; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.2);
+      transition: transform .15s ease;
+    }
+    #chat-fab:hover{ transform: translateY(-2px); }
+    #chat-panel{
+      position:fixed; bottom:90px; right:20px; z-index:60;
+      width:340px; max-width:calc(100vw - 40px); height:480px; max-height:70vh;
+      border-radius:20px; overflow:hidden;
+      background:rgba(15,15,15,0.85); border:1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      display:none; flex-direction:column;
+    }
+    #chat-panel.open{ display:flex; }
+    .chat-head{ padding:14px 18px; border-bottom:1px solid rgba(255,255,255,0.10); display:flex; align-items:center; gap:10px; }
+    .chat-msgs{ flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:10px; }
+    .chat-msg{ padding:10px 14px; border-radius:16px; max-width:80%; font-size:13px; line-height:1.45; }
+    .chat-msg.bot{ align-self:flex-start; background:rgba(255,255,255,0.08); color:#fff; }
+    .chat-msg.user{ align-self:flex-end; background:#fff; color:#000; }
+    .chat-opts{ padding:0 18px 14px; display:flex; flex-direction:column; gap:8px; }
+    .chat-opt{ width:100%; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px; cursor:pointer; text-align:left; transition: background .15s; }
+    .chat-opt:hover{ background:rgba(255,255,255,0.10); }
+
+    /* dashboard shell + mock */
+    .dash-shell{
+      width:100%; max-width:1100px;
+      border-radius:18px; overflow:hidden; position:relative;
+      background:#0a0a0a; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      display:flex; flex-direction:column;
+    }
+    .dash-shell-bar{
+      display:flex; align-items:center; gap:8px; padding:10px 14px;
+      background:rgba(20,20,20,0.95); border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .dash-dot{ width:10px; height:10px; border-radius:50%; }
+    .dash-mock{
+      padding: 22px 24px; display:flex; flex-direction:column; gap:18px;
+      background:
+        radial-gradient(50% 50% at 50% 0%, rgba(125,211,231,0.10), transparent 70%),
+        #0a0a0a;
+    }
+    .dash-mock-head{ display:flex; align-items:center; justify-content:space-between; }
+    .dash-mock-head .left{ display:flex; align-items:center; gap:14px; }
+    .dash-mock-head .nf-mark{
+      width:28px; height:28px; border-radius:50%;
+      background: radial-gradient(circle, rgba(125,211,231,0.4), rgba(125,211,231,0.05) 70%);
+      border:1px solid rgba(125,211,231,0.5);
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; color:#fff; font-weight:600; letter-spacing:0.05em;
+    }
+    .dash-mock-head .title{ font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.85); font-weight:500; }
+    .dash-mock-head .live{
+      display:flex; align-items:center; gap:8px;
+      font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#34d399; font-weight:500;
+    }
+    .dash-mock-head .live .pp{
+      width:8px; height:8px; border-radius:50%; background:#34d399;
+      box-shadow:0 0 10px #34d399; animation: pulse-g 2s ease-in-out infinite;
+    }
+    @keyframes pulse-g{ 0%,100%{opacity:1; box-shadow:0 0 8px #34d399} 50%{opacity:0.5; box-shadow:0 0 14px #34d399} }
+    .dash-mock-stats{
+      display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;
+    }
+    .dash-stat{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px; padding:16px;
+      backdrop-filter: blur(12px); min-width:0;
+    }
+    .dash-stat .k{ font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px; line-height:1.4; }
+    .dash-stat .v{
+      font-size:32px; font-weight:500; line-height:1;
+      background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      letter-spacing:-0.02em;
+    }
+    .dash-stat .t{ margin-top:6px; font-size:11px; color:#7dd3e7; font-weight:500; letter-spacing:0.04em; }
+    .dash-mock-row{
+      display:grid; grid-template-columns: 1.4fr 1fr; gap:10px;
+    }
+    /* ── DASHBOARD MOBILE ── */
+    @media (max-width:640px){
+      .dash-mock{ padding:14px; gap:12px; }
+      .dash-mock-stats{ grid-template-columns: repeat(2, 1fr); gap:8px; }
+      .dash-stat{ padding:12px; }
+      .dash-stat .v{ font-size:26px; }
+      .dash-mock-row{ grid-template-columns: 1fr; }
+      .dash-shell{ border-radius:14px; }
+    }
+    .dash-spark, .dash-feed{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px; padding:16px;
+      backdrop-filter: blur(12px);
+    }
+    .dash-spark .h{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+    .dash-spark .h .k{ font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+    .dash-spark .h .v{ font-size:18px; color:#fff; font-weight:500; }
+    .dash-feed .h{ font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:10px; }
+    .feed-row{
+      display:flex; gap:10px; align-items:flex-start; padding:7px 0;
+      border-bottom:1px dashed rgba(255,255,255,0.06); font-size:11px;
+    }
+    .feed-row:last-child{ border-bottom:none; }
+    .feed-row .ts{ color:rgba(255,255,255,0.4); flex-shrink:0; min-width:48px; font-variant-numeric: tabular-nums; }
+    .feed-row .ev{ color:rgba(255,255,255,0.85); }
+    .feed-row .ev b{ color:#7dd3e7; font-weight:500; }
+
+    /* tabs */
+    .dash-tabs{
+      display:flex; gap:2px; padding-bottom:0;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      overflow-x:auto; -webkit-overflow-scrolling:touch;
+    }
+    .dash-tab{
+      padding:10px 14px; font-size:11px; font-weight:500; letter-spacing:0.06em;
+      color:rgba(255,255,255,0.5); cursor:pointer;
+      background:transparent; border:0; border-bottom:2px solid transparent;
+      white-space:nowrap; transition: color .15s, border-color .15s;
+      font-family:'General Sans', sans-serif;
+    }
+    .dash-tab:hover{ color:#fff; }
+    .dash-tab.active{ color:#7dd3e7; border-bottom-color:#7dd3e7; }
+    .dash-panel{ display:none; flex-direction:column; gap:14px; }
+    .dash-panel.active{ display:flex; }
+
+    /* bar chart */
+    .bar-chart{
+      display:grid; grid-template-columns: repeat(24, 1fr); gap:3px;
+      align-items:flex-end; height:120px; padding-top:10px;
+    }
+    .bar-chart .bar{
+      background: linear-gradient(180deg, rgba(125,211,231,0.9), rgba(125,211,231,0.2));
+      border-radius:2px; min-height:4px;
+      transition: opacity .2s;
+    }
+    .bar-chart .bar:hover{ opacity:1; filter: brightness(1.3); }
+    .bar-axis{ display:flex; justify-content:space-between; font-size:9px; color:rgba(255,255,255,0.4); margin-top:6px; padding:0 2px; }
+
+    /* donut */
+    .donut-row{ display:flex; align-items:center; gap:24px; }
+    .donut-svg{ width:140px; height:140px; flex-shrink:0; }
+    .donut-legend{ flex:1; display:flex; flex-direction:column; gap:9px; }
+    .donut-legend-item{ display:flex; align-items:center; gap:10px; font-size:12px; }
+    .donut-legend-item .swatch{ width:9px; height:9px; border-radius:2px; flex-shrink:0; }
+    .donut-legend-item .label{ color:rgba(255,255,255,0.85); flex:1; }
+    .donut-legend-item .pct{ color:#fff; font-weight:500; font-variant-numeric: tabular-nums; }
+
+    /* funnel */
+    .funnel{ display:flex; flex-direction:column; gap:8px; }
+    .funnel-row{ display:flex; align-items:center; gap:12px; }
+    .funnel-bar{ height:32px; border-radius:8px; background: linear-gradient(90deg, rgba(125,211,231,0.85), rgba(125,211,231,0.4)); display:flex; align-items:center; padding:0 12px; color:#000; font-weight:600; font-size:12px; }
+    .funnel-label{ width:100px; font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:0.08em; text-transform:uppercase; flex-shrink:0; }
+    .funnel-pct{ font-size:11px; color:rgba(255,255,255,0.55); flex-shrink:0; }
+
+    /* rating distribution */
+    .rating-row{ display:flex; align-items:center; gap:10px; padding:5px 0; }
+    .rating-stars{ width:50px; font-size:11px; color:rgba(255,255,255,0.6); flex-shrink:0; letter-spacing:0.04em; }
+    .rating-track{ flex:1; height:8px; border-radius:4px; background:rgba(255,255,255,0.06); overflow:hidden; }
+    .rating-fill{ height:100%; background: linear-gradient(90deg, rgba(125,211,231,0.85), rgba(125,211,231,0.5)); border-radius:4px; }
+    .rating-count{ width:40px; text-align:right; font-size:11px; color:rgba(255,255,255,0.7); font-variant-numeric: tabular-nums; flex-shrink:0; }
+
+    /* security ring */
+    .sec-score{ display:flex; align-items:center; gap:18px; }
+    .sec-score-svg{ width:120px; height:120px; flex-shrink:0; }
+    .sec-score-info .v{ font-size:42px; font-weight:500; line-height:1;
+      background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.5) 100%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .sec-score-info .k{ font-size:11px; color:rgba(255,255,255,0.55); letter-spacing:0.14em; text-transform:uppercase; margin-top:4px; }
+
+    /* agents list */
+    .agent-row{ display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px dashed rgba(255,255,255,0.06); }
+    .agent-row:last-child{ border-bottom:none; }
+    .agent-name{ flex:1; font-size:12px; color:rgba(255,255,255,0.9); }
+    .agent-tasks{ font-size:11px; color:rgba(255,255,255,0.5); font-variant-numeric: tabular-nums; }
+    .agent-pill{ font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:3px 8px; border-radius:999px; }
+    .agent-pill.live{ color:#34d399; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.25); }
+    .agent-pill.idle{ color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); }
+  </style>
+</head>
+<body class="bg-black text-white">
+
+<!-- ════════════════ SLIDE 1 — HERO (cosmic vortex) ════════════════ -->
+<section class="slide s-light flex flex-col">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
+  <div class="scrim"></div>
+
+  <!-- NAV -->
+  <nav class="relative z-10 flex items-center justify-between" style="padding: 20px 60px;">
+    <a href="#" class="flex items-center gap-3">
+      <span class="text-white font-medium tracking-wider" style="font-size:18px;letter-spacing:0.04em">NEXFLOW<span class="opacity-70 font-normal">AI</span></span>
+    </a>
+    <div class="hidden md:flex items-center" style="gap:30px">
+      <a href="#dashboard" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Dashboard <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a href="#how" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Process <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a href="#modules" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Modules <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
+      <a href="#integrations" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Integrations</a>
+      <a href="#founder" class="flex items-center text-white text-[14px] font-medium" style="gap:10px">Founder</a>
+    </div>
+    <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-dark">Book Audit</a>
+  </nav>
+
+  <div class="relative z-10 flex flex-col items-center text-center" style="padding: 220px 24px 102px; gap:36px">
+    <div class="rounded-[20px] flex items-center" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+      <span class="dot"></span>
+      <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
+      <span class="text-[13px] font-medium text-white">Voice · Security · Custom</span>
+    </div>
+    <h1 class="grad-head font-medium text-center" style="max-width:880px; font-size:64px; line-height:1.1; letter-spacing:-0.02em">
+      AI Operations for any part of your business.
+    </h1>
+    <p class="text-[15px] font-normal text-center" style="color:rgba(255,255,255,0.7); max-width:700px; line-height:1.55">
+      From the phone that never gets answered, to the security no one's watching, to the workflow no one wants to do — we design, build, and run AI agents inside your operation. If a process should be automated, NexFlow makes it real.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book an AI Operations Audit</a>
+      <a href="#dashboard" class="pill-dark">See It Live</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 2 — LIVE DASHBOARD (galaxy) ════════════════ -->
+<section id="dashboard" class="slide s-heavy flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-12">
+      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">Command Center · Live</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto mb-5" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">See it running. Right now.</h2>
+      <p class="text-[15px] font-normal blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.6; max-width:620px">One Command Center for every AI agent operating inside your business — voice, pipeline, security, custom workflows. Live, branded, owned by you.</p>
+    </div>
+    <div class="dash-shell mx-auto blur-in">
+      <div class="dash-shell-bar">
+        <div class="dash-dot" style="background:#ff5f57"></div>
+        <div class="dash-dot" style="background:#febc2e"></div>
+        <div class="dash-dot" style="background:#28c840"></div>
+        <div class="ml-3 text-[11px]" style="color:rgba(255,255,255,0.5)">dashboard.nexflowaisolutions.com</div>
+        <div class="ml-auto flex items-center gap-2 text-[11px]" style="color:#34d399">
+          <span class="w-2 h-2 rounded-full" style="background:#34d399; box-shadow:0 0 8px #34d399"></span>
+          Live
+        </div>
+      </div>
+      <div class="dash-mock">
+        <div class="dash-mock-head">
+          <div class="left">
+            <div class="nf-mark">N</div>
+            <div class="title">Command Center</div>
+          </div>
+          <div class="live"><span class="pp"></span>All Systems Live</div>
+        </div>
+
+        <!-- TAB NAV -->
+        <div class="dash-tabs" role="tablist">
+          <button class="dash-tab active" data-tab="overview">Overview</button>
+          <button class="dash-tab" data-tab="voice">01 · Voice</button>
+          <button class="dash-tab" data-tab="custom">02 · Custom Agents</button>
+          <button class="dash-tab" data-tab="sentry">03 · Sentry</button>
+          <button class="dash-tab" data-tab="sync">04 · Pipeline</button>
+          <button class="dash-tab" data-tab="capture">05 · Capture</button>
+        </div>
+
+        <!-- ─── OVERVIEW ─── -->
+        <div class="dash-panel active" data-panel="overview">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">Agents Live</div><div class="v">8</div><div class="t">▲ +2 this month</div></div>
+            <div class="dash-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="dash-stat"><div class="k">Calls Answered</div><div class="v">412</div><div class="t">100% pickup</div></div>
+            <div class="dash-stat"><div class="k">Security Score</div><div class="v">98<span style="font-size:18px; color:rgba(255,255,255,0.4)">/100</span></div><div class="t">▲ All clear</div></div>
+          </div>
+          <div class="dash-mock-row">
+            <div class="dash-spark">
+              <div class="h"><span class="k">Automations · 24h</span><span class="v">1,284</span></div>
+              <svg viewBox="0 0 820 100" width="100%" height="80" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="cyanGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="rgba(125,211,231,0.15)"/>
+                    <stop offset="100%" stop-color="#7dd3e7"/>
+                  </linearGradient>
+                  <filter id="cyanGlow"><feGaussianBlur stdDeviation="2.5"/></filter>
+                </defs>
+                <path d="M0,82 C70,72 110,68 170,58 C240,46 290,52 350,38 C420,22 470,30 530,22 C590,14 640,18 700,10 C740,6 780,8 820,4" fill="none" stroke="url(#cyanGrad)" stroke-width="3" stroke-linecap="round" filter="url(#cyanGlow)"/>
+              </svg>
+            </div>
+            <div class="dash-feed">
+              <div class="h">Live Activity</div>
+              <div class="feed-row"><span class="ts">11:47</span><span class="ev"><b>Voice agent</b> · Inbound call · Booked</span></div>
+              <div class="feed-row"><span class="ts">11:42</span><span class="ev"><b>Custom agent</b> · Invoice nudge · Sent</span></div>
+              <div class="feed-row"><span class="ts">11:36</span><span class="ev"><b>Sentry scan</b> · Perimeter clean</span></div>
+              <div class="feed-row"><span class="ts">11:31</span><span class="ev"><b>Triage agent</b> · 14 leads routed</span></div>
+              <div class="feed-row"><span class="ts">11:28</span><span class="ev"><b>No-show recovery</b> · 3 rebooked</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── 01 · VOICE ─── -->
+        <div class="dash-panel" data-panel="voice">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">Calls Answered</div><div class="v">412</div><div class="t">▲ 100% pickup</div></div>
+            <div class="dash-stat"><div class="k">Avg Duration</div><div class="v">2:14</div><div class="t">▼ -8s vs avg</div></div>
+            <div class="dash-stat"><div class="k">Booked Rate</div><div class="v">62<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">▲ +9%</div></div>
+            <div class="dash-stat"><div class="k">After-Hours</div><div class="v">37<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">▲ Recovered</div></div>
+          </div>
+          <div class="dash-spark">
+            <div class="h"><span class="k">Calls per hour · last 24h</span><span class="v">412 total</span></div>
+            <div class="bar-chart" id="bars-voice">
+              <!-- 24 bars rendered via JS -->
+            </div>
+            <div class="bar-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+          </div>
+        </div>
+
+        <!-- ─── 02 · CAPTURE ─── -->
+        <div class="dash-panel" data-panel="capture">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">Leads · 24h</div><div class="v">247</div><div class="t">▲ +18%</div></div>
+            <div class="dash-stat"><div class="k">Sources</div><div class="v">5</div><div class="t">All synced</div></div>
+            <div class="dash-stat"><div class="k">Qualified</div><div class="v">89<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">▲ +4%</div></div>
+            <div class="dash-stat"><div class="k">Time to Lead</div><div class="v">8<span style="font-size:18px; color:rgba(255,255,255,0.4)">s</span></div><div class="t">Instant routing</div></div>
+          </div>
+          <div class="dash-spark">
+            <div class="h"><span class="k">Lead Sources · 24h</span><span class="v">247</span></div>
+            <div class="donut-row">
+              <svg class="donut-svg" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3.2"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7dd3e7" stroke-width="3.2" stroke-dasharray="45 100" stroke-dashoffset="25" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3.2" stroke-dasharray="28 100" stroke-dashoffset="-20" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f0d57a" stroke-width="3.2" stroke-dasharray="15 100" stroke-dashoffset="-48" transform="rotate(-90 18 18)"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.2" stroke-dasharray="12 100" stroke-dashoffset="-63" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div class="donut-legend">
+                <div class="donut-legend-item"><span class="swatch" style="background:#7dd3e7"></span><span class="label">Web Forms</span><span class="pct">45%</span></div>
+                <div class="donut-legend-item"><span class="swatch" style="background:#34d399"></span><span class="label">Paid Ads</span><span class="pct">28%</span></div>
+                <div class="donut-legend-item"><span class="swatch" style="background:#f0d57a"></span><span class="label">Direct Messages</span><span class="pct">15%</span></div>
+                <div class="donut-legend-item"><span class="swatch" style="background:#a78bfa"></span><span class="label">Referrals</span><span class="pct">12%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── 03 · SYNC ─── -->
+        <div class="dash-panel" data-panel="sync">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">In Pipeline</div><div class="v">247</div><div class="t">All synced</div></div>
+            <div class="dash-stat"><div class="k">Booked</div><div class="v">89</div><div class="t">▲ +24%</div></div>
+            <div class="dash-stat"><div class="k">Showed</div><div class="v">71</div><div class="t">80% show rate</div></div>
+            <div class="dash-stat"><div class="k">Won</div><div class="v">34</div><div class="t">38% win rate</div></div>
+          </div>
+          <div class="dash-spark">
+            <div class="h"><span class="k">Pipeline Funnel</span><span class="v" style="color:#34d399">38% close</span></div>
+            <div class="funnel">
+              <div class="funnel-row"><div class="funnel-label">New</div><div class="funnel-bar" style="width:100%">247</div><div class="funnel-pct">100%</div></div>
+              <div class="funnel-row"><div class="funnel-label">Contacted</div><div class="funnel-bar" style="width:88%">217</div><div class="funnel-pct">88%</div></div>
+              <div class="funnel-row"><div class="funnel-label">Booked</div><div class="funnel-bar" style="width:36%">89</div><div class="funnel-pct">36%</div></div>
+              <div class="funnel-row"><div class="funnel-label">Showed</div><div class="funnel-bar" style="width:29%">71</div><div class="funnel-pct">29%</div></div>
+              <div class="funnel-row"><div class="funnel-label">Won</div><div class="funnel-bar" style="width:14%">34</div><div class="funnel-pct">14%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── 04 · SENTRY ─── -->
+        <div class="dash-panel" data-panel="sentry">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">Security Score</div><div class="v">98<span style="font-size:18px; color:rgba(255,255,255,0.4)">/100</span></div><div class="t">▲ Low risk</div></div>
+            <div class="dash-stat"><div class="k">Last Scan</div><div class="v">4h</div><div class="t">Auto-scheduled</div></div>
+            <div class="dash-stat"><div class="k">Threats Blocked</div><div class="v">12</div><div class="t">Last 30 days</div></div>
+            <div class="dash-stat"><div class="k">Compliance</div><div class="v">100<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">All checks pass</div></div>
+          </div>
+          <div class="dash-spark">
+            <div class="h"><span class="k">Perimeter Health · 7-day</span><span class="v" style="color:#34d399">All clear</span></div>
+            <div class="sec-score">
+              <svg class="sec-score-svg" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3" stroke-dasharray="98 100" transform="rotate(-90 18 18)" stroke-linecap="round"/>
+                <text x="18" y="20" text-anchor="middle" font-size="9" fill="#fff" font-weight="500">98</text>
+              </svg>
+              <div style="flex:1; display:flex; flex-direction:column; gap:8px">
+                <div class="feed-row"><span class="ts">04:00</span><span class="ev"><b>Scan complete</b> · 0 critical, 0 high</span></div>
+                <div class="feed-row"><span class="ts">02:14</span><span class="ev"><b>Patch applied</b> · CMS · auto</span></div>
+                <div class="feed-row"><span class="ts">YDA</span><span class="ev"><b>Threat blocked</b> · brute-force IP</span></div>
+                <div class="feed-row"><span class="ts">YDA</span><span class="ev"><b>SSL renewed</b> · 90d cycle</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── 02 · CUSTOM AGENTS ─── -->
+        <div class="dash-panel" data-panel="custom">
+          <div class="dash-mock-stats">
+            <div class="dash-stat"><div class="k">Active Agents</div><div class="v">8</div><div class="t">▲ 2 added this month</div></div>
+            <div class="dash-stat"><div class="k">Tasks Run · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="dash-stat"><div class="k">Success Rate</div><div class="v">99.2<span style="font-size:18px; color:rgba(255,255,255,0.4)">%</span></div><div class="t">10 retries</div></div>
+            <div class="dash-stat"><div class="k">Hours Saved</div><div class="v">14<span style="font-size:18px; color:rgba(255,255,255,0.4)">h</span></div><div class="t">vs manual</div></div>
+          </div>
+          <div class="dash-spark">
+            <div class="h"><span class="k">Active Agents</span><span class="v">8 running</span></div>
+            <div class="agent-row"><span class="agent-name">No-Show Recovery Bot</span><span class="agent-tasks">312 runs</span><span class="agent-pill live">Live</span></div>
+            <div class="agent-row"><span class="agent-name">Inquiry Triage Agent</span><span class="agent-tasks">247 runs</span><span class="agent-pill live">Live</span></div>
+            <div class="agent-row"><span class="agent-name">Lead Follow-Up Sequence</span><span class="agent-tasks">198 runs</span><span class="agent-pill live">Live</span></div>
+            <div class="agent-row"><span class="agent-name">Contract Renewal Alert</span><span class="agent-tasks">156 runs</span><span class="agent-pill live">Live</span></div>
+            <div class="agent-row"><span class="agent-name">Overdue Invoice Nudge</span><span class="agent-tasks">89 runs</span><span class="agent-pill live">Live</span></div>
+            <div class="agent-row"><span class="agent-name">Client Onboarding Flow</span><span class="agent-tasks">73 runs</span><span class="agent-pill idle">Scheduled</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 3 — HOW IT WORKS (numbered steps · liquid metal) ════════════════ -->
+<section id="how" class="slide flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-5xl mx-auto w-full">
+    <div class="text-center mb-14">
+      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">How It Works</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:680px">From audit to live system. In days.</h2>
+    </div>
+    <div class="space-y-7 max-w-3xl mx-auto">
+      <div class="relative flex items-start gap-5 blur-in">
+        <div class="relative">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="flex-1 glass rounded-2xl p-6">
+          <h4 class="text-[20px] font-medium text-white mb-1">Book an AI Operations Audit</h4>
+          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Tell us about your business in 60 seconds. We look at it personally — where your operation is leaking time, leads, or risk.</p>
+        </div>
+      </div>
+      <div class="relative flex items-start gap-5 blur-in">
+        <div class="relative">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="flex-1 glass rounded-2xl p-6">
+          <h4 class="text-[20px] font-medium text-white mb-1">Custom operations report</h4>
+          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Within 24 hours: a written breakdown of which agents we'd build first, the workflows they replace, and the ROI math — no fluff, no upsell deck.</p>
+        </div>
+      </div>
+      <div class="relative flex items-start gap-5 blur-in">
+        <div class="relative">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="flex-1 glass rounded-2xl p-6">
+          <h4 class="text-[20px] font-medium text-white mb-1">We build &amp; deploy</h4>
+          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">We design the agents, wire them into your stack — phone, calendar, CRM, tools — and pressure-test every flow before it goes live. You don't lift a finger.</p>
+        </div>
+      </div>
+      <div class="relative flex items-start gap-5 blur-in">
+        <div class="relative">
+          <div class="step-num">04</div>
+        </div>
+        <div class="flex-1 glass rounded-2xl p-6">
+          <h4 class="text-[20px] font-medium text-white mb-1">Live in days. Running forever.</h4>
+          <p class="text-[14px]" style="color:rgba(255,255,255,0.7); line-height:1.6">Your branded Command Center goes live. Every signal tracked. We handle ongoing monitoring and optimization. You watch the leads come in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 4 — MODULES (glass sculpture) ════════════════ -->
+<section id="modules" class="slide flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
+    <div class="text-center mb-12">
+      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">Where We Operate</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto mb-5" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:820px">AI Operations, end-to-end.</h2>
+      <p class="text-[15px] font-normal blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.6; max-width:680px">Four zones cover the full operating surface of a service business. We work in one, several, or all of them — depending on where your leverage lives.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+      <div class="glass rounded-2xl p-8 blur-in">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">01 · CUSTOMER-FACING</p>
+        <h4 class="text-[24px] font-medium text-white mb-3">AI Voice Receptionist</h4>
+        <p class="text-[14px] font-normal mb-4" style="color:rgba(255,255,255,0.7); line-height:1.6">A voice agent that answers every inbound call — qualifies, books, escalates, and logs to your CRM. 24/7, no missed windows, sounds human.</p>
+        <p class="text-[12px]" style="color:rgba(255,255,255,0.4)">Inbound calls · After-hours coverage · Intake · Booking · Live transfer</p>
+      </div>
+      <div class="glass rounded-2xl p-8 blur-in">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">02 · INTERNAL OPERATIONS</p>
+        <h4 class="text-[24px] font-medium text-white mb-3">Custom AI Agents</h4>
+        <p class="text-[14px] font-normal mb-4" style="color:rgba(255,255,255,0.7); line-height:1.6">Bespoke agents built into the workflows that actually slow your team down. If you can describe the process, we can put an agent inside it.</p>
+        <p class="text-[12px]" style="color:rgba(255,255,255,0.4)">Triage · No-show recovery · Renewal alerts · Invoice nudges · Onboarding</p>
+      </div>
+      <div class="glass rounded-2xl p-8 blur-in">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">03 · RISK &amp; SECURITY</p>
+        <h4 class="text-[24px] font-medium text-white mb-3">Sentry — Cyber Risk Intel</h4>
+        <p class="text-[14px] font-normal mb-4" style="color:rgba(255,255,255,0.7); line-height:1.6">Continuous scanning of your perimeter, credentials, and exposed surface. The cybersecurity layer most small businesses skip — until something breaks.</p>
+        <p class="text-[12px]" style="color:rgba(255,255,255,0.4)">Perimeter scans · Credential exposure · Compliance · Threat alerts</p>
+      </div>
+      <div class="glass rounded-2xl p-8 blur-in">
+        <p class="text-[11px] font-medium text-white/60 mb-3 tracking-[0.18em]">04 · REVENUE OPERATIONS</p>
+        <h4 class="text-[24px] font-medium text-white mb-3">Pipeline &amp; Follow-Up</h4>
+        <p class="text-[14px] font-normal mb-4" style="color:rgba(255,255,255,0.7); line-height:1.6">Every lead routed, every follow-up sent, every conversion logged. The connective tissue between your forms, ads, CRM, and calendar — running on its own.</p>
+        <p class="text-[12px]" style="color:rgba(255,255,255,0.4)">Lead routing · Multi-channel capture · CRM sync · Drip sequences</p>
+      </div>
+    </div>
+    <p class="text-center mt-10 text-[13px] blur-in" style="color:rgba(255,255,255,0.5); max-width:560px; margin-left:auto; margin-right:auto">Not on this list? Bring it. Half our builds start with <em>"can you automate this?"</em></p>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 5 — INTEGRATIONS (different bg per request) ════════════════ -->
+<section id="integrations" class="slide flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+          <span class="dot"></span>
+          <span class="text-[13px] font-medium text-white">Integrations</span>
+        </div>
+        <h2 class="grad-head font-medium mb-6 blur-in" style="font-size:52px; line-height:1.1; letter-spacing:-0.02em; max-width:520px">No rip and replace.</h2>
+        <p class="text-[16px] font-normal blur-in mb-7" style="color:rgba(255,255,255,0.7); line-height:1.6; max-width:520px">Keep the CRM, calendar, email platform, and booking tools you already use. NexFlow plugs in alongside them — no migration, no retraining, no starting over.</p>
+        <ul class="space-y-3 blur-in" style="color:rgba(255,255,255,0.8)">
+          <li class="flex items-start gap-3 text-[14px]"><span class="dot mt-2 flex-shrink-0"></span>Your CRM, email, and calendar stay exactly where they are</li>
+          <li class="flex items-start gap-3 text-[14px]"><span class="dot mt-2 flex-shrink-0"></span>We sync into your existing customer data and workflows</li>
+          <li class="flex items-start gap-3 text-[14px]"><span class="dot mt-2 flex-shrink-0"></span>55+ integrations supported out of the box</li>
+        </ul>
+      </div>
+      <div class="blur-in marquee-wrap" id="int-marquee">
+        <!-- Row 1 (scrolls left) — 9 tools -->
+        <div class="marquee-row left" id="m-row-1"></div>
+        <!-- Row 2 (scrolls right) — 9 tools -->
+        <div class="marquee-row right" id="m-row-2" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 6 — STATS (galaxy) ════════════════ -->
+<section class="slide flex items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14">
+      <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium text-white">The Outcome</span>
+      </div>
+      <h2 class="grad-head font-medium blur-in mx-auto" style="font-size:52px; line-height:1.12; letter-spacing:-0.02em; max-width:760px">Built for results you can measure.</h2>
+    </div>
+    <div class="glass-strong rounded-3xl p-10 md:p-14 blur-in">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 text-center md:text-left">
+        <div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">4</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Operational zones</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Customer · Internal · Risk · Revenue</div>
+        </div>
+        <div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">Any</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Workflow agentized</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">If you can describe it, we can build it</div>
+        </div>
+        <div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">24/7</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">Always running</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">No missed windows</div>
+        </div>
+        <div>
+          <div class="stat-num grad-head font-medium leading-none mb-3">Days</div>
+          <div class="text-[14px] font-normal" style="color:rgba(255,255,255,0.7)">To go live</div>
+          <div class="text-[11px] mt-1" style="color:rgba(255,255,255,0.4)">Not months</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 7 — FOUNDER (cosmic vortex) ════════════════ -->
+<section id="founder" class="slide flex items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
+  <div class="scrim"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
+    <div class="grid grid-cols-1 md:grid-cols-[360px_1fr] gap-14 items-center">
+      <div class="glass-strong rounded-2xl p-10 blur-in flex flex-col items-center gap-7">
+        <div class="relative">
+          <div class="absolute -inset-3 rounded-full" style="background: radial-gradient(circle, rgba(125,211,231,0.3), transparent 70%); filter: blur(12px)"></div>
+          <img src="founder.jpg" alt="Antonyo Fridal" class="relative w-44 h-44 rounded-full object-cover" style="border:2px solid rgba(255,255,255,0.4)">
+        </div>
+        <div class="w-full border-t border-white/10 pt-5 flex flex-col gap-3 text-sm">
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Founder</span><span class="text-white font-medium">Antonyo Fridal</span></div>
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Background</span><span class="text-white font-medium">Cybersecurity · 5 yrs</span></div>
+          <div class="flex justify-between"><span class="text-[11px] uppercase tracking-[0.18em]" style="color:rgba(255,255,255,0.5)">Building</span><span class="text-white font-medium">NexFlow AI</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="rounded-[20px] inline-flex items-center mb-6 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+          <span class="dot"></span>
+          <span class="text-[13px] font-medium text-white">The Founder</span>
+        </div>
+        <h2 class="grad-head font-medium mb-6 blur-in" style="font-size:52px; line-height:1.1; letter-spacing:-0.02em; max-width:620px">Built by an operator. Not a marketer.</h2>
+        <p class="text-[16px] font-normal mb-5 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">I'm Antonyo Fridal — five years in tech and cybersecurity, working inside the systems that businesses run on. I've watched the same pattern over and over: phones unanswered, workflows held together by tribal knowledge, security treated as a checkbox, and good companies bleeding revenue to manual work that shouldn't be manual anymore.</p>
+        <p class="text-[16px] font-normal mb-7 blur-in" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">NexFlow is the AI operations partner those companies should have had years ago. Built from a security mindset — every agent observable, every workflow tracked, every signal captured. If a process can be agentized correctly, it should be.</p>
+        <div class="flex flex-wrap gap-2 blur-in">
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">5 yrs · Tech</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Cybersecurity</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Systems Thinker</span>
+          <span class="rounded-full text-[12px]" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.85); padding: 6px 14px">Operator-First</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE 8 — CTA + FOOTER (liquid metal) ════════════════ -->
+<section id="contact" class="slide flex flex-col items-center justify-center">
+  <video class="bg" autoplay loop muted playsinline preload="auto"
+    data-hls="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"></video>
+  <div class="scrim"></div>
+  <div class="cosmic-accent"></div>
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center">
+      <div class="rounded-[20px] inline-flex items-center mb-7 blur-in" style="background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.20); padding: 8px 16px; gap:8px">
+        <span class="dot"></span>
+        <span class="text-[13px] font-medium" style="color:rgba(255,255,255,0.6)">AI Operations ·</span>
+        <span class="text-[13px] font-medium text-white">Now Booking Operations Audits</span>
+      </div>
+      <h2 class="grad-head font-medium mb-6 blur-in mx-auto" style="font-size:60px; line-height:1.05; letter-spacing:-0.02em; max-width:820px">Tell us what shouldn't be manual anymore.</h2>
+      <p class="text-[16px] font-normal mb-9 blur-in mx-auto" style="color:rgba(255,255,255,0.7); line-height:1.65; max-width:640px">Sixty seconds to describe your business. Twenty-four hours to get back a written audit — which agents we'd build, what they'd replace, what it costs, what it returns. No deck, no sales call required.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4 blur-in mb-5">
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book an AI Operations Audit</a>
+        <a href="#dashboard" class="pill-dark">See It Live</a>
+      </div>
+    </div>
+    <div class="mt-24 pt-10 border-t border-white/10">
+      <!-- footer columns -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="text-white text-[14px] font-medium mb-4">NexFlow AI</div>
+          <div class="text-[12px] leading-relaxed" style="color:rgba(255,255,255,0.45)">AI Operations for any part of your business. Built and managed by us, owned by you.</div>
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.4)">Product</div>
+          <ul class="flex flex-col gap-2.5 text-[13px]" style="color:rgba(255,255,255,0.7)">
+            <li><a href="#dashboard" class="hover:text-white">Dashboard</a></li>
+            <li><a href="#how" class="hover:text-white">Process</a></li>
+            <li><a href="#modules" class="hover:text-white">Modules</a></li>
+            <li><a href="#integrations" class="hover:text-white">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.4)">Company</div>
+          <ul class="flex flex-col gap-2.5 text-[13px]" style="color:rgba(255,255,255,0.7)">
+            <li><a href="#founder" class="hover:text-white">Founder</a></li>
+            <li><a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="hover:text-white">Operations Audit</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.4)">Legal</div>
+          <ul class="flex flex-col gap-2.5 text-[13px]" style="color:rgba(255,255,255,0.7)">
+            <li><a href="privacy.html" class="hover:text-white">Privacy Policy</a></li>
+            <li><a href="terms.html" class="hover:text-white">Terms of Service</a></li>
+            <li><a href="privacy.html#sms" class="hover:text-white">SMS Policy</a></li>
+            <li><a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="hover:text-white">Data Requests</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- compliance / legal disclosures -->
+      <div class="pt-8 border-t border-white/5">
+        <p class="text-[11px] leading-relaxed mb-3" style="color:rgba(255,255,255,0.5)">
+          <strong style="color:rgba(255,255,255,0.75)">SMS Consent &amp; TCPA Notice:</strong>
+          By providing your phone number to NexFlow AI Solutions LLC, you consent to receive transactional and promotional SMS messages from NexFlow AI on behalf of yourself or the businesses you operate. Message frequency varies. Message and data rates may apply. Reply <strong>STOP</strong> to unsubscribe at any time, or <strong>HELP</strong> for assistance. Consent is not a condition of purchase. Florida, USA.
+        </p>
+        <p class="text-[11px] leading-relaxed mb-3" style="color:rgba(255,255,255,0.5)">
+          <strong style="color:rgba(255,255,255,0.75)">A2P 10DLC Compliance:</strong>
+          NexFlow AI operates under registered A2P 10DLC campaigns. Business owners using NexFlow AI confirm they have obtained proper opt-in consent from their clients before adding contacts to any messaging workflow. NexFlow AI complies with carrier guidelines, the Telephone Consumer Protection Act (TCPA), and CTIA messaging principles.
+        </p>
+        <p class="text-[11px] leading-relaxed mb-6" style="color:rgba(255,255,255,0.5)">
+          <strong style="color:rgba(255,255,255,0.75)">Data &amp; Privacy:</strong>
+          NexFlow AI Solutions LLC processes business and customer data in accordance with our Privacy Policy. We do not sell user data. NexFlow integrates with third-party platforms (CRM, calendar, payment, and messaging providers) — your data with those providers remains owned and controlled by you. CCPA and GDPR data requests honored via our <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="underline" style="color:rgba(255,255,255,0.7)">contact form</a>.
+        </p>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pt-4 border-t border-white/5">
+          <div class="text-[11px]" style="color:rgba(255,255,255,0.4)">
+            © 2026 <strong style="color:rgba(255,255,255,0.6)">NexFlow AI Solutions LLC</strong>. All rights reserved. Florida, USA.
+          </div>
+          <div class="text-[11px]" style="color:rgba(255,255,255,0.35)">
+            Built for operators · Cybersecurity-first
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FLOATING CHAT WIDGET ════════════════ -->
+<button id="chat-fab" aria-label="Chat">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div id="chat-panel">
+  <div class="chat-head">
+    <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.1)">
+      <span class="text-[11px] font-medium" style="color:#7dd3e7">NF</span>
+    </div>
+    <div class="text-[13px] font-medium">NexFlow Assistant</div>
+    <div class="ml-auto text-[11px] flex items-center gap-1.5" style="color:#34d399">
+      <span class="w-1.5 h-1.5 rounded-full" style="background:#34d399"></span>Online
+    </div>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-opts" id="chat-opts"></div>
+</div>
+
+<script>
+  // HLS attach
+  function attachHls(v){
+    const src = v.getAttribute('data-hls'); if (!src) return;
+    if (v.canPlayType('application/vnd.apple.mpegurl')) { v.src = src; v.play().catch(()=>{}); return; }
+    if (window.Hls && Hls.isSupported()){
+      const h = new Hls({ enableWorker:true });
+      h.loadSource(src); h.attachMedia(v);
+      h.on(Hls.Events.MANIFEST_PARSED, ()=> v.play().catch(()=>{}));
+    }
+  }
+  document.querySelectorAll('video[data-hls]').forEach(attachHls);
+
+  // Reveal observer
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.blur-in').forEach(el => io.observe(el));
+
+  // ── CHAT FAB ──
+  const chatFab = document.getElementById('chat-fab');
+  if (chatFab) chatFab.addEventListener('click', toggleChat);
+
+  // ── DASHBOARD TABS ──
+  document.querySelectorAll('.dash-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const name = tab.getAttribute('data-tab');
+      document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panel = document.querySelector('.dash-panel[data-panel="' + name + '"]');
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // ── INTEGRATIONS MARQUEE ──
+  (function buildMarquee(){
+    const ROW_1 = [
+      ['googlecalendar/4285F4', 'Google Calendar'],
+      ['stripe/635BFF', 'Stripe'],
+      ['square/ffffff', 'Square'],
+      ['calendly/006BFF', 'Calendly'],
+      ['quickbooks/2CA01C', 'QuickBooks'],
+      ['mailchimp/FFE01B', 'Mailchimp'],
+      ['instagram/E4405F', 'Instagram'],
+      ['whatsapp/25D366', 'WhatsApp'],
+      ['hubspot/FF7A59', 'HubSpot'],
+    ];
+    const ROW_2 = [
+      ['google/ffffff', 'Google'],
+      ['gmail/EA4335', 'Gmail'],
+      ['facebook/1877F2', 'Facebook'],
+      ['yelp/D32323', 'Yelp'],
+      ['zoom/0B5CFF', 'Zoom'],
+      ['paypal/003087', 'PayPal'],
+      ['venmo/3D95CE', 'Venmo'],
+      ['notion/ffffff', 'Notion'],
+      ['dropbox/0061FF', 'Dropbox'],
+    ];
+    const renderRow = (rowEl, items) => {
+      const frag = document.createDocumentFragment();
+      const buildChip = ([icon, name]) => {
+        const chip = document.createElement('div');
+        chip.className = 'marquee-chip';
+        const img = document.createElement('img');
+        img.src = '/icons/' + icon.split('/')[0] + '.svg';
+        img.alt = name;
+        img.width = 22; img.height = 22;
+        img.decoding = 'async';
+        img.addEventListener('error', () => img.remove());
+        const span = document.createElement('span');
+        span.className = 'name';
+        span.textContent = name;
+        chip.appendChild(img); chip.appendChild(span);
+        return chip;
+      };
+      [...items, ...items].forEach(item => frag.appendChild(buildChip(item)));
+      rowEl.appendChild(frag);
+    };
+    const r1 = document.getElementById('m-row-1');
+    const r2 = document.getElementById('m-row-2');
+    if (r1) renderRow(r1, ROW_1);
+    if (r2) renderRow(r2, ROW_2);
+  })();
+
+  // Voice tab — render 24 bars (calls per hour, deterministic shape)
+  (function renderVoiceBars(){
+    const host = document.getElementById('bars-voice');
+    if (!host) return;
+    const heights = [4,3,2,2,3,5,12,28,52,78,72,65,68,74,82,88,95,84,62,38,22,14,9,6];
+    const max = Math.max(...heights);
+    heights.forEach(h => {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = (Math.max(4, (h/max)*100)) + '%';
+      host.appendChild(bar);
+    });
+  })();
+
+  // ── CHAT ──
+  const TYPEFORM = 'https://form.typeform.com/to/Klck50zm';
+  const RESPONSES = {
+    greeting:{text:"Hey! I'm the NexFlow assistant. What would you like to know?",options:['What does NexFlow do?','How does it work?','Who is it for?','Book an audit']},
+    what:{text:"NexFlow builds AI operations for service businesses. We design, build, and run AI agents inside your business — voice receptionists, custom workflow agents, and Sentry (cyber risk monitoring). If a process should be automated, we make it real.",options:['How does it work?','Who is it for?','Book an audit']},
+    howworks:{text:"Book an AI operations audit (60 seconds). Within 24 hours you get a written breakdown — which agents we'd build first, what they'd replace, and the ROI math. If we're a fit, we build, wire it into your stack, and deploy. Live in days.",options:['Who is it for?','Book an audit']},
+    whofor:{text:"Service businesses where the operation is the product — clinics, agencies, home services, professional services, anyone losing time, leads, or risk to manual work that should be running on its own.",options:['What does NexFlow do?','Book an audit']},
+    pricing:{text:"Every build is scoped to your operation, so pricing depends on which agents you need and the integrations involved. Book an audit and the report comes back with exact numbers.",options:['Book an audit']},
+    audit:{text:"The audit is free and takes about 60 seconds to apply. We'll send back a written operations report within 24 hours. Click below.",options:['Open Audit Form →'],action:TYPEFORM},
+    contact:{text:"Fastest way to reach us is through the audit form — we respond within a few hours.",options:['Book an audit']},
+    fallback:{text:"For specifics I'd recommend booking an audit — we'll look at your operation and walk through where AI fits.",options:['Book an audit','What does NexFlow do?']}
+  };
+  function detectIntent(t){
+    t=t.toLowerCase();
+    if(/what.*do|what is|who are|about|explain|service/.test(t))return'what';
+    if(/how.*work|process/.test(t))return'howworks';
+    if(/who|industry|type|fit/.test(t))return'whofor';
+    if(/price|cost|how much|pay/.test(t))return'pricing';
+    if(/audit|demo|book|schedule|call|meeting|apply|form/.test(t))return'audit';
+    if(/contact|email|reach|phone/.test(t))return'contact';
+    return'fallback';
+  }
+  let chatOpen=false;
+  function toggleChat(){
+    chatOpen=!chatOpen;
+    document.getElementById('chat-panel').classList.toggle('open',chatOpen);
+    if(chatOpen && document.getElementById('chat-msgs').children.length===0) showResponse('greeting');
+  }
+  function addMsg(text,type){
+    const el=document.createElement('div'); el.className='chat-msg '+type; el.textContent=text;
+    const m=document.getElementById('chat-msgs'); m.appendChild(el); m.scrollTop=99999;
+  }
+  function showResponse(key){
+    const r=RESPONSES[key]||RESPONSES.fallback;
+    const opts=document.getElementById('chat-opts'); opts.innerHTML='';
+    setTimeout(()=>{
+      addMsg(r.text,'bot');
+      r.options.forEach(o=>{
+        const b=document.createElement('button');
+        b.className='chat-opt'; b.textContent=o;
+        b.onclick=()=>handleOption(o,r.action);
+        opts.appendChild(b);
+      });
+    },500);
+  }
+  function handleOption(opt,action){
+    document.getElementById('chat-opts').innerHTML='';
+    addMsg(opt,'user');
+    if(opt.includes('Audit Form')||opt.includes('audit form')){ window.open(TYPEFORM,'_blank'); return; }
+    showResponse(detectIntent(opt));
+  }
+</script>
+
+</body>
