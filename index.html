@@ -175,6 +175,20 @@
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     }
 
+    /* live-call block (NEX-48) — tap-to-call on mobile, copy number on desktop */
+    .live-call{ border-radius:22px; padding:24px 28px; max-width:440px; margin:0 auto; text-align:center; }
+    .live-call-eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:16px; }
+    .live-call .live-dot{ width:7px; height:7px; border-radius:50%; background:#8CC8DC; box-shadow:0 0 10px rgba(140,200,220,0.9); animation:lc-pulse 1.6s ease-in-out infinite; }
+    @keyframes lc-pulse{ 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .live-call-num{ font-size:30px; font-weight:600; letter-spacing:-0.01em; color:#fff; line-height:1; }
+    .live-call-copy{ position:relative; display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:12px; font-size:13px; font-weight:500; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); cursor:pointer; transition:background .2s, border-color .2s; }
+    .live-call-copy:hover{ background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.28); }
+    .live-call-copied{ position:absolute; left:50%; transform:translateX(-50%); top:-32px; font-size:12px; font-weight:600; color:#8CC8DC; background:rgba(8,8,9,0.96); border:1px solid rgba(140,200,220,0.4); padding:3px 10px; border-radius:8px; opacity:0; pointer-events:none; transition:opacity .25s; white-space:nowrap; }
+    .live-call-copied.show{ opacity:1; }
+    .live-call-tel{ display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 20px; border-radius:14px; font-size:16px; font-weight:600; color:#080809; background:#8CC8DC; box-shadow:0 0 24px rgba(140,200,220,0.35); transition:transform .15s, box-shadow .2s; }
+    .live-call-tel:active{ transform:scale(0.98); }
+    .live-call-sub{ font-size:13px; color:rgba(255,255,255,0.62); margin-top:16px; }
+
     /* dot accent */
     .dot{ width:5px; height:5px; border-radius:50%; background:#7dd3e7; display:inline-block; box-shadow: 0 0 8px rgba(125,211,231,0.7); }
 
@@ -1002,6 +1016,19 @@
       display:flex; align-items:center; justify-content:center; color:#7dd3e7;
     }
   </style>
+
+  <!-- Open Graph / Twitter social meta (NEX-48) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nexflowaisolutions.com/" />
+  <meta property="og:title" content="NexFlow AI — Every call answered. Every lead booked." />
+  <meta property="og:description" content="AI receptionist that answers every call live, qualifies, and books to your calendar — for med spas, dental, and home-service businesses." />
+  <meta property="og:image" content="https://nexflowaisolutions.com/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NexFlow AI — Every call answered. Every lead booked." />
+  <meta name="twitter:description" content="AI receptionist that answers every call live, qualifies, and books to your calendar." />
+  <meta name="twitter:image" content="https://nexflowaisolutions.com/og.png" />
 </head>
 <body class="bg-black text-white">
 
@@ -1133,6 +1160,23 @@
       <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
       <a href="#dashboard" class="pill-dark">See the Command Center</a>
     </div>
+
+    <!-- TODO: Replace +1XXXXXXXXXX with real Vapi/GHL number -->
+    <div class="live-call glass-strong">
+      <div class="live-call-eyebrow"><span class="live-dot"></span>Talk to the receptionist live</div>
+      <div class="hidden md:flex items-center justify-center gap-4">
+        <span class="live-call-num">+1 (XXX) XXX-XXXX</span>
+        <button type="button" class="live-call-copy" data-copy-number="+1XXXXXXXXXX" aria-label="Copy phone number">
+          <span class="live-call-copied">Copied!</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <a href="tel:+1XXXXXXXXXX" class="live-call-tel md:hidden">
+        Call the AI live →
+      </a>
+      <p class="live-call-sub">Real AI. Real call. Ask it to book you an appointment.</p>
+    </div>
   </div>
 </section>
 
@@ -1192,7 +1236,26 @@
       <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
         Agents that pick up.<br><span class="muted">Calls that close themselves.</span>
       </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:560px">Don't take our word for it — call the live agent now. Below is exactly what your customer experiences.</p>
     </div>
+
+    <!-- TODO: Replace +1XXXXXXXXXX with real Vapi/GHL number -->
+    <div class="live-call glass-strong blur-in mb-20">
+      <div class="live-call-eyebrow"><span class="live-dot"></span>Talk to the receptionist live</div>
+      <div class="hidden md:flex items-center justify-center gap-4">
+        <span class="live-call-num">+1 (XXX) XXX-XXXX</span>
+        <button type="button" class="live-call-copy" data-copy-number="+1XXXXXXXXXX" aria-label="Copy phone number">
+          <span class="live-call-copied">Copied!</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <a href="tel:+1XXXXXXXXXX" class="live-call-tel md:hidden">
+        Call the AI live →
+      </a>
+      <p class="live-call-sub">Real AI. Real call. Ask it to book you an appointment.</p>
+    </div>
+
     <!-- SCENE 1 — Voice Agent (phone left · copy right) -->
     <div class="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-12 md:gap-20 max-w-5xl mx-auto items-center mb-32">
       <div class="blur-in order-2 md:order-1">
@@ -1458,6 +1521,96 @@
             <div class="agent-row"><span class="agent-name">Overdue Invoice Nudge</span><span class="agent-tasks">89 runs</span><span class="agent-pill live">Live</span></div>
             <div class="agent-row"><span class="agent-name">Client Onboarding Flow</span><span class="agent-tasks">73 runs</span><span class="agent-pill idle">Scheduled</span></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ MID-PAGE CTA ════════════════ -->
+<section class="slide clean flex items-center justify-center section-flow">
+  <div class="relative z-10 px-6 py-20 max-w-3xl mx-auto w-full text-center">
+    <div class="blur-in">
+      <p style="font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.45); font-weight:600; margin-bottom:16px">Free — No commitment</p>
+      <h2 class="grad-head font-medium mb-5" style="font-size:46px; line-height:1.05; letter-spacing:-0.025em">Ready to stop missing calls?</h2>
+      <p style="font-size:16px; color:rgba(255,255,255,0.65); line-height:1.65; max-width:480px; margin:0 auto 32px">Sixty seconds to describe your business. We come back with a written audit — which agents we'd build, what they replace, what it returns.</p>
+      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE — FOUNDER ════════════════ -->
+<section id="founder" class="slide clean flex items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-16 md:py-20 max-w-4xl mx-auto w-full">
+    <div class="glass-strong rounded-[28px] p-8 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 items-center blur-in">
+      <!-- Photo slot — fallback to AF monogram if founder.jpg missing -->
+      <div class="flex-shrink-0">
+        <img src="/founder.jpg" alt="Antonyo Fridal"
+             id="founder-photo"
+             class="rounded-full object-cover"
+             style="width:96px; height:96px; border:1px solid rgba(255,255,255,0.18); display:block"
+             onerror="this.style.display='none'; document.getElementById('founder-monogram').style.display='flex'">
+        <div id="founder-monogram"
+             class="rounded-full glass items-center justify-center"
+             style="display:none; width:96px; height:96px; border:1px solid rgba(255,255,255,0.18)">
+          <span style="font-size:22px; font-weight:500; color:#fff; letter-spacing:0.04em">AF</span>
+        </div>
+      </div>
+      <!-- Copy -->
+      <div class="text-center md:text-left">
+        <div class="concept-eyebrow" style="margin-bottom:12px">Founder</div>
+        <p style="font-size:17px; color:rgba(255,255,255,0.82); line-height:1.65; max-width:520px; margin-bottom:20px">
+          Every system NexFlow builds is designed, built, and managed directly — no agency layer, no handed-off execution. Your AI receptionist runs on infrastructure we own and operate. Built and managed by us, owned by you.
+        </p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.45); letter-spacing:0.02em">
+          Antonyo Fridal · Founder, NexFlow AI
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SLIDE — SENTRY (demoted; below proof area) ════════════════ -->
+<section id="sentry" class="slide clean flex items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-16 md:py-24 max-w-5xl mx-auto w-full">
+    <div class="text-center mb-12 concept-pair">
+      <div class="concept-eyebrow blur-in">Add-on</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:680px">
+        Sentry.<br><span class="muted">Cyber risk, handled.</span>
+      </h2>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:540px">
+        A $197 cyber risk report — one scan of your business perimeter, credential exposure, and compliance posture. Know your risk before an attacker does.
+      </p>
+    </div>
+    <div class="stagger grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <div class="fw-eyebrow">Perimeter Scan</div>
+        <h3>What's exposed?</h3>
+        <p>Open ports, misconfigured services, and exposed endpoints — identified and documented in plain English.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>External surface scan</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Misconfiguration detection</div>
+        </div>
+      </div>
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="fw-eyebrow">Credential Check</div>
+        <h3>Are you breached?</h3>
+        <p>Cross-referenced against known breach databases. You'll know if your credentials are already circulating.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Dark web credential check</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Business account exposure</div>
+        </div>
+      </div>
+      <div class="fw-card blur-in">
+        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div class="fw-eyebrow">Risk Report</div>
+        <h3>A written action plan.</h3>
+        <p>Not a scan dump. A prioritized, plain-English report with what to fix first and what it would take.</p>
+        <div class="fw-feats">
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Compliance-ready reports</div>
+          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Prioritized remediation steps</div>
         </div>
       </div>
     </div>
@@ -2319,6 +2472,28 @@
   document.getElementById('chat-close')?.addEventListener('click', closeChat);
   document.getElementById('chat-send')?.addEventListener('click', handleInput);
   document.getElementById('chat-input-field')?.addEventListener('keydown', (e)=>{ if(e.key === 'Enter'){ e.preventDefault(); handleInput(); } });
+
+  // Live-call copy-to-clipboard (NEX-48)
+  document.querySelectorAll('.live-call-copy').forEach((btn)=>{
+    btn.addEventListener('click', async ()=>{
+      const num = btn.getAttribute('data-copy-number') || '';
+      try {
+        await navigator.clipboard.writeText(num);
+      } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = num; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+      }
+      const toast = btn.querySelector('.live-call-copied');
+      if (toast) {
+        toast.classList.add('show');
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(()=> toast.classList.remove('show'), 1500);
+      }
+    });
+  });
 </script>
 
 </body>
