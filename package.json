@@ -1,0 +1,25 @@
+{
+  "name": "nexflowai-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./dist/tailwind.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fridalantonyo-boop/nexflowai-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/fridalantonyo-boop/nexflowai-site/issues"
+  },
+  "homepage": "https://github.com/fridalantonyo-boop/nexflowai-site#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

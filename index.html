@@ -18,11 +18,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dist/tailwind.css">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
-  <script>
-    tailwind.config = { theme: { extend: { fontFamily: { sans: ["'General Sans'", "ui-sans-serif", "system-ui"] } } } }
-  </script>
   <style>
     html, body { background:#000; color:#fff; }
     html{ scroll-behavior:smooth; }
@@ -1118,25 +1115,21 @@
   </nav>
 
   <div class="relative z-10 flex flex-col items-center text-center" style="padding: 180px 24px 56px; gap:30px">
-    <a href="#demo" class="hero-pill-btn rounded-[20px] inline-flex items-center" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding: 8px 16px; gap:10px; backdrop-filter: blur(12px); cursor:pointer; transition: background .2s, border-color .2s">
-      <span class="dot"></span>
-      <span class="text-[13px] font-medium text-white">Intelligent Agents × Dashboard</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.7); margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg>
-    </a>
+    <p style="font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.5); font-weight:600; margin:0">DESIGNED TO PERFORM · BUILT TO AUTOMATE</p>
     <h1 class="grad-head font-medium text-center" style="max-width:920px; font-size:74px; line-height:1.02; letter-spacing:-0.03em">
-      Designed to perform.<br><span style="color:rgba(255,255,255,0.4)">Built to automate.</span>
+      Every call answered.<br>Every lead booked.<br><span style="color:rgba(255,255,255,0.4)">Never a voicemail.</span>
     </h1>
     <p class="text-[16px] font-normal text-center" style="color:rgba(255,255,255,0.65); max-width:620px; line-height:1.55">
-      AI operations for any part of your business — voice receptionists, custom workflow agents, and Sentry cyber risk monitoring, all running inside one command center.
+      NexFlow's AI receptionist answers every call live, qualifies the caller, books them straight to your calendar, and texts a confirmation — for med spas, dental, and home-service businesses that lose money on missed calls.
     </p>
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
-      <a href="#dashboard" class="pill-dark">See the Command Center</a>
+      <a class="pill-light" href="tel:+1XXXXXXXXXX">Call the AI live →</a>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ SLIDE — FRAMEWORKS (3-card) ════════════════ -->
+<!-- ════════════════ SLIDE — FRAMEWORKS (2-card) ════════════════ -->
 <section id="frameworks" class="slide clean flex flex-col items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-7xl mx-auto w-full">
     <div class="text-center mb-14 concept-pair">
@@ -1144,9 +1137,9 @@
       <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
         The blueprint.<br><span class="muted">Behind every system.</span>
       </h2>
-      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:560px">Three frameworks. One operating layer. Each one is its own system — together they compound.</p>
+      <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:560px">Two core systems. One operating layer. Each one is its own engine — together they compound.</p>
     </div>
-    <div class="stagger grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div class="stagger grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
       <div class="fw-card blur-in">
         <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
         <div class="fw-eyebrow">01 · Voice</div>
@@ -1167,17 +1160,6 @@
           <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Any workflow, any department</div>
           <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Plugs into the tools you already use</div>
           <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Designed for your business — not a template</div>
-        </div>
-      </div>
-      <div class="fw-card blur-in">
-        <div class="ic-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
-        <div class="fw-eyebrow">03 · Sentry</div>
-        <h3>Cyber Risk<br>Intelligence</h3>
-        <p>Watches the perimeter so you don't have to. Scans, alerts, patches — running in the background.</p>
-        <div class="fw-feats">
-          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Perimeter &amp; credential scans</div>
-          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Compliance-ready reports</div>
-          <div class="fw-feat"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Threat alerts in real time</div>
         </div>
       </div>
     </div>
