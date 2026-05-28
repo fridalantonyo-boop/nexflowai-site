@@ -1,0 +1,83 @@
+<!-- Render to og.png: npx puppeteer screenshot og.html --output og.png --width 1200 --height 630 --or use any headless browser -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200, height=630, initial-scale=1" />
+  <title>NexFlow AI — OG image</title>
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html, body{ width:1200px; height:630px; overflow:hidden; }
+    body{
+      background:#080809;
+      color:#fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      position:relative;
+    }
+    /* ambient cyan glow */
+    .glow-a{ position:absolute; top:-220px; left:-160px; width:760px; height:760px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(140,200,220,0.18), rgba(140,200,220,0)); }
+    .glow-b{ position:absolute; bottom:-300px; right:-180px; width:820px; height:820px; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(140,200,220,0.12), rgba(140,200,220,0)); }
+    /* faint grid texture */
+    .grid{ position:absolute; inset:0; opacity:0.06;
+      background-image:linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+                       linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px);
+      background-size:64px 64px; }
+    /* thin top accent line */
+    .accent-line{ position:absolute; top:0; left:0; right:0; height:4px;
+      background:linear-gradient(90deg, rgba(140,200,220,0), #8CC8DC 35%, #8CC8DC 65%, rgba(140,200,220,0)); }
+
+    .wrap{ position:relative; z-index:2; height:100%; display:flex; flex-direction:column;
+      justify-content:center; padding:0 90px; }
+
+    .brand{ display:flex; align-items:center; gap:18px; margin-bottom:42px; }
+    .brand-mark{ width:58px; height:58px; border-radius:15px;
+      background:linear-gradient(145deg, rgba(140,200,220,0.22), rgba(140,200,220,0.06));
+      border:1px solid rgba(140,200,220,0.45); display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 30px rgba(140,200,220,0.35); }
+    .brand-mark span{ font-size:30px; font-weight:700; letter-spacing:-0.02em; color:#8CC8DC; }
+    .brand-name{ font-size:30px; font-weight:600; letter-spacing:-0.01em; color:#fff; }
+    .brand-name b{ color:#8CC8DC; font-weight:600; }
+
+    .eyebrow{ display:inline-flex; align-items:center; gap:10px; font-size:18px; font-weight:600;
+      letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:26px; }
+    .eyebrow .dot{ width:9px; height:9px; border-radius:50%; background:#8CC8DC;
+      box-shadow:0 0 12px rgba(140,200,220,0.9); }
+
+    h1{ font-size:84px; line-height:1.02; letter-spacing:-0.03em; font-weight:700; max-width:980px; }
+    h1 .muted{ color:rgba(255,255,255,0.42); }
+
+    .sub{ margin-top:34px; font-size:27px; line-height:1.45; font-weight:400;
+      color:rgba(255,255,255,0.66); max-width:880px; }
+
+    .footer{ position:absolute; bottom:54px; left:90px; right:90px; z-index:2;
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:21px; color:rgba(255,255,255,0.5); }
+    .footer .url{ color:#8CC8DC; font-weight:500; }
+  </style>
+</head>
+<body>
+  <div class="glow-a"></div>
+  <div class="glow-b"></div>
+  <div class="grid"></div>
+  <div class="accent-line"></div>
+
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark"><span>N</span></div>
+      <div class="brand-name">NexFlow <b>AI</b></div>
+    </div>
+
+    <div class="eyebrow"><span class="dot"></span>AI Receptionist</div>
+    <h1>Every call answered.<br><span class="muted">Every lead booked.</span></h1>
+    <p class="sub">An AI receptionist that answers every call live, qualifies the caller, and books straight to your calendar.</p>
+  </div>
+
+  <div class="footer">
+    <span class="url">nexflowaisolutions.com</span>
+    <span>Voice · Custom Agents · Sentry</span>
+  </div>
+</body>
+</html>
