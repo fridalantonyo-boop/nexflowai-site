@@ -1001,6 +1001,78 @@
       background:rgba(125,211,231,0.15); border:1px solid rgba(125,211,231,0.4);
       display:flex; align-items:center; justify-content:center; color:#7dd3e7;
     }
+
+    /* ── dashboard illustrative caption ── */
+    .dash-note{
+      display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+      font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+      color:rgba(255,255,255,0.42); font-weight:500;
+    }
+    .dash-note .pp-dot{ width:6px; height:6px; border-radius:50%; background:rgba(125,211,231,0.6); flex-shrink:0; }
+
+    /* ── founder card ── */
+    .founder-card{
+      display:grid; grid-template-columns: 280px 1fr; gap:44px; align-items:center;
+      max-width:940px; margin:0 auto; position:relative; overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.10); border-radius:30px; padding:44px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+    .founder-card::before{
+      content:''; position:absolute; top:-50%; left:-10%; width:50%; height:80%;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(125,211,231,0.16), transparent 70%);
+      filter: blur(50px); pointer-events:none;
+    }
+    .founder-photo{ position:relative; z-index:1; }
+    .founder-photo img{
+      width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:22px;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    }
+    .founder-body{ position:relative; z-index:1; }
+    .founder-name{ font-size:25px; font-weight:600; color:#fff; letter-spacing:-0.01em; }
+    .founder-role{ font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#7dd3e7; margin-top:6px; margin-bottom:18px; font-weight:600; }
+    .founder-body p{ font-size:15px; line-height:1.7; color:rgba(255,255,255,0.78); margin-bottom:22px; }
+    .founder-cred{ display:flex; flex-wrap:wrap; gap:10px; }
+    .founder-cred .cred{
+      display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:500;
+      color:rgba(255,255,255,0.85); padding:7px 13px; border-radius:999px;
+      background:rgba(125,211,231,0.08); border:1px solid rgba(125,211,231,0.22);
+    }
+    .founder-cred .cred svg{ color:#7dd3e7; flex-shrink:0; }
+
+    /* ── testimonial cards ── */
+    .tm-card{
+      position:relative; display:flex; flex-direction:column;
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.10); border-radius:22px; padding:28px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      transition: border-color .3s, transform .3s;
+    }
+    .tm-card:hover{ border-color: rgba(125,211,231,0.4); transform: translateY(-3px); }
+    .tm-stars{ display:flex; gap:3px; margin-bottom:16px; color:#7dd3e7; }
+    .tm-quote{ font-size:15px; line-height:1.62; color:rgba(255,255,255,0.88); margin-bottom:24px; flex:1; }
+    .tm-author{ display:flex; align-items:center; gap:12px; }
+    .tm-avatar{
+      width:42px; height:42px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; color:#0a0a0a;
+      background:linear-gradient(135deg, #7dd3e7, #5fbecf);
+    }
+    .tm-name{ font-size:14px; font-weight:600; color:#fff; }
+    .tm-meta{ font-size:12px; color:rgba(255,255,255,0.55); margin-top:2px; }
+
+    /* ── risk reversal line ── */
+    .risk-rev{
+      font-size:13px; font-weight:500; letter-spacing:0.01em;
+      color:rgba(255,255,255,0.55); max-width:560px;
+    }
+    .risk-rev b{ color:rgba(255,255,255,0.85); font-weight:600; }
+
+    @media (max-width:760px){
+      .founder-card{ grid-template-columns:1fr; gap:28px; padding:30px; text-align:center; }
+      .founder-photo img{ max-width:220px; margin:0 auto; }
+      .founder-cred{ justify-content:center; }
+    }
   </style>
 </head>
 <body class="bg-black text-white">
@@ -1123,11 +1195,11 @@
       <span class="text-[13px] font-medium text-white">Intelligent Agents × Dashboard</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.7); margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
-    <h1 class="grad-head font-medium text-center" style="max-width:920px; font-size:74px; line-height:1.02; letter-spacing:-0.03em">
-      Designed to perform.<br><span style="color:rgba(255,255,255,0.4)">Built to automate.</span>
+    <h1 class="grad-head font-medium text-center" style="max-width:940px; font-size:74px; line-height:1.02; letter-spacing:-0.03em">
+      Never miss another lead.<br><span style="color:rgba(255,255,255,0.4)">Never do the busywork again.</span>
     </h1>
-    <p class="text-[16px] font-normal text-center" style="color:rgba(255,255,255,0.65); max-width:620px; line-height:1.55">
-      AI operations for any part of your business — voice receptionists, custom workflow agents, and Sentry cyber risk monitoring, all running inside one command center.
+    <p class="text-[16px] font-normal text-center" style="color:rgba(255,255,255,0.72); max-width:640px; line-height:1.6">
+      We build and run the AI agents that answer your calls, follow up your leads, and watch your security — so your team gets the hours back and nothing slips through. One command center. Built and run by us, owned by you.
     </p>
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
@@ -1286,6 +1358,7 @@
         The command center.<br><span class="muted">Every agent, one view.</span>
       </h2>
       <p class="text-[15px] font-normal blur-in mx-auto mt-6" style="color:rgba(255,255,255,0.65); line-height:1.6; max-width:580px">Voice. Custom agents. Security. One screen. Owned by you.</p>
+      <div class="dash-note blur-in"><span class="pp-dot"></span>Sample dashboard · figures shown are illustrative</div>
     </div>
     <div class="dash-shell pop mx-auto">
       <div class="dash-shell-bar">
@@ -1642,6 +1715,85 @@
   </div>
 </section>
 
+<!-- ════════════════ SLIDE — FOUNDER + PROOF ════════════════ -->
+<section id="founder" class="slide clean flex flex-col items-center justify-center section-flow">
+  <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-14 concept-pair">
+      <div class="concept-eyebrow blur-in">Who's behind it</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:760px">
+        Built by an operator.<br><span class="muted">Not a faceless software vendor.</span>
+      </h2>
+    </div>
+
+    <!-- founder card -->
+    <div class="founder-card blur-in">
+      <div class="founder-photo">
+        <img src="founder.jpg" alt="Antonyo Fridal — Founder of NexFlow AI" loading="lazy" width="280" height="280"/>
+      </div>
+      <div class="founder-body">
+        <div class="founder-name">Antonyo Fridal</div>
+        <div class="founder-role">Founder · NexFlow AI</div>
+        <p>I came up in cybersecurity — years spent making sure systems never fail quietly. NexFlow is that same discipline pointed at your operations. Every agent we build is logged, monitored, and accountable, so you're not buying a tool you have to babysit. You're getting a partner who treats your business like a system that should never drop a lead, miss a call, or leave a gap open.</p>
+        <div class="founder-cred">
+          <span class="cred"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Cybersecurity-first methodology</span>
+          <span class="cred"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Every signal logged &amp; auditable</span>
+          <span class="cred"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Builds you own — no lock-in</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         ⚠️  PLACEHOLDER TESTIMONIALS — layout preview only.
+         REPLACE the quotes/names/roles below with REAL client testimonials
+         before relying on this for conversions. Do NOT ship fabricated
+         social proof live. Harvest real quotes from the first free audits.
+         ════════════════════════════════════════════════════════════════ -->
+    <!-- HIDDEN until real testimonials exist. To re-enable: delete this wrapping
+         <div style="display:none"> and its matching </div> below, then replace
+         every [Client Name] / role / quote with a real one. -->
+    <div style="display:none" data-testimonials-pending>
+    <div class="text-center mt-24 mb-12 concept-pair">
+      <div class="concept-eyebrow blur-in">In their words</div>
+      <h2 class="grad-head blur-in mx-auto" style="max-width:700px; font-size:46px">
+        Operators who stopped<br><span class="muted">doing it by hand.</span>
+      </h2>
+    </div>
+    <div class="stagger grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="tm-card blur-in">
+        <div class="tm-stars">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="tm-quote">"The voice agent books appointments while I'm with patients. We went from missing a third of our calls to catching every one — it paid for itself in the first month."</p>
+        <div class="tm-author">
+          <div class="tm-avatar">DR</div>
+          <div><div class="tm-name">[Client Name]</div><div class="tm-meta">Owner · Med Spa</div></div>
+        </div>
+      </div>
+      <div class="tm-card blur-in">
+        <div class="tm-stars">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="tm-quote">"They didn't hand us software and walk away. They built the follow-up sequence around our actual sales process and tuned it until it worked. Feels like having an ops hire who never sleeps."</p>
+        <div class="tm-author">
+          <div class="tm-avatar">MK</div>
+          <div><div class="tm-name">[Client Name]</div><div class="tm-meta">Director · Marketing Agency</div></div>
+        </div>
+      </div>
+      <div class="tm-card blur-in">
+        <div class="tm-stars">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="tm-quote">"The security background shows. Everything is logged, nothing falls through the cracks, and I finally have one dashboard instead of ten tabs. Wish I'd done this a year ago."</p>
+        <div class="tm-author">
+          <div class="tm-avatar">JT</div>
+          <div><div class="tm-name">[Client Name]</div><div class="tm-meta">Founder · Home Services</div></div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /data-testimonials-pending (hidden) -->
+  </div>
+</section>
+
 <!-- ════════════════ SLIDE — FAQ ════════════════ -->
 <section id="faq" class="slide clean flex items-center justify-center section-flow">
   <div class="relative z-10 px-6 lg:px-16 py-24 md:py-32 max-w-4xl mx-auto w-full">
@@ -1713,6 +1865,7 @@
         <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="pill-light">Book a Free Audit</a>
         <a href="#dashboard" class="pill-dark">See the Command Center</a>
       </div>
+      <p class="risk-rev blur-in mx-auto"><b>No obligation.</b> No sales pressure. Keep the audit even if we never work together.</p>
     </div>
     <div class="mt-24 pt-10 border-t border-white/10">
       <!-- footer columns -->
