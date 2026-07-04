@@ -3,26 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NexFlow AI — AI agents that actually run the work</title>
-  <meta name="description" content="NexFlow AI builds and runs secure AI agents for med spas, clinics, law firms, and home-service businesses — every call answered and booked, every follow-up automated. Built by a founder with six years in cybersecurity.">
-  <link rel="canonical" href="https://nexflowaisolutions.com/">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#0a0a0c">
-  <meta name="apple-mobile-web-app-title" content="NexFlow">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nexflowaisolutions.com">
-  <meta property="og:title" content="NexFlow AI — AI agents that actually run the work">
-  <meta property="og:description" content="Secure AI agents for med spas, clinics, law firms, and home-service businesses — every call answered and booked, every follow-up automated. Built by a founder with six years in cybersecurity.">
-  <meta property="og:image" content="https://nexflowaisolutions.com/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
+  <title>NexFlow AI — Agents that actually run the work (Cyndra-style preview)</title>
   <link rel="preconnect" href="https://api.fontshare.com">
   <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet">
-  <script defer data-domain="nexflowaisolutions.com" src="https://plausible.io/js/script.outbound-links.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
@@ -259,6 +243,7 @@
     .ask-btn{ display:flex; align-items:center; gap:10px; padding:15px 18px; border-radius:14px; border:1px solid var(--line2); background:rgba(255,255,255,0.03); color:var(--ink); font-size:14px; font-weight:500; transition:.2s; text-decoration:none; }
     .ask-btn:hover{ background:rgba(255,255,255,0.07); transform:translateY(-1px); }
 
+    .preview-flag{ position:fixed; bottom:16px; left:16px; z-index:90; background:rgba(125,211,231,0.12); border:1px solid rgba(125,211,231,0.4); color:var(--accent); font-size:11.5px; font-weight:600; letter-spacing:0.06em; padding:7px 13px; border-radius:100px; backdrop-filter:blur(10px); }
     /* respect reduced-motion preference */
     @media (prefers-reduced-motion: reduce){
       *, *::before, *::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
@@ -272,6 +257,7 @@
 <body>
   <div class="grain"></div>
   <div class="vignette"></div>
+  <div class="preview-flag">PREVIEW · NOT LIVE</div>
 
   <div id="progress"></div>
 
@@ -281,7 +267,7 @@
   <nav>
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <span style="font-size:18px;font-weight:600;letter-spacing:0.03em">NEXFLOW <span style="opacity:.6;font-weight:400">AI</span></span>
+        <span style="font-size:18px;font-weight:600;letter-spacing:0.03em">NEXFLOW<span style="opacity:.6;font-weight:400">AI</span></span>
       </div>
       <div class="nav-links hidden md:flex items-center gap-8">
         <a href="#demo" class="nav-link">How it works</a>
@@ -304,12 +290,8 @@
 
   <!-- HERO -->
   <section class="hero-shell">
-    <video class="bg" autoplay loop muted playsinline preload="metadata"
-      poster="/hero-poster.jpg" data-src="/hero-bg.mp4"></video>
-    <script>
-      (function(){var v=document.querySelector('video.bg');
-        if(v && matchMedia('(min-width:768px)').matches){v.src=v.dataset.src;}})();
-    </script>
+    <video class="bg" autoplay loop muted playsinline preload="auto"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4"></video>
     <div class="scrim"></div>
     <header class="inner max-w-6xl mx-auto px-6 pt-24 pb-28 text-center">
     <div class="reveal flex justify-center mb-7">
@@ -318,8 +300,8 @@
     <h1 class="display reveal mx-auto" style="font-size:clamp(42px,7.5vw,84px);max-width:920px">
       AI agents that<br>actually run the work.
     </h1>
-    <p class="reveal muted mx-auto mt-7" style="font-size:18px;line-height:1.6;max-width:640px;color:rgba(246,244,240,0.82)">
-      For med spas, clinics, law firms, and home-service businesses: an AI receptionist that answers every call and books it straight into your calendar, plus custom agents that run your follow-up and intake — fully managed, with your approval. Built by a founder with six years in cybersecurity.
+    <p class="reveal muted mx-auto mt-7" style="font-size:18px;line-height:1.6;max-width:610px;color:rgba(246,244,240,0.82)">
+      We design, build, and run them for you. Your agents answer every call, live inside the tools you already use, and ship real work — fully managed, with your approval.
     </p>
     <div class="reveal flex flex-wrap gap-3 justify-center mt-9">
       <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="btn btn-primary">Book your free audit
@@ -647,16 +629,16 @@
 
   <div class="divider"></div>
 
-  <!-- PROOF — real client -->
+  <!-- ASK AI ABOUT NEXFLOW -->
   <section class="max-w-3xl mx-auto px-6 py-20 text-center">
     <div class="reveal">
-      <p class="eyebrow mb-4">Real client, real retainer</p>
-      <h2 class="display mx-auto mb-8" style="font-size:clamp(26px,4vw,38px);max-width:560px">We run the marketing engine for an international preschool.</h2>
-      <div class="card mx-auto text-left" style="max-width:640px;padding:28px 30px">
-        <p class="muted" style="font-size:15.5px;line-height:1.7">Monthly retainer client since June 2026. NexFlow agents run their content, their ads, and their reporting — every inquiry followed up automatically, every lead tracked in a live dashboard their team checks each morning. North-star metric: booked tours.</p>
-        <p class="muted mt-4" style="font-size:13px;opacity:.7">Full case study with numbers walked through on your audit call.</p>
+      <p class="eyebrow mb-4">Don't take our word for it</p>
+      <h2 class="display mx-auto mb-8" style="font-size:clamp(26px,4vw,38px);max-width:480px">Ask AI about NexFlow.</h2>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <a class="ask-btn justify-center" href="https://chatgpt.com/?q=What%20is%20NexFlow%20AI%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener">Ask ChatGPT</a>
+        <a class="ask-btn justify-center" href="https://www.perplexity.ai/search?q=What%20is%20NexFlow%20AI%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener">Ask Perplexity</a>
+        <a class="ask-btn justify-center" href="https://claude.ai/new?q=What%20is%20NexFlow%20AI%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener">Ask Claude</a>
       </div>
-      <!-- TODO: name HoneyBees + add quote/logo once written permission is in hand -->
     </div>
   </section>
 
@@ -671,21 +653,7 @@
       <details><summary>How long until it's live? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Most builds go live in days, not months. Your free audit comes back with an exact timeline for your operation.</div></details>
       <details><summary>Do I have to replace my current tools? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">No. NexFlow plugs in alongside your CRM, calendar, phone, and inbox — 55+ integrations out of the box. No migration, no retraining.</div></details>
       <details><summary>How do I stay in control? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Every agent runs in the autonomy mode you set — full approvals, semi-auto, or autonomous. Every action is logged in your Command Center.</div></details>
-      <details><summary>What makes NexFlow different? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Most agencies bolt AI onto your business and hope. Our founder spent six years in cybersecurity before building agents — so every NexFlow agent ships security-first: least-privilege access to your tools, every action logged, your data stays yours. Custom-built around how your business actually runs, then operated for you.</div></details>
-      <details><summary>What does it cost? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Every build is scoped in your free audit, but typical engagements: missed-call rescue from $997 setup + $197/mo, a 24/7 AI voice receptionist from $2,500 setup + $397/mo, custom agent builds quoted fixed-price before we start. The audit comes back with an exact number — no surprises, cancel anytime.</div></details>
-    </div>
-  </section>
-
-  <!-- WHAT HAPPENS WHEN YOU BOOK -->
-  <section id="process" class="max-w-6xl mx-auto px-6 pt-20 pb-2">
-    <div class="reveal text-center mb-10">
-      <p class="eyebrow mb-4">What happens when you book</p>
-      <h2 class="display mx-auto" style="font-size:clamp(26px,4vw,38px);max-width:520px">Three steps. No lock-in.</h2>
-    </div>
-    <div class="reveal grid sm:grid-cols-3 gap-3">
-      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">01 — Free audit</p><p class="muted" style="font-size:14.5px;line-height:1.65">Seven questions, three minutes. Tell us how your business runs today.</p></div>
-      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">02 — Your plan in 24 hours</p><p class="muted" style="font-size:14.5px;line-height:1.65">A written plan: which agents we'd build, what they replace, and an exact fixed price.</p></div>
-      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">03 — Live in days</p><p class="muted" style="font-size:14.5px;line-height:1.65">We build, you approve, it runs. Cancel anytime — the agents keep logs, you keep the data.</p></div>
+      <details><summary>What makes NexFlow different? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">We don't sell a generic toolkit. We design custom agents around how your business actually runs and operate them as a partner — every action logged, nothing falling through.</div></details>
     </div>
   </section>
 
@@ -707,8 +675,8 @@
   <!-- FOOTER -->
   <footer class="max-w-6xl mx-auto px-6 py-12 border-t" style="border-color:var(--line)">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-      <span style="font-size:15px;font-weight:600">NEXFLOW <span style="opacity:.6;font-weight:400">AI</span></span>
-      <span class="muted" style="font-size:12.5px">Built for operators · © 2026 NexFlow AI · <a href="/privacy-policy" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacy</a> · <a href="/terms-of-service" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Terms</a></span>
+      <span style="font-size:15px;font-weight:600">NEXFLOW<span style="opacity:.6;font-weight:400">AI</span></span>
+      <span class="muted" style="font-size:12.5px">Built for operators · © 2026 NexFlow AI</span>
     </div>
   </footer>
 
