@@ -178,9 +178,13 @@
     .cc{ background:linear-gradient(180deg,#0e0e10,#0a0a0c); border:1px solid var(--line2); border-radius:20px; overflow:hidden; }
     .cc-bar{ display:flex; align-items:center; gap:8px; padding:13px 18px; border-bottom:1px solid var(--line); }
     .cc-tabs{ display:flex; gap:4px; padding:10px 14px; border-bottom:1px solid var(--line); overflow-x:auto; }
-    .cc-tab{ font-size:12.5px; padding:7px 13px; border-radius:9px; color:var(--mut2); white-space:nowrap; }
+    .cc-tab{ font-size:12.5px; padding:7px 13px; border-radius:9px; color:var(--mut2); white-space:nowrap; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .18s, color .18s; }
+    .cc-tab:hover{ color:var(--ink); }
     .cc-tab.active{ background:rgba(125,211,231,0.1); color:var(--accent); }
     .cc-body{ padding:18px; }
+    .cc-pane{ display:none; }
+    .cc-pane.active{ display:block; animation:cc-fade .28s ease; }
+    @keyframes cc-fade{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
     .cc-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
     .cc-stat{ border:1px solid var(--line); border-radius:13px; padding:13px 14px; background:rgba(255,255,255,0.015); }
     .cc-stat .k{ font-size:11px; color:var(--mut2); }
@@ -460,34 +464,140 @@
         <span class="chan">dashboard.nexflowaisolutions.com</span>
         <span class="illus" style="margin-left:auto">Sample data · illustrative</span>
       </div>
-      <div class="cc-tabs">
-        <span class="cc-tab active">Overview</span>
-        <span class="cc-tab">Voice</span>
-        <span class="cc-tab">Custom Agents</span>
-        <span class="cc-tab">Pipeline</span>
-        <span class="cc-tab">Capture</span>
+      <div class="cc-tabs" role="tablist">
+        <span class="cc-tab active" role="tab" tabindex="0" data-tab="overview">Overview</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="voice">Voice</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="agents">Custom Agents</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="pipeline">Pipeline</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="capture">Capture</span>
       </div>
       <div class="cc-body">
-        <div class="cc-stats">
-          <div class="cc-stat"><div class="k">Agents Live</div><div class="v"><span id="cc-agents">0</span></div><div class="t">▲ +2 this month</div></div>
-          <div class="cc-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
-          <div class="cc-stat"><div class="k">Calls Answered</div><div class="v"><span id="cc-calls">0</span></div><div class="t">100% pickup</div></div>
-          <div class="cc-stat"><div class="k">Hours Saved</div><div class="v"><span id="cc-hours">0</span>h</div><div class="t">▲ vs manual</div></div>
-        </div>
-        <div class="cc-row">
-          <div class="cc-panel">
-            <div class="cc-ph"><span>Automations · 24h</span><span style="color:var(--ink);font-weight:600">1,284</span></div>
-            <svg viewBox="0 0 820 110" width="100%" height="96" preserveAspectRatio="none">
-              <defs><linearGradient id="ccg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(125,211,231,0.25)"/><stop offset="100%" stop-color="#7dd3e7"/></linearGradient></defs>
-              <path class="spark-path" id="spark" d="M0,92 C70,80 110,76 170,64 C240,52 290,58 350,42 C420,26 470,34 530,26 C590,18 640,22 700,14 C740,10 780,12 820,8" fill="none" stroke="url(#ccg)" stroke-width="3" stroke-linecap="round"/>
-            </svg>
+        <!-- OVERVIEW -->
+        <div class="cc-pane active" data-pane="overview">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Agents Live</div><div class="v"><span id="cc-agents">0</span></div><div class="t">▲ +2 this month</div></div>
+            <div class="cc-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="cc-stat"><div class="k">Calls Answered</div><div class="v"><span id="cc-calls">0</span></div><div class="t">100% pickup</div></div>
+            <div class="cc-stat"><div class="k">Hours Saved</div><div class="v"><span id="cc-hours">0</span>h</div><div class="t">▲ vs manual</div></div>
           </div>
-          <div class="cc-panel" id="cc-feed">
-            <div class="cc-ph"><span>Live activity</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
-            <div class="cc-feed-row anim-step"><span class="ts">11:47</span><span><b style="color:var(--ink);font-weight:600">Voice agent</b> · inbound · booked</span></div>
-            <div class="cc-feed-row anim-step"><span class="ts">11:42</span><span><b style="color:var(--ink);font-weight:600">Custom agent</b> · invoice nudge</span></div>
-            <div class="cc-feed-row anim-step"><span class="ts">11:31</span><span><b style="color:var(--ink);font-weight:600">Triage agent</b> · 14 routed</span></div>
-            <div class="cc-feed-row anim-step"><span class="ts">11:28</span><span><b style="color:var(--ink);font-weight:600">No-show recovery</b> · 3 rebooked</span></div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Automations · 24h</span><span style="color:var(--ink);font-weight:600">1,284</span></div>
+              <svg viewBox="0 0 820 110" width="100%" height="96" preserveAspectRatio="none">
+                <defs><linearGradient id="ccg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(125,211,231,0.25)"/><stop offset="100%" stop-color="#7dd3e7"/></linearGradient></defs>
+                <path class="spark-path" id="spark" d="M0,92 C70,80 110,76 170,64 C240,52 290,58 350,42 C420,26 470,34 530,26 C590,18 640,22 700,14 C740,10 780,12 820,8" fill="none" stroke="url(#ccg)" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="cc-panel" id="cc-feed">
+              <div class="cc-ph"><span>Live activity</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:47</span><span><b style="color:var(--ink);font-weight:600">Voice agent</b> · inbound · booked</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:42</span><span><b style="color:var(--ink);font-weight:600">Custom agent</b> · invoice nudge</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:31</span><span><b style="color:var(--ink);font-weight:600">Triage agent</b> · 14 routed</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:28</span><span><b style="color:var(--ink);font-weight:600">No-show recovery</b> · 3 rebooked</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VOICE -->
+        <div class="cc-pane" data-pane="voice">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Calls Answered</div><div class="v">412</div><div class="t">100% pickup</div></div>
+            <div class="cc-stat"><div class="k">Booked</div><div class="v">88</div><div class="t">▲ 21% of calls</div></div>
+            <div class="cc-stat"><div class="k">Missed → Recovered</div><div class="v">37</div><div class="t">▲ won back</div></div>
+            <div class="cc-stat"><div class="k">Avg Handle</div><div class="v">1:12</div><div class="t">no hold time</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Recent calls</span><span style="color:var(--ink);font-weight:600">Today</span></div>
+              <div class="cc-feed-row"><span class="ts">11:47</span><span><b style="color:var(--ink);font-weight:600">New patient</b> · booked Tue 2:30 PM</span></div>
+              <div class="cc-feed-row"><span class="ts">11:20</span><span><b style="color:var(--ink);font-weight:600">Reschedule</b> · moved to Fri 10 AM</span></div>
+              <div class="cc-feed-row"><span class="ts">10:58</span><span><b style="color:var(--ink);font-weight:600">Pricing question</b> · answered · SMS sent</span></div>
+              <div class="cc-feed-row"><span class="ts">10:31</span><span><b style="color:var(--ink);font-weight:600">After-hours call</b> · captured · callback queued</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Outcomes · this week</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">Booked</span><span style="color:var(--ink)">88 appointments</span></div>
+              <div class="cc-feed-row"><span class="ts">Routed</span><span style="color:var(--ink)">31 to your team</span></div>
+              <div class="cc-feed-row"><span class="ts">FAQ</span><span style="color:var(--ink)">204 answered instantly</span></div>
+              <div class="cc-feed-row"><span class="ts">Spam</span><span style="color:var(--ink)">62 screened out</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOM AGENTS -->
+        <div class="cc-pane" data-pane="agents">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Agents Live</div><div class="v">8</div><div class="t">▲ +2 this month</div></div>
+            <div class="cc-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="cc-stat"><div class="k">In Approval</div><div class="v">3</div><div class="t">awaiting you</div></div>
+            <div class="cc-stat"><div class="k">Success</div><div class="v">99.2%</div><div class="t">▲ vs manual</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Agents running</span><span style="color:var(--ink);font-weight:600">8 live</span></div>
+              <div class="cc-feed-row"><span class="ts">Triage</span><span style="color:var(--ink)">14 inbound routed</span></div>
+              <div class="cc-feed-row"><span class="ts">Invoice</span><span style="color:var(--ink)">9 nudges sent · 2 paid</span></div>
+              <div class="cc-feed-row"><span class="ts">Reviews</span><span style="color:var(--ink)">6 requests · 4 five-star</span></div>
+              <div class="cc-feed-row"><span class="ts">Recovery</span><span style="color:var(--ink)">3 no-shows rebooked</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Approval queue</span><span style="color:var(--accent);font-weight:600">3 pending</span></div>
+              <div class="cc-feed-row"><span class="ts">11:42</span><span><b style="color:var(--ink);font-weight:600">Refund · $240</b> · needs sign-off</span></div>
+              <div class="cc-feed-row"><span class="ts">11:15</span><span><b style="color:var(--ink);font-weight:600">Discount offer</b> · VIP customer</span></div>
+              <div class="cc-feed-row"><span class="ts">10:49</span><span><b style="color:var(--ink);font-weight:600">Contract reply</b> · draft ready</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PIPELINE -->
+        <div class="cc-pane" data-pane="pipeline">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">New Leads</div><div class="v">24</div><div class="t">▲ today</div></div>
+            <div class="cc-stat"><div class="k">Contacted</div><div class="v">61</div><div class="t">auto follow-up</div></div>
+            <div class="cc-stat"><div class="k">Booked</div><div class="v">18</div><div class="t">▲ 30% rate</div></div>
+            <div class="cc-stat"><div class="k">Won</div><div class="v">7</div><div class="t">$9,400 value</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Recent leads</span><span style="color:var(--ink);font-weight:600">24 today</span></div>
+              <div class="cc-feed-row"><span class="ts">2m</span><span><b style="color:var(--ink);font-weight:600">Maria T.</b> · intake form · auto-replied</span></div>
+              <div class="cc-feed-row"><span class="ts">24m</span><span><b style="color:var(--ink);font-weight:600">Derek C.</b> · Google Ads · quote queued</span></div>
+              <div class="cc-feed-row"><span class="ts">1h</span><span><b style="color:var(--ink);font-weight:600">Jordan L.</b> · Instagram DM · qualified</span></div>
+              <div class="cc-feed-row"><span class="ts">2h</span><span><b style="color:var(--ink);font-weight:600">Sarah P.</b> · missed call · booked Fri 3 PM</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Stages</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">New</span><span style="color:var(--ink)">24 leads</span></div>
+              <div class="cc-feed-row"><span class="ts">Nurture</span><span style="color:var(--ink)">61 in sequence</span></div>
+              <div class="cc-feed-row"><span class="ts">Booked</span><span style="color:var(--ink)">18 discovery calls</span></div>
+              <div class="cc-feed-row"><span class="ts">Won</span><span style="color:var(--ink)">7 · $9,400</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAPTURE -->
+        <div class="cc-pane" data-pane="capture">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Captured · 24h</div><div class="v">46</div><div class="t">▲ nothing missed</div></div>
+            <div class="cc-stat"><div class="k">Auto-Replied</div><div class="v">46</div><div class="t">under 60s</div></div>
+            <div class="cc-stat"><div class="k">Recovered</div><div class="v">$4,280</div><div class="t">▲ would-be lost</div></div>
+            <div class="cc-stat"><div class="k">Response</div><div class="v">&lt;60s</div><div class="t">every channel</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Capture feed</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">11:51</span><span><b style="color:var(--ink);font-weight:600">Missed call</b> · SMS sent · rebook link</span></div>
+              <div class="cc-feed-row"><span class="ts">11:38</span><span><b style="color:var(--ink);font-weight:600">Web form</b> · Maria T. · replied instantly</span></div>
+              <div class="cc-feed-row"><span class="ts">11:22</span><span><b style="color:var(--ink);font-weight:600">Instagram DM</b> · qualified · call offered</span></div>
+              <div class="cc-feed-row"><span class="ts">11:04</span><span><b style="color:var(--ink);font-weight:600">After-hours</b> · captured · queued for AM</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>By channel · 24h</span><span style="color:var(--ink);font-weight:600">46 total</span></div>
+              <div class="cc-feed-row"><span class="ts">Calls</span><span style="color:var(--ink)">19 missed · all recovered</span></div>
+              <div class="cc-feed-row"><span class="ts">Forms</span><span style="color:var(--ink)">14 · instant reply</span></div>
+              <div class="cc-feed-row"><span class="ts">DMs</span><span style="color:var(--ink)">9 · qualified</span></div>
+              <div class="cc-feed-row"><span class="ts">SMS</span><span style="color:var(--ink)">4 · in conversation</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -793,6 +903,22 @@
     countTo('cc-calls',412,'',1400);
     countTo('cc-hours',14,'',1100);
     playSeq('cc-feed', null);
+
+    // command center — tab switching (Overview / Voice / Custom Agents / Pipeline / Capture)
+    (function(){
+      const tabs=[...document.querySelectorAll('.cc-tab')];
+      const panes=[...document.querySelectorAll('.cc-pane')];
+      if(!tabs.length) return;
+      function select(tab){
+        const name=tab.dataset.tab;
+        tabs.forEach(t=>{ const on=t===tab; t.classList.toggle('active',on); t.setAttribute('aria-selected',on?'true':'false'); });
+        panes.forEach(p=>p.classList.toggle('active', p.dataset.pane===name));
+      }
+      tabs.forEach(tab=>{
+        tab.addEventListener('click',()=>select(tab));
+        tab.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(tab); } });
+      });
+    })();
 
     // voice receptionist — animated live call
     (function(){
