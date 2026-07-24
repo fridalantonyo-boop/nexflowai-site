@@ -178,6 +178,14 @@ a {
   pointer-events: auto;
 }
 
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background 0.3s, border-color 0.3s;
+}
+
 .nav-left {
   display: flex;
   align-items: center;

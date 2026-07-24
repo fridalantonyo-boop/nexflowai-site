@@ -115,6 +115,7 @@ const MENU_LINKS = [
 
 function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -123,10 +124,17 @@ function Navbar() {
     }
   }, [open])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <>
       <motion.nav
-        className="navbar"
+        className={`navbar ${scrolled && !open ? 'scrolled' : ''}`}
         initial={{ y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: EASE }}
