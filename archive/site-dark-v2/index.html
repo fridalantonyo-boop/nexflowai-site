@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexFlow AI — AI agents that actually run the work</title>
+  <meta name="description" content="NexFlow AI builds and runs secure AI agents for med spas, clinics, law firms, and home-service businesses — every call answered and booked, every follow-up automated.">
+  <link rel="canonical" href="https://nexflowaisolutions.com/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-title" content="NexFlow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nexflowaisolutions.com">
+  <meta property="og:title" content="NexFlow AI — AI agents that actually run the work">
+  <meta property="og:description" content="Secure AI agents for med spas, clinics, law firms, and home-service businesses — every call answered and booked, every follow-up automated.">
+  <meta property="og:image" content="https://nexflowaisolutions.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet">
+  <script defer data-domain="nexflowaisolutions.com" src="https://plausible.io/js/script.outbound-links.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#0a0a0c;
+      --bg2:#0b0b0d;
+      --ink:#f6f4f0;
+      --mut:rgba(246,244,240,0.74);
+      --mut2:rgba(246,244,240,0.52);
+      --line:rgba(255,255,255,0.07);
+      --line2:rgba(255,255,255,0.12);
+      --accent:#7dd3e7;
+      --gold:#e7d3a8;
+      --stone:#b9b2a7;
+      --card:rgba(255,255,255,0.02);
+    }
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:'General Sans', ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing:antialiased; letter-spacing:-0.01em;
+      overflow-x:hidden;
+    }
+    ::selection{ background:rgba(125,211,231,0.25); }
+
+    /* hero uses the original cosmic-vortex video background (see .hero-shell > video.bg) */
+    .grain{
+      position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .wrap{ position:relative; z-index:2; }
+
+    /* ── type ── */
+    .display{ font-weight:500; letter-spacing:-0.042em; line-height:1.06; padding-bottom:0.04em;
+      background:linear-gradient(177deg,#fff 20%, rgba(255,255,255,0.56));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      /* own composited layer — otherwise the clipped text paints over fixed overlays (Chromium) */
+      transform:translateZ(0); }
+    .eyebrow{ display:inline-flex; align-items:center; gap:11px; font-size:11.5px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--mut2); }
+    .eyebrow::before{ content:""; width:22px; height:1px; background:linear-gradient(90deg,transparent,var(--accent)); flex:none; }
+    .text-center .eyebrow{ justify-content:center; }
+    .text-center .eyebrow::after{ content:""; width:22px; height:1px; background:linear-gradient(90deg,var(--accent),transparent); flex:none; }
+    .muted{ color:var(--mut); }
+
+    /* ── pills / buttons ── */
+    .pill{ display:inline-flex; align-items:center; gap:9px; padding:8px 16px; border-radius:100px;
+      border:1px solid var(--line2); background:linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02)); font-size:12.5px; color:var(--mut); backdrop-filter:blur(10px); box-shadow:0 1px 0 rgba(255,255,255,0.06) inset; }
+    .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px rgba(125,211,231,0.8); }
+    .btn{ display:inline-flex; align-items:center; gap:9px; padding:14px 24px; border-radius:13px; font-size:14.5px; font-weight:500; cursor:pointer; transition:transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .25s, background .2s; text-decoration:none; }
+    .btn-primary{ background:linear-gradient(180deg,#ffffff,#ebe7df); color:#0a0a0a; box-shadow:0 1px 0 rgba(255,255,255,0.7) inset, 0 10px 28px -10px rgba(0,0,0,0.7); }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 1px 0 rgba(255,255,255,0.8) inset, 0 18px 40px -12px rgba(255,255,255,0.22); }
+    .btn-ghost{ background:rgba(255,255,255,0.04); color:var(--ink); border:1px solid var(--line2); }
+    .btn-ghost:hover{ background:rgba(255,255,255,0.09); transform:translateY(-2px); }
+
+    /* ── card ── */
+    .card{ position:relative; background:var(--card); border:1px solid var(--line); border-radius:20px; backdrop-filter:blur(10px); transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s; }
+    .card::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), transparent 22%); -webkit-mask:linear-gradient(#000,transparent 40%); mask:linear-gradient(#000,transparent 40%); opacity:.7; }
+    .card-glow{ box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 100px -50px rgba(0,0,0,0.9); }
+
+    /* ── nav ── */
+    nav{ position:sticky; top:0; z-index:50; backdrop-filter:blur(14px); background:rgba(7,7,8,0.6); border-bottom:1px solid var(--line); }
+    .nav-link{ font-size:14px; color:var(--mut); transition:.15s; }
+    .nav-link:hover{ color:var(--ink); }
+
+    /* ── chat / slack mock ── */
+    .mock{ background:linear-gradient(180deg,#101012,#0b0b0d); border:1px solid var(--line2); border-radius:18px; overflow:hidden; }
+    .mock-bar{ display:flex; align-items:center; gap:7px; padding:13px 16px; border-bottom:1px solid var(--line); }
+    .tdot{ width:11px; height:11px; border-radius:50%; }
+    .chan{ font-size:12.5px; color:var(--mut2); margin-left:8px; }
+    .msg{ display:flex; gap:11px; padding:13px 18px; align-items:flex-start; }
+    .av{ width:30px; height:30px; border-radius:8px; flex:none; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; }
+    .av.user{ background:#2d2a26; color:var(--stone); }
+    .av.bot{ background:linear-gradient(135deg,#7dd3e7,#3a8fa3); color:#06222a; }
+    .who{ font-size:12.5px; font-weight:600; color:var(--ink); }
+    .when{ font-size:11px; color:var(--mut2); margin-left:7px; font-weight:400; }
+    .txt{ font-size:13.5px; color:var(--mut); line-height:1.5; margin-top:3px; }
+    .step{ display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--mut); padding:3px 0; }
+    .check{ width:16px; height:16px; border-radius:50%; background:rgba(125,211,231,0.14); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; }
+    .deliver{ margin-top:10px; display:flex; align-items:center; gap:11px; padding:11px 13px; border-radius:11px; background:rgba(255,255,255,0.04); border:1px solid var(--line2); }
+
+    /* ── integration grid ── */
+    .logo-cell{ height:76px; border:1px solid rgba(255,255,255,0.06); border-radius:16px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#f6f5f2,#e7e5df); box-shadow:0 12px 30px -18px rgba(0,0,0,0.85); }
+
+    /* ── timeline ── */
+    .tl{ position:relative; padding-left:26px; }
+    .tl::before{ content:""; position:absolute; left:6px; top:6px; bottom:6px; width:1.5px; background:linear-gradient(180deg,var(--accent),transparent); }
+    .tl-row{ position:relative; padding:11px 0; }
+    .tl-row::before{ content:""; position:absolute; left:-23px; top:16px; width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(125,211,231,0.12); }
+    .tl-time{ font-size:12px; color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }
+    .tl-text{ font-size:13.5px; color:var(--mut); margin-top:2px; }
+
+    /* ── autonomy toggle ── */
+    .mode-btn{ flex:1; padding:14px 10px; border-radius:13px; border:1px solid var(--line); background:rgba(255,255,255,0.02); cursor:pointer; transition:.2s; text-align:center; font-family:inherit; color:inherit; }
+    .mode-btn.active{ border-color:var(--accent); background:rgba(125,211,231,0.07); }
+    .mode-btn .mt{ font-size:14px; font-weight:600; color:var(--ink); }
+    .mode-btn .md{ font-size:11px; color:var(--mut2); margin-top:3px; }
+
+    /* ── faq ── */
+    details{ border-bottom:1px solid var(--line); }
+    summary{ list-style:none; cursor:pointer; padding:20px 4px; display:flex; justify-content:space-between; align-items:center; font-size:16px; font-weight:500; }
+    summary::-webkit-details-marker{ display:none; }
+    .faq-plus{ transition:.25s; color:var(--mut2); flex:none; }
+    details[open] .faq-plus{ transform:rotate(45deg); color:var(--accent); }
+    .faq-a{ padding:0 4px 22px; font-size:14.5px; color:var(--mut); line-height:1.65; max-width:680px; }
+
+    /* ── reveal ── */
+    .reveal{ opacity:0; transform:translateY(26px) scale(.985); filter:blur(7px); transition:opacity .85s cubic-bezier(.2,.7,.2,1), transform .85s cubic-bezier(.2,.7,.2,1), filter .85s ease; }
+    .reveal.in{ opacity:1; transform:none; filter:none; }
+
+    /* ── hero video wallpaper ── */
+    .hero-shell{ position:relative; overflow:hidden; }
+    .hero-shell > video.bg{ position:absolute; left:50%; top:50%; min-width:100%; min-height:100%; width:auto; height:auto; transform:translate(-50%,-50%); object-fit:cover; z-index:0; }
+    .hero-shell > .scrim{ position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 28%, rgba(7,7,8,0.30), transparent 70%),
+        linear-gradient(180deg, rgba(7,7,8,0.50) 0%, rgba(7,7,8,0.22) 32%, rgba(7,7,8,0.82) 84%, var(--bg) 100%); }
+    .hero-shell > .inner{ position:relative; z-index:2; }
+
+    /* ── live workflow animation ── */
+    .anim-step{ opacity:0; transform:translateY(7px); transition:opacity .45s ease, transform .45s ease; }
+    .anim-step.show{ opacity:1; transform:none; }
+    .typing{ display:none; gap:5px; padding:8px 0; align-items:center; }
+    .typing.show{ display:inline-flex; }
+    .typing span{ width:6px; height:6px; border-radius:50%; background:var(--mut2); animation:blink 1.2s infinite; }
+    .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
+    @keyframes blink{ 0%,60%,100%{opacity:.25} 30%{opacity:1} }
+    .illus{ display:inline-block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mut2); border:1px solid var(--line); border-radius:6px; padding:2px 7px; }
+
+    /* ── v2: scroll progress ── */
+    #progress{ position:fixed; top:0; left:0; height:2px; width:0; z-index:60; background:linear-gradient(90deg,var(--accent),#fff); box-shadow:0 0 12px rgba(125,211,231,0.6); }
+
+    /* ── v2: mobile nav ── */
+    .hamb{ display:none; flex-direction:column; gap:4px; cursor:pointer; padding:8px; border:0; background:none; }
+    .hamb span{ width:20px; height:1.6px; background:var(--ink); transition:.25s; border-radius:2px; }
+    .hamb.open span:nth-child(1){ transform:translateY(5.6px) rotate(45deg); }
+    .hamb.open span:nth-child(2){ opacity:0; }
+    .hamb.open span:nth-child(3){ transform:translateY(-5.6px) rotate(-45deg); }
+    .mobile-menu{ display:none; flex-direction:column; padding:6px 16px 16px; border-bottom:1px solid var(--line); background:rgba(7,7,8,0.95); backdrop-filter:blur(14px); }
+    .mobile-menu.open{ display:flex; }
+    .mobile-menu a{ padding:13px 4px; font-size:15px; color:var(--mut); border-bottom:1px solid var(--line); }
+    @media(max-width:768px){ .nav-links{ display:none !important; } .hamb{ display:flex; } }
+
+    /* ── v2: logo marquee ── */
+    .marquee{ overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); }
+    .marquee-track{ display:flex; gap:20px; width:max-content; animation:scroll 36s linear infinite; align-items:center; }
+    @keyframes scroll{ to{ transform:translateX(-50%); } }
+    .marquee img{ height:20px; width:auto; padding:11px 14px; background:linear-gradient(180deg,#f6f5f2,#e7e5df); border-radius:11px; box-sizing:content-box; box-shadow:0 8px 22px -14px rgba(0,0,0,0.8); }
+
+    /* ── v2: real logos in grid ── */
+    .logo-cell img{ height:27px; width:auto; }
+    .logo-cell:hover img{ opacity:1; filter:none; }
+
+    /* ── v2: command center dashboard ── */
+    .cc{ background:linear-gradient(180deg,#0e0e10,#0a0a0c); border:1px solid var(--line2); border-radius:20px; overflow:hidden; }
+    .cc-bar{ display:flex; align-items:center; gap:8px; padding:13px 18px; border-bottom:1px solid var(--line); }
+    .cc-tabs{ display:flex; gap:4px; padding:10px 14px; border-bottom:1px solid var(--line); overflow-x:auto; }
+    .cc-tab{ font-size:12.5px; padding:7px 13px; border-radius:9px; color:var(--mut2); white-space:nowrap; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .18s, color .18s; }
+    .cc-tab:hover{ color:var(--ink); }
+    .cc-tab.active{ background:rgba(125,211,231,0.1); color:var(--accent); }
+    .cc-body{ padding:18px; }
+    .cc-pane{ display:none; }
+    .cc-pane.active{ display:block; animation:cc-fade .28s ease; }
+    @keyframes cc-fade{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+    .cc-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+    .cc-stat{ border:1px solid var(--line); border-radius:13px; padding:13px 14px; background:rgba(255,255,255,0.015); }
+    .cc-stat .k{ font-size:11px; color:var(--mut2); }
+    .cc-stat .v{ font-size:24px; font-weight:600; color:var(--ink); margin-top:5px; letter-spacing:-0.02em; }
+    .cc-stat .t{ font-size:11px; color:var(--accent); margin-top:5px; }
+    .cc-row{ display:grid; grid-template-columns:1.5fr 1fr; gap:12px; }
+    .cc-panel{ border:1px solid var(--line); border-radius:13px; padding:15px; background:rgba(255,255,255,0.012); }
+    .cc-ph{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--mut2); margin-bottom:12px; }
+    .cc-feed-row{ display:flex; gap:9px; align-items:center; padding:6px 0; font-size:12.5px; color:var(--mut); }
+    .cc-feed-row .ts{ font-size:10.5px; color:var(--mut2); font-variant-numeric:tabular-nums; min-width:34px; }
+    .spark-path{ stroke-dasharray:900; stroke-dashoffset:900; transition:stroke-dashoffset 1.7s cubic-bezier(.2,.7,.2,1); }
+    @media(max-width:680px){
+      .cc-stats{ grid-template-columns:repeat(2,1fr); } .cc-row{ grid-template-columns:1fr; }
+      .cc-stat .v{ font-size:20px; } .cc-stat{ padding:11px 12px; }
+    }
+    @media(max-width:768px){
+      section[class*="py-28"]{ padding-top:64px !important; padding-bottom:64px !important; }
+      section[class*="py-24"]{ padding-top:56px !important; padding-bottom:56px !important; }
+      section[class*="py-20"]{ padding-top:48px !important; padding-bottom:48px !important; }
+      section[class*="py-16"]{ padding-top:46px !important; padding-bottom:46px !important; }
+    }
+    @media(max-width:480px){ h1.display{ font-size:clamp(27px,8vw,42px) !important; } }
+
+    /* ── v2: channel chips ── */
+    .chip{ display:inline-flex; align-items:center; gap:9px; padding:11px 17px; border-radius:12px; border:1px solid var(--line2); background:rgba(255,255,255,0.025); font-size:14px; color:var(--ink); transition:transform .25s, border-color .25s; }
+    .chip:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,0.22); }
+    .chip img{ height:18px; }
+    .chip svg{ color:var(--gold); }
+
+    /* ── v2: premium finishing ── */
+    section[id]{ scroll-margin-top:84px; }
+    .card:not(.card-glow){ transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s; }
+    .card:not(.card-glow):hover{ transform:translateY(-4px); border-color:var(--line2); }
+    .logo-cell{ transition:transform .25s, background .2s, border-color .2s; }
+    .logo-cell:hover{ transform:translateY(-2px); }
+    .ask-btn:hover{ border-color:var(--line2); }
+    .cc{ position:relative; }
+    .cc::after{ content:""; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent); }
+    .nav-link{ position:relative; }
+    .nav-link::after{ content:""; position:absolute; left:0; bottom:-5px; width:0; height:1px; background:var(--accent); transition:width .25s; }
+    .nav-link:hover::after{ width:100%; }
+
+    /* ── v2: cinematic depth ── */
+    .vignette{ position:fixed; inset:0; z-index:1; pointer-events:none;
+      background:radial-gradient(ellipse 120% 80% at 50% 0%, transparent 55%, rgba(0,0,0,0.5) 100%); }
+    .hero-shell .display{ text-shadow:0 2px 50px rgba(0,0,0,0.55); }
+    .mock, .cc{ box-shadow:0 1px 0 rgba(255,255,255,0.05) inset, 0 50px 130px -55px rgba(0,0,0,0.95); }
+    nav{ transition:background .3s, box-shadow .3s, border-color .3s; }
+    nav.scrolled{ background:rgba(6,6,7,0.82); box-shadow:0 10px 40px -20px rgba(0,0,0,0.9); }
+    /* gradient hairline divider */
+    .divider{ height:1px; max-width:1100px; margin:0 auto; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.10),transparent); }
+    /* number badge — refined outline style */
+    .num-badge{ width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:var(--gold); border:1px solid rgba(231,211,168,0.3); background:linear-gradient(180deg,rgba(231,211,168,0.08),transparent); margin-bottom:16px; }
+    .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; letter-spacing:0.04em; color:var(--accent); }
+    .kicker .n{ font-size:11px; color:var(--gold); border:1px solid rgba(231,211,168,0.3); border-radius:6px; padding:1px 7px; }
+
+    /* ── v2: voice receptionist phone demo ── */
+    .phone{ width:294px; max-width:100%; margin:0 auto; border-radius:42px; padding:13px; background:linear-gradient(180deg,#141416,#0a0a0c); border:1px solid var(--line2); box-shadow:0 60px 140px -50px rgba(0,0,0,0.95), 0 1px 0 rgba(255,255,255,0.06) inset; position:relative; }
+    .phone-screen{ border-radius:30px; background:radial-gradient(120% 55% at 50% 0%, rgba(125,211,231,0.07), transparent 60%), #0b0b0d; height:548px; overflow:hidden; display:flex; flex-direction:column; position:relative; }
+    .phone-notch{ position:absolute; top:9px; left:50%; transform:translateX(-50%); width:86px; height:20px; background:#000; border-radius:0 0 13px 13px; z-index:6; }
+    .call-top{ padding:40px 20px 16px; text-align:center; border-bottom:1px solid var(--line); }
+    .call-av{ width:62px; height:62px; border-radius:50%; margin:0 auto 12px; background:linear-gradient(135deg,#7dd3e7,#3a8fa3); display:flex; align-items:center; justify-content:center; color:#06222a; box-shadow:0 0 0 6px rgba(125,211,231,0.08); }
+    .call-name{ font-size:16px; font-weight:600; color:var(--ink); }
+    .call-status{ font-size:12px; color:var(--accent); margin-top:3px; font-variant-numeric:tabular-nums; }
+    .wave{ display:flex; align-items:center; justify-content:center; gap:3px; height:22px; margin-top:13px; }
+    .wave i{ width:3px; height:6px; border-radius:3px; background:var(--accent); animation:wv 1.1s ease-in-out infinite; }
+    .wave i:nth-child(2){ animation-delay:.12s } .wave i:nth-child(3){ animation-delay:.24s } .wave i:nth-child(4){ animation-delay:.36s } .wave i:nth-child(5){ animation-delay:.48s } .wave i:nth-child(6){ animation-delay:.16s } .wave i:nth-child(7){ animation-delay:.30s }
+    @keyframes wv{ 0%,100%{ height:6px; opacity:.45 } 50%{ height:19px; opacity:1 } }
+    .call-body{ flex:1; padding:15px; display:flex; flex-direction:column; gap:9px; overflow:hidden; }
+    .vbubble{ max-width:82%; font-size:12.5px; line-height:1.45; padding:9px 12px; border-radius:14px; }
+    .vbubble .lbl{ display:block; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--mut2); margin-bottom:3px; }
+    .vbubble.agent{ align-self:flex-start; background:rgba(125,211,231,0.12); color:#dff4fa; border-bottom-left-radius:5px; }
+    .vbubble.caller{ align-self:flex-end; background:rgba(255,255,255,0.06); color:var(--ink); border-bottom-right-radius:5px; }
+    .call-done{ margin-top:auto; padding:11px 13px; border-radius:14px; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.3); display:flex; align-items:center; gap:10px; }
+
+    .ask-btn{ display:flex; align-items:center; gap:10px; padding:15px 18px; border-radius:14px; border:1px solid var(--line2); background:rgba(255,255,255,0.03); color:var(--ink); font-size:14px; font-weight:500; transition:.2s; text-decoration:none; }
+    .ask-btn:hover{ background:rgba(255,255,255,0.07); transform:translateY(-1px); }
+
+    /* respect reduced-motion preference */
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+      .reveal{ opacity:1 !important; transform:none !important; filter:none !important; }
+      .anim-step{ opacity:1 !important; transform:none !important; }
+      .marquee-track{ animation:none !important; }
+      video.bg{ display:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <div id="progress"></div>
+
+  <div class="wrap">
+
+  <!-- NAV -->
+  <nav>
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span style="font-size:18px;font-weight:600;letter-spacing:0.03em">NEXFLOW <span style="opacity:.6;font-weight:400">AI</span></span>
+      </div>
+      <div class="nav-links hidden md:flex items-center gap-8">
+        <a href="#demo" class="nav-link">How it works</a>
+        <a href="#dashboard" class="nav-link">Command Center</a>
+        <a href="#tools" class="nav-link">Integrations</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="btn btn-primary" style="padding:9px 16px;font-size:13.5px">Book free audit</a>
+        <button class="hamb" id="hamb" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#demo">How it works</a>
+      <a href="#dashboard">Command Center</a>
+      <a href="#tools">Integrations</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-shell">
+    <video class="bg" autoplay loop muted playsinline preload="metadata"
+      poster="/hero-poster.jpg" data-src="/hero-bg.mp4"></video>
+    <script>
+      (function(){var v=document.querySelector('video.bg');
+        if(!v) return;
+        // load on every viewport — the mp4 is ~430KB and muted+playsinline autoplays on mobile
+        v.src=v.dataset.src;
+        var p=v.play&&v.play();
+        if(p&&p.catch){p.catch(function(){});} // ignore autoplay-blocked rejection; poster stays
+      })();
+    </script>
+    <div class="scrim"></div>
+    <header class="inner max-w-6xl mx-auto px-6 pt-24 pb-28 text-center">
+    <div class="reveal flex justify-center mb-7">
+      <span class="pill"><span class="dot"></span> Done-for-you AI operations</span>
+    </div>
+    <h1 class="display reveal mx-auto" style="font-size:clamp(42px,7.5vw,84px);max-width:920px">
+      AI agents that<br>actually run the work.
+    </h1>
+    <p class="reveal muted mx-auto mt-7" style="font-size:18px;line-height:1.6;max-width:640px;color:rgba(246,244,240,0.82)">
+      For med spas, clinics, law firms, and home-service businesses: an AI receptionist that answers every call and books it into your calendar, plus custom agents that run your follow-up and intake — fully managed.
+    </p>
+    <div class="reveal flex flex-wrap gap-3 justify-center mt-9">
+      <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="btn btn-primary">Book your free audit
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#demo" class="btn btn-ghost">See how it works</a>
+    </div>
+    <div class="reveal mt-14">
+      <p class="eyebrow mb-6">Plugs into 55+ tools you already run</p>
+      <div class="marquee max-w-3xl mx-auto">
+        <div class="marquee-track">
+          <img src="logos/slack.svg" alt="Slack"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail"><img src="https://cdn.simpleicons.org/googlecalendar" alt="Google Calendar"><img src="https://cdn.simpleicons.org/stripe" alt="Stripe"><img src="logos/twilio.svg" alt="Twilio"><img src="https://cdn.simpleicons.org/hubspot" alt="HubSpot"><img src="https://cdn.simpleicons.org/calendly" alt="Calendly"><img src="https://cdn.simpleicons.org/quickbooks" alt="QuickBooks"><img src="https://cdn.simpleicons.org/zoom" alt="Zoom"><img src="https://cdn.simpleicons.org/square" alt="Square"><img src="https://cdn.simpleicons.org/whatsapp" alt="WhatsApp"><img src="https://cdn.simpleicons.org/notion" alt="Notion">
+          <img src="logos/slack.svg" alt="Slack"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail"><img src="https://cdn.simpleicons.org/googlecalendar" alt="Google Calendar"><img src="https://cdn.simpleicons.org/stripe" alt="Stripe"><img src="logos/twilio.svg" alt="Twilio"><img src="https://cdn.simpleicons.org/hubspot" alt="HubSpot"><img src="https://cdn.simpleicons.org/calendly" alt="Calendly"><img src="https://cdn.simpleicons.org/quickbooks" alt="QuickBooks"><img src="https://cdn.simpleicons.org/zoom" alt="Zoom"><img src="https://cdn.simpleicons.org/square" alt="Square"><img src="https://cdn.simpleicons.org/whatsapp" alt="WhatsApp"><img src="https://cdn.simpleicons.org/notion" alt="Notion">
+        </div>
+      </div>
+    </div>
+    </header>
+  </section>
+
+  <!-- OFFERINGS INTRO -->
+  <section id="demo" class="max-w-6xl mx-auto px-6 pt-28 pb-2 text-center">
+    <p class="eyebrow mb-5 reveal">What we build</p>
+    <h2 class="display mx-auto reveal" style="font-size:clamp(32px,5vw,52px);max-width:640px">Two kinds of agents.<br><span style="color:rgba(255,255,255,0.4)">Both run themselves.</span></h2>
+  </section>
+
+  <!-- OFFERING 01 — VOICE RECEPTIONIST (animated call) -->
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal order-2 lg:order-1" id="voice-demo">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="call-top">
+              <div class="call-av"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+              <div class="call-name">NexFlow Voice Agent</div>
+              <div class="call-status" id="call-status">Incoming call…</div>
+              <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="call-body">
+              <div class="vbubble caller anim-step"><span class="lbl">Caller</span>Hi — do you have any openings this week?</div>
+              <div class="vbubble agent anim-step"><span class="lbl">NexFlow agent</span>We do. I can get you in Thursday at 10, or Friday at 2 — which works better?</div>
+              <div class="vbubble caller anim-step"><span class="lbl">Caller</span>Thursday at 10 is perfect.</div>
+              <div class="vbubble agent anim-step"><span class="lbl">NexFlow agent</span>Booked. You'll get a text confirmation shortly. Anything else?</div>
+              <div class="call-done anim-step">
+                <div class="av bot" style="border-radius:9px">✓</div>
+                <div style="flex:1"><div style="font-size:12.5px;font-weight:600;color:var(--ink)">Booked · Thu 10:00 AM</div><div style="font-size:11px;color:var(--mut2)">SMS sent · added to calendar · logged to CRM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal order-1 lg:order-2">
+        <div class="kicker mb-4"><span class="n">01</span> Voice receptionist</div>
+        <h3 class="display" style="font-size:clamp(28px,4vw,42px);max-width:440px">Answers every call.<br>Books the right ones.</h3>
+        <p class="muted mt-6" style="font-size:16px;line-height:1.65;max-width:450px">Trained on your business, it picks up 24/7, qualifies the caller, books straight into your calendar, and transfers to a human when it matters — sounding human the whole way.</p>
+        <ul class="mt-7 space-y-3">
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Inbound &amp; after-hours coverage</li>
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Books to Google / Outlook / Cal.com</li>
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Live transfer + instant SMS confirmation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFERING 02 — CUSTOM AGENTS (assign in plain English) -->
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal">
+        <div class="kicker mb-4"><span class="n">02</span> Custom agents</div>
+        <h2 class="display" style="font-size:clamp(28px,4vw,42px);max-width:440px">Tell it what you need.<br>It ships the outcome.</h2>
+        <p class="muted mt-6" style="font-size:16px;line-height:1.65;max-width:460px">
+          No flowcharts, no rules engine to maintain. Describe the messy problem — a billing dispute, a scheduling pile-up, a stalled deal — the way you'd tell a teammate. It investigates across your tools, uses judgment, and reports back the finished result.
+        </p>
+        <ul class="mt-7 space-y-3">
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Reasons across your CRM, payments &amp; inbox</li>
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Handles multi-step problems end to end</li>
+          <li class="flex items-center gap-3" style="font-size:14.5px;color:var(--mut)"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Pauses for your approval on anything sensitive</li>
+        </ul>
+      </div>
+      <!-- chat mock (animated) -->
+      <div class="reveal mock card-glow" id="demo-mock">
+        <div class="mock-bar">
+          <span class="tdot" style="background:#ff5f57"></span><span class="tdot" style="background:#febc2e"></span><span class="tdot" style="background:#28c840"></span>
+          <span class="chan"># ops · NexFlow agent</span>
+          <span class="illus" style="margin-left:auto">Illustrative</span>
+        </div>
+        <div class="msg">
+          <div class="av user">AF</div>
+          <div>
+            <div><span class="who">You</span><span class="when">9:41 AM</span></div>
+            <div class="txt">A client just emailed furious — says we charged them twice for May. Sort it out.</div>
+          </div>
+        </div>
+        <div class="msg" style="border-top:1px solid var(--line)">
+          <div class="av bot">N</div>
+          <div style="flex:1" id="chat-seq">
+            <div><span class="who">NexFlow Agent</span><span class="when">9:41 AM</span></div>
+            <div class="typing" id="chat-typing"><span></span><span></span><span></span></div>
+            <div class="txt anim-step" style="margin-bottom:8px">On it — pulling the email thread and reconciling Stripe against your CRM.</div>
+            <div class="step anim-step"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Matched the client + email thread in HubSpot</div>
+            <div class="step anim-step"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Stripe: confirmed a duplicate $480 charge on May 14</div>
+            <div class="step anim-step"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Refunded it — held for your approval (over $200)</div>
+            <div class="step anim-step"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span> Drafted the apology &amp; logged root cause: payment webhook fired twice</div>
+            <div class="deliver anim-step">
+              <div class="av bot" style="border-radius:8px">✓</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--ink)">Resolved · $480 refund pending your approval</div>
+                <div style="font-size:11.5px;color:var(--mut2)">Client retained · webhook bug flagged for your dev to fix</div>
+              </div>
+              <span style="font-size:11px;color:var(--accent);font-weight:600">View log</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS — message only (logos slide in the hero) -->
+  <section id="tools" class="max-w-3xl mx-auto px-6 py-24 text-center">
+    <div class="reveal">
+      <p class="eyebrow mb-4">Integrations</p>
+      <h2 class="display mx-auto" style="font-size:clamp(28px,4vw,42px);max-width:560px">No rip and replace.<br>It joins your stack.</h2>
+      <p class="muted mx-auto mt-6" style="font-size:16px;line-height:1.65;max-width:520px">Keep the CRM, calendar, phone, and inbox you already run. NexFlow plugs in alongside them — 55+ integrations out of the box, no migration, no retraining.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- COMMAND CENTER (ported from live site) -->
+  <section id="dashboard" class="max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-12 reveal">
+      <p class="eyebrow mb-4">Your command center</p>
+      <h2 class="display mx-auto" style="font-size:clamp(28px,4.5vw,46px);max-width:580px">Every agent. One screen.<br>Owned by you.</h2>
+    </div>
+    <div class="reveal cc card-glow" id="cc">
+      <div class="cc-bar">
+        <span class="tdot" style="background:#ff5f57"></span><span class="tdot" style="background:#febc2e"></span><span class="tdot" style="background:#28c840"></span>
+        <span class="chan">dashboard.nexflowaisolutions.com</span>
+        <span class="illus" style="margin-left:auto">Sample data · illustrative</span>
+      </div>
+      <div class="cc-tabs" role="tablist">
+        <span class="cc-tab active" role="tab" tabindex="0" data-tab="overview">Overview</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="voice">Voice</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="agents">Custom Agents</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="pipeline">Pipeline</span>
+        <span class="cc-tab" role="tab" tabindex="0" data-tab="capture">Capture</span>
+      </div>
+      <div class="cc-body">
+        <!-- OVERVIEW -->
+        <div class="cc-pane active" data-pane="overview">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Agents Live</div><div class="v"><span id="cc-agents">0</span></div><div class="t">▲ +2 this month</div></div>
+            <div class="cc-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="cc-stat"><div class="k">Calls Answered</div><div class="v"><span id="cc-calls">0</span></div><div class="t">100% pickup</div></div>
+            <div class="cc-stat"><div class="k">Hours Saved</div><div class="v"><span id="cc-hours">0</span>h</div><div class="t">▲ vs manual</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Automations · 24h</span><span style="color:var(--ink);font-weight:600">1,284</span></div>
+              <svg viewBox="0 0 820 110" width="100%" height="96" preserveAspectRatio="none">
+                <defs><linearGradient id="ccg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(125,211,231,0.25)"/><stop offset="100%" stop-color="#7dd3e7"/></linearGradient></defs>
+                <path class="spark-path" id="spark" d="M0,92 C70,80 110,76 170,64 C240,52 290,58 350,42 C420,26 470,34 530,26 C590,18 640,22 700,14 C740,10 780,12 820,8" fill="none" stroke="url(#ccg)" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="cc-panel" id="cc-feed">
+              <div class="cc-ph"><span>Live activity</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:47</span><span><b style="color:var(--ink);font-weight:600">Voice agent</b> · inbound · booked</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:42</span><span><b style="color:var(--ink);font-weight:600">Custom agent</b> · invoice nudge</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:31</span><span><b style="color:var(--ink);font-weight:600">Triage agent</b> · 14 routed</span></div>
+              <div class="cc-feed-row anim-step"><span class="ts">11:28</span><span><b style="color:var(--ink);font-weight:600">No-show recovery</b> · 3 rebooked</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VOICE -->
+        <div class="cc-pane" data-pane="voice">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Calls Answered</div><div class="v">412</div><div class="t">100% pickup</div></div>
+            <div class="cc-stat"><div class="k">Booked</div><div class="v">88</div><div class="t">▲ 21% of calls</div></div>
+            <div class="cc-stat"><div class="k">Missed → Recovered</div><div class="v">37</div><div class="t">▲ won back</div></div>
+            <div class="cc-stat"><div class="k">Avg Handle</div><div class="v">1:12</div><div class="t">no hold time</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Recent calls</span><span style="color:var(--ink);font-weight:600">Today</span></div>
+              <div class="cc-feed-row"><span class="ts">11:47</span><span><b style="color:var(--ink);font-weight:600">New patient</b> · booked Tue 2:30 PM</span></div>
+              <div class="cc-feed-row"><span class="ts">11:20</span><span><b style="color:var(--ink);font-weight:600">Reschedule</b> · moved to Fri 10 AM</span></div>
+              <div class="cc-feed-row"><span class="ts">10:58</span><span><b style="color:var(--ink);font-weight:600">Pricing question</b> · answered · SMS sent</span></div>
+              <div class="cc-feed-row"><span class="ts">10:31</span><span><b style="color:var(--ink);font-weight:600">After-hours call</b> · captured · callback queued</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Outcomes · this week</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">Booked</span><span style="color:var(--ink)">88 appointments</span></div>
+              <div class="cc-feed-row"><span class="ts">Routed</span><span style="color:var(--ink)">31 to your team</span></div>
+              <div class="cc-feed-row"><span class="ts">FAQ</span><span style="color:var(--ink)">204 answered instantly</span></div>
+              <div class="cc-feed-row"><span class="ts">Spam</span><span style="color:var(--ink)">62 screened out</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOM AGENTS -->
+        <div class="cc-pane" data-pane="agents">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Agents Live</div><div class="v">8</div><div class="t">▲ +2 this month</div></div>
+            <div class="cc-stat"><div class="k">Tasks · 24h</div><div class="v">1,284</div><div class="t">▲ +12%</div></div>
+            <div class="cc-stat"><div class="k">In Approval</div><div class="v">3</div><div class="t">awaiting you</div></div>
+            <div class="cc-stat"><div class="k">Success</div><div class="v">99.2%</div><div class="t">▲ vs manual</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Agents running</span><span style="color:var(--ink);font-weight:600">8 live</span></div>
+              <div class="cc-feed-row"><span class="ts">Triage</span><span style="color:var(--ink)">14 inbound routed</span></div>
+              <div class="cc-feed-row"><span class="ts">Invoice</span><span style="color:var(--ink)">9 nudges sent · 2 paid</span></div>
+              <div class="cc-feed-row"><span class="ts">Reviews</span><span style="color:var(--ink)">6 requests · 4 five-star</span></div>
+              <div class="cc-feed-row"><span class="ts">Recovery</span><span style="color:var(--ink)">3 no-shows rebooked</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Approval queue</span><span style="color:var(--accent);font-weight:600">3 pending</span></div>
+              <div class="cc-feed-row"><span class="ts">11:42</span><span><b style="color:var(--ink);font-weight:600">Refund · $240</b> · needs sign-off</span></div>
+              <div class="cc-feed-row"><span class="ts">11:15</span><span><b style="color:var(--ink);font-weight:600">Discount offer</b> · VIP customer</span></div>
+              <div class="cc-feed-row"><span class="ts">10:49</span><span><b style="color:var(--ink);font-weight:600">Contract reply</b> · draft ready</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PIPELINE -->
+        <div class="cc-pane" data-pane="pipeline">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">New Leads</div><div class="v">24</div><div class="t">▲ today</div></div>
+            <div class="cc-stat"><div class="k">Contacted</div><div class="v">61</div><div class="t">auto follow-up</div></div>
+            <div class="cc-stat"><div class="k">Booked</div><div class="v">18</div><div class="t">▲ 30% rate</div></div>
+            <div class="cc-stat"><div class="k">Won</div><div class="v">7</div><div class="t">$9,400 value</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Recent leads</span><span style="color:var(--ink);font-weight:600">24 today</span></div>
+              <div class="cc-feed-row"><span class="ts">2m</span><span><b style="color:var(--ink);font-weight:600">Maria T.</b> · intake form · auto-replied</span></div>
+              <div class="cc-feed-row"><span class="ts">24m</span><span><b style="color:var(--ink);font-weight:600">Derek C.</b> · Google Ads · quote queued</span></div>
+              <div class="cc-feed-row"><span class="ts">1h</span><span><b style="color:var(--ink);font-weight:600">Jordan L.</b> · Instagram DM · qualified</span></div>
+              <div class="cc-feed-row"><span class="ts">2h</span><span><b style="color:var(--ink);font-weight:600">Sarah P.</b> · missed call · booked Fri 3 PM</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Stages</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">New</span><span style="color:var(--ink)">24 leads</span></div>
+              <div class="cc-feed-row"><span class="ts">Nurture</span><span style="color:var(--ink)">61 in sequence</span></div>
+              <div class="cc-feed-row"><span class="ts">Booked</span><span style="color:var(--ink)">18 discovery calls</span></div>
+              <div class="cc-feed-row"><span class="ts">Won</span><span style="color:var(--ink)">7 · $9,400</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAPTURE -->
+        <div class="cc-pane" data-pane="capture">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="k">Captured · 24h</div><div class="v">46</div><div class="t">▲ nothing missed</div></div>
+            <div class="cc-stat"><div class="k">Auto-Replied</div><div class="v">46</div><div class="t">under 60s</div></div>
+            <div class="cc-stat"><div class="k">Recovered</div><div class="v">$4,280</div><div class="t">▲ would-be lost</div></div>
+            <div class="cc-stat"><div class="k">Response</div><div class="v">&lt;60s</div><div class="t">every channel</div></div>
+          </div>
+          <div class="cc-row">
+            <div class="cc-panel">
+              <div class="cc-ph"><span>Capture feed</span><span style="display:flex;align-items:center;gap:6px;color:#34d399"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span></div>
+              <div class="cc-feed-row"><span class="ts">11:51</span><span><b style="color:var(--ink);font-weight:600">Missed call</b> · SMS sent · rebook link</span></div>
+              <div class="cc-feed-row"><span class="ts">11:38</span><span><b style="color:var(--ink);font-weight:600">Web form</b> · Maria T. · replied instantly</span></div>
+              <div class="cc-feed-row"><span class="ts">11:22</span><span><b style="color:var(--ink);font-weight:600">Instagram DM</b> · qualified · call offered</span></div>
+              <div class="cc-feed-row"><span class="ts">11:04</span><span><b style="color:var(--ink);font-weight:600">After-hours</b> · captured · queued for AM</span></div>
+            </div>
+            <div class="cc-panel">
+              <div class="cc-ph"><span>By channel · 24h</span><span style="color:var(--ink);font-weight:600">46 total</span></div>
+              <div class="cc-feed-row"><span class="ts">Calls</span><span style="color:var(--ink)">19 missed · all recovered</span></div>
+              <div class="cc-feed-row"><span class="ts">Forms</span><span style="color:var(--ink)">14 · instant reply</span></div>
+              <div class="cc-feed-row"><span class="ts">DMs</span><span style="color:var(--ink)">9 · qualified</span></div>
+              <div class="cc-feed-row"><span class="ts">SMS</span><span style="color:var(--ink)">4 · in conversation</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL WORK / APPROVALS -->
+  <section id="agents" class="max-w-6xl mx-auto px-6 py-24">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+      <!-- approval queue mock -->
+      <div class="reveal mock card-glow order-2 lg:order-1">
+        <div class="mock-bar">
+          <span class="tdot" style="background:#ff5f57"></span><span class="tdot" style="background:#febc2e"></span><span class="tdot" style="background:#28c840"></span>
+          <span class="chan">Command Center · Approvals</span>
+          <span style="margin-left:auto;font-size:11px;color:#34d399;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span>Live</span>
+        </div>
+        <div style="padding:16px">
+          <div class="card" style="padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px">
+            <div class="av bot" style="border-radius:9px">V</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--ink)">Voice agent · booked inbound call</div>
+              <div style="font-size:11.5px;color:var(--mut2)">New patient · Tue 2:30 PM · auto-confirmed</div>
+            </div>
+            <span style="font-size:11px;color:#34d399;font-weight:600">Auto</span>
+          </div>
+          <div class="card" style="padding:13px 15px;margin-bottom:10px;display:flex;align-items:center;gap:12px;border-color:rgba(125,211,231,0.3)">
+            <div class="av user" style="border-radius:9px">$</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--ink)">Refund request · $240</div>
+              <div style="font-size:11.5px;color:var(--mut2)">Needs your approval before sending</div>
+            </div>
+            <div style="display:flex;gap:6px">
+              <span style="font-size:11px;padding:5px 11px;border-radius:8px;background:var(--ink);color:#0a0a0a;font-weight:600">Approve</span>
+              <span style="font-size:11px;padding:5px 11px;border-radius:8px;border:1px solid var(--line2);color:var(--mut)">Hold</span>
+            </div>
+          </div>
+          <div class="card" style="padding:13px 15px;display:flex;align-items:center;gap:12px">
+            <div class="av bot" style="border-radius:9px">F</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--ink)">Follow-up sequence · 24 leads</div>
+              <div style="font-size:11.5px;color:var(--mut2)">Drafted · scheduled for 4:00 PM</div>
+            </div>
+            <span style="font-size:11px;color:var(--accent);font-weight:600">Semi-auto</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal order-1 lg:order-2">
+        <p class="eyebrow mb-4">Real work, delivered</p>
+        <h2 class="display" style="font-size:clamp(30px,4.5vw,46px);max-width:440px">Stay in control of every action.</h2>
+        <p class="muted mt-6" style="font-size:16px;line-height:1.65;max-width:460px">
+          Your agents never go rogue. Choose how much rope each one gets — review everything, approve the big stuff, or let proven workflows run fully on their own.
+        </p>
+        <div class="flex gap-3 mt-8">
+          <button type="button" class="mode-btn" data-mode="0"><div class="mt">Approvals</div><div class="md">You confirm each action</div></button>
+          <button type="button" class="mode-btn active" data-mode="1"><div class="mt">Semi-auto</div><div class="md">Approve the big stuff</div></button>
+          <button type="button" class="mode-btn" data-mode="2"><div class="mt">Autonomous</div><div class="md">Runs on its own</div></button>
+        </div>
+        <p id="mode-copy" class="muted mt-5" style="font-size:13.5px;line-height:1.6;min-height:42px">
+          Routine work runs automatically; anything touching money or a VIP customer waits for your one-tap approval.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS WHILE YOU SLEEP -->
+  <section class="max-w-6xl mx-auto px-6 py-24">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal">
+        <p class="eyebrow mb-4">Always on</p>
+        <h2 class="display" style="font-size:clamp(30px,4.5vw,46px);max-width:440px">Your business closes.<br>Your agents don't.</h2>
+        <p class="muted mt-6" style="font-size:16px;line-height:1.65;max-width:460px">
+          The calls that used to go to voicemail at 1 AM now get answered, qualified, and booked. You wake up to a full calendar — not a list of missed numbers.
+        </p>
+      </div>
+      <div class="reveal card card-glow" id="overnight-card" style="padding:26px 28px">
+        <div class="flex items-center justify-between mb-5">
+          <span style="font-size:13px;font-weight:600">Overnight · while you slept</span>
+          <span class="illus">Illustrative</span>
+        </div>
+        <div class="tl" id="tl-seq">
+          <div class="tl-row anim-step"><div class="tl-time">01:48</div><div class="tl-text">Inbound call answered — caller asking about availability</div></div>
+          <div class="tl-row anim-step"><div class="tl-time">01:49</div><div class="tl-text">Qualified intent, checked the live calendar</div></div>
+          <div class="tl-row anim-step"><div class="tl-time">01:50</div><div class="tl-text">Booked Thursday 10:00 AM · sent SMS confirmation</div></div>
+          <div class="tl-row anim-step"><div class="tl-time">06:30</div><div class="tl-text">Logged to CRM · added to your morning brief</div></div>
+        </div>
+        <div class="deliver anim-step" style="margin-top:14px">
+          <div class="av bot" style="border-radius:8px">✓</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:var(--ink)">1 booking recovered overnight</div>
+            <div style="font-size:11.5px;color:var(--mut2)">Zero missed calls · 100% pickup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANNELS -->
+  <section class="max-w-4xl mx-auto px-6 py-16 text-center">
+    <p class="eyebrow mb-8 reveal">Works where you work</p>
+    <div class="reveal flex flex-wrap justify-center gap-3">
+      <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Phone calls</span>
+      <span class="chip"><img src="logos/teams.svg" alt=""> Teams</span>
+      <span class="chip"><img src="https://cdn.simpleicons.org/whatsapp" alt=""> WhatsApp</span>
+      <span class="chip"><img src="https://cdn.simpleicons.org/telegram" alt=""> Telegram</span>
+      <span class="chip"><img src="https://cdn.simpleicons.org/gmail" alt=""> Email</span>
+      <span class="chip"><img src="logos/slack.svg" alt=""> Slack</span>
+    </div>
+  </section>
+
+  <!-- YOUR TIME BACK -->
+  <section class="max-w-6xl mx-auto px-6 py-24 text-center">
+    <div class="reveal">
+      <p class="eyebrow mb-4">Your time back</p>
+      <h2 class="display mx-auto" style="font-size:clamp(30px,5vw,52px);max-width:620px">Ship outcomes,<br>not busywork.</h2>
+      <div class="flex flex-wrap justify-center gap-x-16 gap-y-8 mt-12">
+        <div>
+          <div class="display" style="font-size:54px">Every</div>
+          <div class="muted" style="font-size:13.5px;margin-top:4px">inbound call, answered</div>
+        </div>
+        <div>
+          <div class="display" style="font-size:54px"><span id="cnt-int">0</span>+</div>
+          <div class="muted" style="font-size:13.5px;margin-top:4px">tools it plugs into</div>
+        </div>
+        <div>
+          <div class="display" style="font-size:54px">24/7</div>
+          <div class="muted" style="font-size:13.5px;margin-top:4px">always running</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NOW (honest — no fabricated proof) -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-12 reveal">
+      <p class="eyebrow mb-4">Why work with us now</p>
+      <h2 class="display mx-auto" style="font-size:clamp(28px,4vw,42px);max-width:560px">New — and that's the advantage.</h2>
+      <p class="muted mx-auto mt-5" style="font-size:16px;max-width:540px;line-height:1.6">We're taking on our first clients by hand. No support queue, no wall of borrowed logos — just the founder building your agents and standing behind the work.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="reveal card" style="padding:30px">
+        <div class="num-badge">01</div>
+        <div style="font-size:17px;font-weight:600;color:var(--ink)">Founder-built</div>
+        <p class="muted" style="font-size:14px;line-height:1.6;margin-top:9px">You work directly with the person designing and running your agents — not a ticket queue.</p>
+      </div>
+      <div class="reveal card" style="padding:30px">
+        <div class="num-badge">02</div>
+        <div style="font-size:17px;font-weight:600;color:var(--ink)">You own the system</div>
+        <p class="muted" style="font-size:14px;line-height:1.6;margin-top:9px">Branded dashboard, your data, your agents — every action logged. No lock-in, cancel anytime. Nothing held hostage.</p>
+      </div>
+      <div class="reveal card" style="padding:30px">
+        <div class="num-badge">03</div>
+        <div style="font-size:17px;font-weight:600;color:var(--ink)">Free audit, no obligation</div>
+        <p class="muted" style="font-size:14px;line-height:1.6;margin-top:9px">See exactly what we'd build and what it costs before you pay a cent. Keep the plan even if we never work together.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <section id="faq" class="max-w-3xl mx-auto px-6 py-20">
+    <div class="text-center mb-10 reveal">
+      <p class="eyebrow mb-4">FAQ</p>
+      <h2 class="display mx-auto" style="font-size:clamp(28px,4vw,42px)">Questions, answered.</h2>
+    </div>
+    <div class="reveal">
+      <details open><summary>What does NexFlow actually do? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">We design, build, and operate AI agents inside your business — a voice receptionist that answers every call, and custom agents wired into your specific workflows. Everything reports into one branded Command Center you own.</div></details>
+      <details><summary>How long until it's live? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Most builds go live in days, not months. Your free audit comes back with an exact timeline for your operation.</div></details>
+      <details><summary>Do I have to replace my current tools? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">No. NexFlow plugs in alongside your CRM, calendar, phone, and inbox — 55+ integrations out of the box. No migration, no retraining.</div></details>
+      <details><summary>How do I stay in control? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Every agent runs in the autonomy mode you set — full approvals, semi-auto, or autonomous. Every action is logged in your Command Center.</div></details>
+      <details><summary>What makes NexFlow different? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Most agencies bolt AI onto your business and hope. Every NexFlow agent ships security-first: least-privilege access to your tools, every action logged, your data stays yours. Custom-built around how your business actually runs, then operated for you.</div></details>
+      <details><summary>What does it cost? <span class="faq-plus"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="faq-a">Every build is scoped in your free audit, but typical engagements: missed-call rescue from $997 setup + $197/mo, a 24/7 AI voice receptionist from $2,500 setup + $397/mo, custom agent builds quoted fixed-price before we start. The audit comes back with an exact number — no surprises, cancel anytime.</div></details>
+    </div>
+  </section>
+
+  <!-- WHAT HAPPENS WHEN YOU BOOK -->
+  <section id="process" class="max-w-6xl mx-auto px-6 pt-20 pb-2">
+    <div class="reveal text-center mb-10">
+      <p class="eyebrow mb-4">What happens when you book</p>
+      <h2 class="display mx-auto" style="font-size:clamp(26px,4vw,38px);max-width:520px">Three steps. No lock-in.</h2>
+    </div>
+    <div class="reveal grid sm:grid-cols-3 gap-3">
+      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">01 — Free audit</p><p class="muted" style="font-size:14.5px;line-height:1.65">Seven questions, three minutes. Tell us how your business runs today.</p></div>
+      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">02 — Your plan in 24 hours</p><p class="muted" style="font-size:14.5px;line-height:1.65">A written plan: which agents we'd build, what they replace, and an exact fixed price.</p></div>
+      <div class="card" style="padding:26px 24px"><p class="eyebrow mb-3">03 — Live in days</p><p class="muted" style="font-size:14.5px;line-height:1.65">We build, you approve, it runs. Cancel anytime — the agents keep logs, you keep the data.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="max-w-6xl mx-auto px-6 py-28 text-center">
+    <div class="reveal card card-glow" style="padding:60px 32px">
+      <h2 class="display mx-auto" style="font-size:clamp(32px,5vw,56px);max-width:640px">Put an agent on your busywork.</h2>
+      <p class="muted mx-auto mt-6" style="font-size:17px;max-width:480px;line-height:1.6">Free audit — in 24 hours you get a written plan: which agents we'd build, what they replace, and the ROI.</p>
+      <div class="flex flex-wrap gap-3 justify-center mt-9">
+        <a href="https://form.typeform.com/to/Klck50zm" target="_blank" rel="noopener" class="btn btn-primary">Book your free audit
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#demo" class="btn btn-ghost">See how it works</a>
+      </div>
+      <p class="muted mt-6" style="font-size:12.5px;opacity:.65">No obligation · keep the audit even if we never work together</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="max-w-6xl mx-auto px-6 py-12 border-t" style="border-color:var(--line)">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <span style="font-size:15px;font-weight:600">NEXFLOW <span style="opacity:.6;font-weight:400">AI</span></span>
+      <span class="muted" style="font-size:12.5px">Built for operators · © 2026 NexFlow AI · <a href="/privacy-policy" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacy</a> · <a href="/terms-of-service" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Terms</a></span>
+    </div>
+  </footer>
+
+  </div>
+
+  <script>
+    // scroll reveal
+    const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // autonomy mode toggle
+    const modeCopy = {
+      0:"Nothing happens without your sign-off. Every drafted message, booking, and action waits in your queue for one tap.",
+      1:"Routine work runs automatically; anything touching money or a VIP customer waits for your one-tap approval.",
+      2:"Proven workflows run fully on their own, end to end. You just watch the results land in your Command Center."
+    };
+    document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById('mode-copy').textContent = modeCopy[b.dataset.mode];
+    }));
+
+    // count-up
+    function countTo(id,target,suffix,dur){
+      const el=document.getElementById(id); let started=false;
+      const ob=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting && !started){ started=true;
+        const t0=performance.now();
+        (function step(t){ const p=Math.min((t-t0)/dur,1); el.textContent=Math.round(p*target); if(p<1) requestAnimationFrame(step); })(t0);
+      }}),{threshold:0.5});
+      ob.observe(el);
+    }
+    countTo('cnt-int',55,'',1200);
+
+    // live workflow sequence — typing → steps reveal one by one (plays once)
+    function playSeq(containerId, typingId){
+      const c = document.getElementById(containerId); if(!c) return;
+      const steps = [...c.querySelectorAll('.anim-step')];
+      const typing = typingId ? document.getElementById(typingId) : null;
+      const ob = new IntersectionObserver((es)=>es.forEach(e=>{
+        if(!e.isIntersecting) return;
+        ob.unobserve(e.target);
+        let i = 0;
+        const kick = ()=>{ if(typing) typing.classList.remove('show');
+          (function reveal(){ if(i < steps.length){ steps[i].classList.add('show'); i++; setTimeout(reveal, 540); } })(); };
+        if(typing){ typing.classList.add('show'); setTimeout(kick, 750); } else { setTimeout(kick, 200); }
+      }),{threshold:0.45});
+      ob.observe(c);
+    }
+    playSeq('chat-seq','chat-typing');
+    playSeq('overnight-card', null);
+
+    // mobile menu
+    const hamb=document.getElementById('hamb'), mm=document.getElementById('mobile-menu');
+    hamb?.addEventListener('click',()=>{ const open=hamb.classList.toggle('open'); mm.classList.toggle('open'); hamb.setAttribute('aria-expanded', String(open)); });
+    mm?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ hamb.classList.remove('open'); mm.classList.remove('open'); }));
+
+    // scroll progress bar
+    const prog=document.getElementById('progress');
+    addEventListener('scroll',()=>{ const h=document.documentElement; const p=h.scrollTop/((h.scrollHeight-h.clientHeight)||1); prog.style.width=(Math.min(p,1)*100)+'%'; },{passive:true});
+
+    // dashboard sparkline draw-in (one-shot, true path length)
+    const spark=document.getElementById('spark');
+    if(spark){
+      const len=spark.getTotalLength();
+      spark.style.strokeDasharray=len; spark.style.strokeDashoffset=len;
+      const so=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ requestAnimationFrame(()=>{ spark.style.strokeDashoffset=0; }); so.unobserve(e.target); } }),{threshold:0.5});
+      so.observe(spark);
+    }
+
+    // nav scrolled state
+    const navEl=document.querySelector('nav');
+    addEventListener('scroll',()=>{ navEl.classList.toggle('scrolled', scrollY>20); },{passive:true});
+
+    // staggered reveal — cascade children that share a parent
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const sibs=[...el.parentElement.children].filter(c=>c.classList.contains('reveal'));
+      if(sibs.length>1){ el.style.transitionDelay=(sibs.indexOf(el)*0.09)+'s'; }
+    });
+
+    // command center — stat count-up + streaming feed
+    countTo('cc-agents',8,'',1000);
+    countTo('cc-calls',412,'',1400);
+    countTo('cc-hours',14,'',1100);
+    playSeq('cc-feed', null);
+
+    // command center — tab switching (Overview / Voice / Custom Agents / Pipeline / Capture)
+    (function(){
+      const tabs=[...document.querySelectorAll('.cc-tab')];
+      const panes=[...document.querySelectorAll('.cc-pane')];
+      if(!tabs.length) return;
+      function select(tab){
+        const name=tab.dataset.tab;
+        tabs.forEach(t=>{ const on=t===tab; t.classList.toggle('active',on); t.setAttribute('aria-selected',on?'true':'false'); });
+        panes.forEach(p=>p.classList.toggle('active', p.dataset.pane===name));
+      }
+      tabs.forEach(tab=>{
+        tab.addEventListener('click',()=>select(tab));
+        tab.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(tab); } });
+      });
+    })();
+
+    // voice receptionist — animated live call
+    (function(){
+      const card=document.getElementById('voice-demo'); if(!card) return;
+      const bubbles=[...card.querySelectorAll('.anim-step')];
+      const status=document.getElementById('call-status');
+      let timer=null, running=false;
+      function run(){
+        running=true; bubbles.forEach(b=>b.classList.remove('show'));
+        status.textContent='Incoming call…'; let t=0;
+        clearInterval(timer);
+        setTimeout(()=>{
+          status.textContent='Connected · 00:00';
+          timer=setInterval(()=>{ t=Math.min(t+1,59); status.textContent='Connected · 00:'+String(t).padStart(2,'0'); }, 1000);
+          let i=0;
+          (function rev(){ if(i<bubbles.length){ bubbles[i].classList.add('show'); i++; setTimeout(rev, 950); } })();
+        }, 850);
+      }
+      const ob=new IntersectionObserver((es)=>es.forEach(e=>{
+        if(e.isIntersecting){ ob.unobserve(e.target); run(); }
+      }),{threshold:0.4});
+      ob.observe(card);
+    })();
+  </script>
+  <script src="/chat-widget.js" defer></script>
+</body>
+</html>
